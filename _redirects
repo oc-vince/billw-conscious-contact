@@ -1,0 +1,66 @@
+# 301 Redirects — Bill W. Conscious Contact
+# Format: /old-path   /new-path   301
+
+# Trailing-slash cleanup
+/film/                                          /film                           301
+/events/                                        /events                         301
+/privacy-policy/                                /privacy-policy                 301
+/terms-conditions/                              /terms-and-conditions           301
+/contact-us/                                    /contact                        301
+
+# Old /pages/* routes
+/pages/film                                     /film                           301
+/pages/book                                     /book                           301
+/pages/stepping-stones                          /stepping-stones                301
+/pages/subscription                             /subscribe                      301
+/pages/events                                   /events                         301
+/pages/our-partners                             /                               301
+
+# Old /products/* routes
+/products/bill-w-conscious-book                 /book                           301
+/products/membership-yearly                     /                               301
+
+# Old merch / product pages → Home
+/product/the-t-shirt/                           /                               301
+/product/the-hoodie/                            /                               301
+/product/hoodie-t-shirt-bundle/                 /                               301
+/product-category/merch/                        /                               301
+
+# Misc old pages → Home
+/resources/                                     /                               301
+/collectibles/                                  /                               301
+/my-account/                                    /                               301
+/summary/                                       /                               301
+/we-want-your-stories/                          /                               301
+/we-want-your-stories/thank-you-for-your-story/ /                               301
+
+# Collectibles page clean URL
+/collectibles                                   /collectibles.html                      200
+
+# Book pre-order thank-you pages
+/thank-you-paperback                            /thank-you-paperback.html               200
+/thank-you-hardcover                            /thank-you-hardcover.html               200
+/thank-you-legacy                               /thank-you-legacy.html                  200
+
+# Merch thank-you pages
+/thank-you-hoodie                               /thank-you-hoodie.html                  200
+/thank-you-tshirt                               /thank-you-tshirt.html                  200
+/thank-you-bundle                               /thank-you-bundle.html                  200
+
+# subscribe.html retired
+/subscribe.html                                 /                               301
+/subscribe                                      /                               301
+
+# Memberstack pages retired
+/login.html                                     /                               301
+/login                                          /                               301
+/logout.html                                    /                               301
+/logout                                         /                               301
+/signup.html                                    /                               301
+/signup                                         /                               301
+/dashboard.html                                 /                               301
+/dashboard                                      /                               301
+/stream-access.html                             /                               301
+/stream-access                                  /                               301
+/watch.html                                     /                               301
+/watch                                          /                               301

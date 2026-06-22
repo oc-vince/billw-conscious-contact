@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Exclude utility & thank-you pages
+Disallow: /members.html
+Disallow: /thank-you.html
+Disallow: /thank-you-.html
+Disallow: /thank-you-paperback.html
+Disallow: /thank-you-hardcover.html
+Disallow: /thank-you-legacy.html
+
+Sitemap: https://billwconsciouscontact.com/sitemap.xml
