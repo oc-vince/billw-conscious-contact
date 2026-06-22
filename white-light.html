@@ -1,0 +1,434 @@
+<!--
+  Bill W · Conscious Contact — "The White Light"
+  Self-contained, client-side portrait tool. No server, no upload.
+  Drop this file into the Netlify site (e.g. /white-light.html) and link to it.
+  The visitor's photo is decoded and processed entirely in their browser.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The White Light — Bill W · Conscious Contact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- HEIC support for photos straight off an iPhone -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/heic2any/0.0.4/heic2any.min.js"></script>
+
+<style>
+  :root{
+    --ground:#0E0D0C;     /* the dark before the light */
+    --surface:#16140F;    /* raised panels */
+    --light:#F6F1E7;      /* the light itself */
+    --dim:#8C857A;        /* muted warm gray */
+    --faint:#4A453D;      /* hairlines */
+    --amber:#C9A24B;      /* a 1930s incandescent glow — used sparingly */
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--ground);
+    color:var(--light);
+    font-family:"Inter",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+    min-height:100vh;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 24px 80px}
+
+  /* ---- header ---- */
+  .eyebrow{
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 22px;font-weight:500;
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(40px,8vw,76px);line-height:.98;letter-spacing:-.01em;
+    margin:0 0 20px;
+  }
+  .lede{
+    max-width:50ch;color:#cfc8bc;font-size:17px;margin:0 0 40px;
+  }
+  .lede em{font-family:"Fraunces",serif;font-style:italic;color:var(--light)}
+
+  /* ---- stage ---- */
+  .stage{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    background:#000;
+    border:1px solid var(--faint);
+    min-height:300px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stage canvas{display:block;max-width:100%;height:auto;touch-action:none;cursor:grab}
+  .stage.dragging canvas{cursor:grabbing}
+
+  /* ---- dropzone (pre-upload) ---- */
+  .drop{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;text-align:center;
+    padding:48px 24px;cursor:pointer;
+    background:
+      radial-gradient(120% 90% at 50% 38%, rgba(246,241,231,.10), transparent 60%),
+      var(--surface);
+    transition:background .25s ease;
+  }
+  .drop.hot{background:
+      radial-gradient(120% 90% at 50% 38%, rgba(246,241,231,.20), transparent 60%),
+      var(--surface);}
+  .drop .ring{
+    width:60px;height:60px;border-radius:50%;
+    border:1px solid var(--faint);
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 45%, rgba(246,241,231,.35), transparent 70%);
+  }
+  .drop .ring span{width:8px;height:8px;border-radius:50%;background:var(--light);
+    box-shadow:0 0 18px 6px rgba(246,241,231,.6)}
+  .drop h2{font-family:"Fraunces",serif;font-weight:400;font-size:22px;margin:0}
+  .drop p{margin:0;color:var(--dim);font-size:14px;max-width:34ch}
+
+  /* drag hint on the live image */
+  .hint{
+    position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+    background:rgba(14,13,12,.72);backdrop-filter:blur(6px);
+    color:#e9e3d7;font-size:13px;padding:7px 14px;border-radius:999px;
+    border:1px solid var(--faint);pointer-events:none;
+    transition:opacity .4s ease;
+  }
+
+  /* ---- controls ---- */
+  .panel{
+    margin-top:20px;display:grid;gap:22px;
+    grid-template-columns:repeat(2,1fr);
+    background:var(--surface);border:1px solid var(--faint);
+    border-radius:var(--radius);padding:26px;
+  }
+  .ctrl label{display:flex;justify-content:space-between;font-size:13px;
+    color:var(--dim);margin-bottom:9px}
+  .ctrl label b{color:var(--light);font-weight:500;font-variant-numeric:tabular-nums}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:2px;
+    background:var(--faint);border-radius:2px;outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--light);cursor:pointer;border:0;
+    box-shadow:0 0 0 1px var(--ground), 0 0 14px 2px rgba(246,241,231,.4);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;background:var(--light);
+    cursor:pointer;border:0;box-shadow:0 0 14px 2px rgba(246,241,231,.4);
+  }
+  input:focus-visible{box-shadow:0 0 0 3px rgba(201,162,75,.55)}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+  button{
+    font-family:inherit;font-size:15px;cursor:pointer;border-radius:999px;
+    padding:13px 26px;border:1px solid var(--faint);
+    background:transparent;color:var(--light);transition:.18s ease;
+  }
+  button:hover{border-color:var(--dim)}
+  button:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(201,162,75,.55)}
+  button.primary{background:var(--light);color:#161310;border-color:var(--light)}
+  button.primary:hover{background:#fff}
+  button[disabled]{opacity:.35;cursor:not-allowed}
+
+  .privacy{margin-top:18px;font-size:13px;color:var(--dim)}
+  .privacy::before{content:"";display:inline-block;width:6px;height:6px;
+    border-radius:50%;background:var(--amber);margin-right:9px;vertical-align:middle}
+
+  /* ---- footer ---- */
+  footer{margin-top:64px;padding-top:30px;border-top:1px solid var(--faint)}
+  blockquote{
+    font-family:"Fraunces",serif;font-style:italic;font-size:21px;
+    color:var(--light);margin:0 0 12px;max-width:44ch;line-height:1.4;
+  }
+  footer cite{font-style:normal;color:var(--dim);font-size:14px}
+  footer cite::before{content:"— ";color:var(--amber)}
+  footer .src{margin-top:18px;font-size:13px;color:var(--dim)}
+
+  @media (max-width:640px){
+    .wrap{padding:40px 18px 64px}
+    .panel{grid-template-columns:1fr;gap:18px;padding:20px}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+  .hidden{display:none!important}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Bill W · Conscious Contact</p>
+  <h1>The white light</h1>
+  <p class="lede">In 1934, in a hospital room, Bill Wilson described a light he could never explain — a room that <em>blazed</em>. Add a portrait and picture yourself in it. Then drag the light onto your eyes.</p>
+
+  <div class="stage" id="stage">
+    <canvas id="canvas" class="hidden"></canvas>
+    <div class="drop" id="drop">
+      <div class="ring"><span></span></div>
+      <h2>Add a photo</h2>
+      <p>Drag a portrait here, or tap to choose one. It stays on your device.</p>
+    </div>
+    <div class="hint hidden" id="hint">Drag the light onto your eyes</div>
+  </div>
+  <input type="file" id="file" accept="image/*,.heic,.heif" class="hidden">
+
+  <div class="panel hidden" id="panel">
+    <div class="ctrl">
+      <label for="intensity">Light <b id="intensityV">100%</b></label>
+      <input type="range" id="intensity" min="0" max="130" value="100">
+    </div>
+    <div class="ctrl">
+      <label for="size">Size <b id="sizeV">1.0×</b></label>
+      <input type="range" id="size" min="50" max="170" value="100">
+    </div>
+    <div class="ctrl">
+      <label for="spread">Spread <b id="spreadV">1.0×</b></label>
+      <input type="range" id="spread" min="70" max="180" value="100">
+    </div>
+    <div class="ctrl">
+      <label for="warm">Warmth <b id="warmV">soft</b></label>
+      <input type="range" id="warm" min="0" max="100" value="50">
+    </div>
+  </div>
+
+  <div class="actions hidden" id="actions">
+    <button class="primary" id="download">Download</button>
+    <button id="reset">Start over</button>
+  </div>
+
+  <p class="privacy hidden" id="privacy">Your photo is never uploaded. Everything happens in your browser.</p>
+
+  <footer>
+    <blockquote>I didn't write the 11th Step. It came to me as an inspiration.</blockquote>
+    <cite>Bill Wilson</cite>
+    <p class="src">From the documentary <em>Bill W · Conscious Contact</em>.</p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const stage=$("stage"), canvas=$("canvas"), ctx=canvas.getContext("2d");
+  const drop=$("drop"), fileInput=$("file"), panel=$("panel"),
+        actions=$("actions"), privacy=$("privacy"), hint=$("hint");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Resolution-independent parameters
+  const params = { cx:0.50, cy:0.40, intensity:1.0, size:1.0, spread:1.0, warm:0.5 };
+
+  // Faded-grayscale look (matches the desktop script: lift shadows, crush contrast)
+  const GAIN = 0.80, LIFT = 26;
+  const LIVE_MAX = 1300;   // working size while editing (keeps dragging smooth)
+  const SAVE_MAX = 2600;   // resolution used for the downloaded file
+
+  let bitmap=null;         // source image
+  let baseGray=null;       // Float32Array faded-grayscale base at live res
+  let liveW=0, liveH=0;
+  let bloom=1;             // animated multiplier for the wash-in
+
+  /* ---------- loading ---------- */
+  async function fileToBitmap(file){
+    let blob = file;
+    const isHeic = /heic|heif/i.test(file.type) || /\.(heic|heif)$/i.test(file.name);
+    if (isHeic && window.heic2any){
+      try { blob = await window.heic2any({ blob:file, toType:"image/jpeg", quality:0.92 }); }
+      catch(e){ /* fall through; some browsers decode HEIC natively */ }
+    }
+    if (window.createImageBitmap){
+      try { return await createImageBitmap(blob); } catch(e){}
+    }
+    return await new Promise((res,rej)=>{
+      const img=new Image();
+      img.onload=()=>res(img);
+      img.onerror=()=>rej(new Error("decode"));
+      img.src=URL.createObjectURL(blob);
+    });
+  }
+
+  function fitDims(w,h,max){
+    const s = Math.min(1, max/Math.max(w,h));
+    return [Math.round(w*s), Math.round(h*s)];
+  }
+
+  // Render the source to a canvas at a target size and return faded-gray Float32Array
+  function makeBase(w,h){
+    const off=document.createElement("canvas"); off.width=w; off.height=h;
+    const octx=off.getContext("2d");
+    octx.drawImage(bitmap,0,0,w,h);
+    const d=octx.getImageData(0,0,w,h).data;
+    const g=new Float32Array(w*h);
+    for(let i=0,p=0;i<d.length;i+=4,p++){
+      let lum = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
+      lum = lum*GAIN + LIFT;
+      g[p] = lum>255?255:lum;
+    }
+    return g;
+  }
+
+  async function loadFile(file){
+    try {
+      bitmap = await fileToBitmap(file);
+    } catch(e){
+      drop.querySelector("h2").textContent = "Couldn't read that file";
+      drop.querySelector("p").textContent = "Try a JPG or PNG export of the photo.";
+      return;
+    }
+    const sw = bitmap.width, sh = bitmap.height;
+    [liveW, liveH] = fitDims(sw, sh, LIVE_MAX);
+    canvas.width=liveW; canvas.height=liveH;
+    baseGray = makeBase(liveW, liveH);
+
+    // reset placement to a sensible default for a centered portrait
+    params.cx=0.50; params.cy=0.40;
+
+    drop.classList.add("hidden");
+    canvas.classList.remove("hidden");
+    panel.classList.remove("hidden");
+    actions.classList.remove("hidden");
+    privacy.classList.remove("hidden");
+    hint.classList.remove("hidden");
+    setTimeout(()=>hint.style.opacity="0", 4200);
+
+    if(reduceMotion){ bloom=1; render(); }
+    else animateBloom();
+  }
+
+  /* ---------- the effect ---------- */
+  // Build a 1-D Gaussian falloff vector along an axis.
+  function gauss(len, center, sigma){
+    const v=new Float32Array(len);
+    const k = 1/(2*sigma*sigma);
+    for(let i=0;i<len;i++){ const dx=i-center; v[i]=Math.exp(-dx*dx*k); }
+    return v;
+  }
+
+  // Compose into the given context at size w,h using a base-gray array.
+  function compose(targetCtx, base, w, h){
+    const cx=params.cx*w, cy=params.cy*h;
+    const sxc = w*0.27*params.size*params.spread;
+    const syc = w*0.12*params.size;
+    const sxh = w*0.53*params.size*params.spread;
+    const syh = w*0.28*params.size;
+    // separable gaussians (fast: no exp in the inner pixel loop)
+    const gxc=gauss(w,cx,sxc), gyc=gauss(h,cy,syc);
+    const gxh=gauss(w,cx,sxh), gyh=gauss(h,cy,syh);
+    const inten = params.intensity*bloom;
+    const warm = params.warm;
+    const rW=1+0.06*warm, gW=1+0.02*warm, bW=1-0.04*warm;
+
+    const out=targetCtx.createImageData(w,h);
+    const o=out.data;
+    for(let y=0,p=0;y<h;y++){
+      const cY=gyc[y], hY=gyh[y];
+      for(let x=0;x<w;x++,p++){
+        let glow = gxc[x]*cY + 0.55*(gxh[x]*hY);
+        glow = glow>1?1:glow;
+        glow *= inten;
+        if(glow>1) glow=1;
+        const bg = base[p];
+        const blended = bg*(1-glow) + 255*glow;
+        const screen = 255 - (255-blended)*(255-glow*255)/255;
+        let v = blended*0.7 + screen*0.3;
+        const i=p*4;
+        if(warm>0){
+          o[i]   = Math.min(255, v*rW);
+          o[i+1] = Math.min(255, v*gW);
+          o[i+2] = Math.min(255, v*bW);
+        } else {
+          o[i]=o[i+1]=o[i+2]=v;
+        }
+        o[i+3]=255;
+      }
+    }
+    targetCtx.putImageData(out,0,0);
+  }
+
+  let raf=0;
+  function render(){
+    if(raf) return;
+    raf=requestAnimationFrame(()=>{ raf=0; compose(ctx, baseGray, liveW, liveH); });
+  }
+
+  function animateBloom(){
+    const start=performance.now(), dur=900;
+    function step(t){
+      const k=Math.min(1,(t-start)/dur);
+      bloom = 1-Math.pow(1-k,3);          // easeOutCubic
+      compose(ctx, baseGray, liveW, liveH);
+      if(k<1) requestAnimationFrame(step); else bloom=1;
+    }
+    bloom=0; requestAnimationFrame(step);
+  }
+
+  /* ---------- dragging the light ---------- */
+  function pointTo(e){
+    const r=canvas.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width;
+    const y=(e.clientY-r.top)/r.height;
+    params.cx=Math.max(0,Math.min(1,x));
+    params.cy=Math.max(0,Math.min(1,y));
+    render();
+  }
+  let dragging=false;
+  canvas.addEventListener("pointerdown",e=>{
+    dragging=true; canvas.setPointerCapture(e.pointerId);
+    stage.classList.add("dragging"); hint.style.opacity="0"; pointTo(e);
+  });
+  canvas.addEventListener("pointermove",e=>{ if(dragging) pointTo(e); });
+  canvas.addEventListener("pointerup",()=>{dragging=false;stage.classList.remove("dragging");});
+  canvas.addEventListener("pointercancel",()=>{dragging=false;stage.classList.remove("dragging");});
+
+  /* ---------- controls ---------- */
+  function bind(id, valId, fmt, apply){
+    const el=$(id), out=$(valId);
+    el.addEventListener("input",()=>{ apply(+el.value); out.textContent=fmt(+el.value); render(); });
+  }
+  bind("intensity","intensityV", v=>v+"%",        v=>params.intensity=v/100);
+  bind("size","sizeV",           v=>(v/100).toFixed(1)+"×", v=>params.size=v/100);
+  bind("spread","spreadV",       v=>(v/100).toFixed(1)+"×", v=>params.spread=v/100);
+  bind("warm","warmV", v=> v===0?"black & white" : v<55?"soft":"warm", v=>params.warm=v/100);
+
+  /* ---------- file pickers ---------- */
+  drop.addEventListener("click",()=>fileInput.click());
+  fileInput.addEventListener("change",e=>{ if(e.target.files[0]) loadFile(e.target.files[0]); });
+  ["dragenter","dragover"].forEach(ev=>stage.addEventListener(ev,e=>{
+    e.preventDefault(); drop.classList.add("hot"); }));
+  ["dragleave","drop"].forEach(ev=>stage.addEventListener(ev,e=>{
+    e.preventDefault(); drop.classList.remove("hot"); }));
+  stage.addEventListener("drop",e=>{
+    const f=e.dataTransfer.files[0]; if(f) loadFile(f);
+  });
+
+  /* ---------- download (rendered at higher resolution) ---------- */
+  $("download").addEventListener("click",()=>{
+    const [w,h]=fitDims(bitmap.width,bitmap.height,SAVE_MAX);
+    const c=document.createElement("canvas"); c.width=w; c.height=h;
+    const cc=c.getContext("2d");
+    const savedBloom=bloom; bloom=1;
+    compose(cc, makeBase(w,h), w, h);
+    bloom=savedBloom;
+    c.toBlob(blob=>{
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);
+      a.download="conscious-contact-white-light.png";
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    },"image/png");
+  });
+
+  $("reset").addEventListener("click",()=>{
+    bitmap=null; baseGray=null;
+    canvas.classList.add("hidden");
+    panel.classList.add("hidden"); actions.classList.add("hidden");
+    privacy.classList.add("hidden"); hint.classList.add("hidden");
+    drop.classList.remove("hidden");
+    drop.querySelector("h2").textContent="Add a photo";
+    drop.querySelector("p").textContent="Drag a portrait here, or tap to choose one. It stays on your device.";
+    fileInput.value="";
+    // restore default control values
+    $("intensity").value=100; $("intensityV").textContent="100%";
+    $("size").value=100; $("sizeV").textContent="1.0×";
+    $("spread").value=100; $("spreadV").textContent="1.0×";
+    $("warm").value=50; $("warmV").textContent="soft";
+    Object.assign(params,{cx:.5,cy:.4,intensity:1,size:1,spread:1,warm:.5});
+  });
+})();
+</script>
