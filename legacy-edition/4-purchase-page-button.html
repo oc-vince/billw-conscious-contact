@@ -1,0 +1,96 @@
+<!--
+  ============================================================
+  LEGACY EDITION — Purchase Page Button Snippet
+  Paste this into your purchase page HTML where the buy
+  button should appear. Replace the two placeholder values.
+  ============================================================
+-->
+
+<!-- ① Paste this where you want the button -->
+<div id="legacy-edition-wrap" style="text-align:center; margin: 2rem 0;">
+  <button
+    id="legacy-edition-btn"
+    disabled
+    style="
+      padding: 16px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      cursor: not-allowed;
+      background: #cccccc;
+      color: #888888;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.03em;
+    "
+  >
+    Checking availability…
+  </button>
+  <p id="legacy-edition-remaining" style="margin-top:8px; font-size:0.85rem; color:#666;"></p>
+</div>
+
+<!-- ② Paste this script just before </body> -->
+<script>
+(function () {
+  // ─── REPLACE THESE TWO VALUES ────────────────────────────
+  var AVAILABILITY_URL = "https://YOUR_PROJECT_REF.supabase.co/functions/v1/check-availability";
+  var PAYMENT_LINK_URL = "https://buy.stripe.com/YOUR_PAYMENT_LINK";
+  // ─────────────────────────────────────────────────────────
+
+  var btn = document.getElementById("legacy-edition-btn");
+  var note = document.getElementById("legacy-edition-remaining");
+
+  // Active button styles (customise to match your site)
+  var activeStyles = {
+    background: "#1a1a2e",   // ← change to your brand colour
+    color: "#ffffff",
+    cursor: "pointer",
+  };
+
+  // Sold-out button styles
+  var soldOutStyles = {
+    background: "#9e9e9e",
+    color: "#ffffff",
+    cursor: "not-allowed",
+  };
+
+  function applyStyles(el, styles) {
+    Object.assign(el.style, styles);
+  }
+
+  fetch(AVAILABILITY_URL)
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data.available) {
+        btn.textContent = "Buy Now — $149.95";
+        btn.disabled = false;
+        applyStyles(btn, activeStyles);
+        btn.addEventListener("click", function () {
+          window.location.href = PAYMENT_LINK_URL;
+        });
+        // Show remaining count while copies are low (optional)
+        if (data.remaining <= 20) {
+          note.textContent = "Only " + data.remaining + " copies remaining!";
+          note.style.color = "#c0392b";
+          note.style.fontWeight = "600";
+        } else {
+          note.textContent = data.remaining + " of 190 copies still available.";
+        }
+      } else {
+        btn.textContent = "SOLD OUT";
+        btn.disabled = true;
+        applyStyles(btn, soldOutStyles);
+        note.textContent = "All 190 Legacy Edition copies have been claimed.";
+      }
+    })
+    .catch(function () {
+      // If the availability check fails, fail open (show buy button)
+      btn.textContent = "Buy Now — $149.95";
+      btn.disabled = false;
+      applyStyles(btn, activeStyles);
+      btn.addEventListener("click", function () {
+        window.location.href = PAYMENT_LINK_URL;
+      });
+    });
+})();
+</script>
