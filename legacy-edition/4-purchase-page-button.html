@@ -74,13 +74,13 @@
           note.style.color = "#c0392b";
           note.style.fontWeight = "600";
         } else {
-          note.textContent = data.remaining + " of 190 copies still available.";
+          note.textContent = data.remaining + " of 135 copies still available.";
         }
       } else {
         btn.textContent = "SOLD OUT";
         btn.disabled = true;
         applyStyles(btn, soldOutStyles);
-        note.textContent = "All 190 Legacy Edition copies have been claimed.";
+        note.textContent = "All 135 Legacy Edition copies have been claimed.";
       }
     })
     .catch(function () {
