@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N5GCNJCG');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://billwconsciouscontact.com/library">
+  <title>Library | Bill W. Conscious Contact — Book & Film</title>
+  <meta name="description" content="Bring Bill W. Conscious Contact to your library — documentary screenings, author talks, free programming kits, and Kanopy streaming. Ideal for adult programming and National Recovery Month.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://billwconsciouscontact.com/library">
+  <meta property="og:title" content="Library | Bill W. Conscious Contact — Book & Film">
+  <meta property="og:description" content="Bring Bill W. Conscious Contact to your library — documentary screenings, author talks, free programming kits, and Kanopy streaming.">
+  <meta property="og:image" content="https://billwconsciouscontact.com/images/OG-image-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:logo" content="https://billwconsciouscontact.com/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://billwconsciouscontact.com/library">
+  <meta name="twitter:title" content="Library | Bill W. Conscious Contact — Book & Film">
+  <meta name="twitter:description" content="Bring Bill W. Conscious Contact to your library — documentary screenings, author talks, free programming kits, and Kanopy streaming.">
+  <meta name="twitter:image" content="https://billwconsciouscontact.com/images/OG-image-1200x630.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    /* ── Offering cards grid ── */
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .offering-card {
+      background: var(--black-light);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: border-color 0.25s;
+    }
+
+    .offering-card:hover {
+      border-color: rgba(201,168,76,0.38);
+    }
+
+    .offering-card-label {
+      font-family: var(--font-ui);
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .offering-card-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.65rem;
+      line-height: 1.3;
+    }
+
+    .offering-card-desc {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: rgba(245,240,230,0.65);
+      line-height: 1.75;
+    }
+
+    /* ── Video wrapper ── */
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9/16;
+      max-height: 64vh;
+      background: #000;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    .video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10,10,10,0.32);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .video-overlay.hidden { display: none; }
+
+    .play-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid rgba(201,168,76,0.75);
+      background: rgba(201,168,76,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s, transform 0.25s;
+      backdrop-filter: blur(4px);
+    }
+
+    .play-circle:hover {
+      background: rgba(201,168,76,0.28);
+      transform: scale(1.08);
+    }
+
+    .play-circle svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--gold);
+      margin-left: 4px;
+    }
+
+    /* ── Contact block ── */
+    .contact-name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.04em;
+    }
+
+    .contact-details {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      color: rgba(245,240,230,0.45);
+      line-height: 2;
+      letter-spacing: 0.03em;
+    }
+
+    .contact-details a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-details a:hover { color: var(--gold-light); }
+
+    /* ── Video + text column sizing ── */
+    .lib-about-grid {
+      display: grid;
+      grid-template-columns: 38% 62%;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .lib-about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    @media (max-width: 767px) {
+      .offerings-grid { grid-template-columns: 1fr; }
+    }
+
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5GCNJCG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-small">Bill W.</span>
+      <span class="nav-logo-main">Conscious Contact</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="film.html">Film</a></li>
+      <li><a href="book.html">Book</a></li>
+      <li><a href="stepping-stones.html">Stepping Stones</a></li>
+      <li><a href="press.html">Press</a></li>
+      <li><a href="purchase.html" class="nav-cta">Purchase</a></li>
+    </ul>
+    <div class="nav-auth"></div>
+    <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open'); this.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" style="min-height: 70vh; background: linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.85), var(--black)), url('images/library-hero.webp') center / cover no-repeat;">
+    <div class="hero-pretitle">For Libraries &amp; Literary Communities</div>
+    <h1 class="hero-title">Library</h1>
+    <p class="hero-subtitle">Where Research Meets Recovery — A Program Built for Public Libraries</p>
+  </section>
+
+  <!-- ── INTRO + VIDEO ── -->
+  <section class="section-pad" style="background: var(--black-light);">
+    <div class="container" style="max-width: 1200px;">
+      <div class="lib-about-grid">
+
+        <!-- Left: Video -->
+        <div class="reveal">
+          <div class="video-wrap">
+            <video id="libraryVideo" preload="metadata" playsinline>
+              <source src="vid/Library-OPT.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay" id="videoOverlay">
+              <button class="play-circle" id="playBtn" aria-label="Play video">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Text -->
+        <div class="about-text reveal">
+          <div class="section-label">About the Program</div>
+          <h2 class="section-heading">The Film &amp; the Book, Together</h2>
+          <p>An exploration of Bill Wilson's spiritual life and the philosophical roots of the Twelve Step Movement — produced in partnership with The Stepping Stones Foundation&reg;. Winner of ten festival awards; screened internationally and across the U.S.</p>
+          <p>Twenty-five years of research into Bill Wilson's philosophy, his correspondence with Carl Jung, the influence of William James, and the Oxford Group — presented for general audiences, not just recovery specialists.</p>
+          <p>A natural fit for adult programming, recovery and wellness series, local history collections, and interfaith or philosophy discussion groups.</p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.75rem;">
+            <a href="#offerings" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.9rem 2.5rem; letter-spacing: 0.15em;">What We Offer</a>
+            <a href="#contact" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.9rem 2.5rem; letter-spacing: 0.15em;">Book Your Library</a>
+          </div>
+        </div>
+
+      </div><!-- end lib-about-grid -->
+    </div>
+  </section>
+
+  <!-- ── WHAT WE OFFER ── -->
+  <section id="offerings" class="section-pad" style="background: var(--black);">
+    <div class="container">
+      <div class="section-label reveal" style="justify-content: center;">Programs &amp; Resources</div>
+      <h2 class="section-heading reveal" style="text-align: center;">What We Offer Your Library</h2>
+      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(245,240,230,0.65); text-align: center; max-width: 640px; margin: 0 auto; line-height: 1.8;">Everything your team needs to deliver a meaningful, well-attended program — from first contact to final discussion.</p>
+
+      <div class="offerings-grid">
+
+        <div class="offering-card reveal">
+          <div class="offering-card-label">Screening</div>
+          <div class="offering-card-title">Documentary Screening + Live Q&amp;A</div>
+          <p class="offering-card-desc">A community outreach program ready to host, ideal for adult and community programming slots. Brings the film directly to your audience with a live Q&amp;A session.</p>
+        </div>
+
+        <div class="offering-card reveal">
+          <div class="offering-card-label">Author Event</div>
+          <div class="offering-card-title">Author Talk &amp; Book Signing</div>
+          <p class="offering-card-desc">Paperback, hardcover, and a limited Legacy Edition (150 copies) available for your collection or for sale at the event. A rare opportunity for your patrons to meet the author.</p>
+        </div>
+
+        <div class="offering-card reveal">
+          <div class="offering-card-label">Free Resource</div>
+          <div class="offering-card-title">Free Library Programming Kit</div>
+          <p class="offering-card-desc">Discussion questions, a companion reading list, and a screening introduction — all ready to use. No extra preparation required for your programming team.</p>
+        </div>
+
+        <div class="offering-card reveal">
+          <div class="offering-card-label">Streaming</div>
+          <div class="offering-card-title">Film Streaming via Kanopy</div>
+          <p class="offering-card-desc">Available through Kanopy — no extra licensing needed for Kanopy-subscribing libraries. Your patrons can watch anytime, anywhere with an existing library card.</p>
+        </div>
+
+        <div class="offering-card reveal" style="grid-column: 1 / -1;">
+          <div class="offering-card-label">Timing</div>
+          <div class="offering-card-title">Ready-Made September Programming</div>
+          <p class="offering-card-desc">Timed to National Recovery Month — a natural fit for libraries looking to mark the occasion with substantive, research-backed programming that resonates with a broad community audience.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHY IT FITS ── -->
+  <section class="section-pad" style="background: var(--black-light);">
+    <div class="container">
+      <div class="reveal" style="max-width: 800px; margin: 0 auto; text-align: center;">
+        <div class="section-label" style="justify-content: center;">Community Relevance</div>
+        <h2 class="section-heading" style="text-align: center;">Why It Fits Your Community</h2>
+        <div style="width: 48px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent); margin: 0 auto 2.5rem;"></div>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.3rem); color: rgba(245,240,230,0.78); line-height: 1.85;">Twenty-five years of research into Bill Wilson's philosophy, his correspondence with Carl Jung, the influence of William James, and the Oxford Group — presented for general audiences, not just recovery specialists. A natural fit for adult programming, recovery and wellness series, local history collections, and interfaith or philosophy discussion groups.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT CTA ── -->
+  <section id="contact" class="section-pad" style="background: var(--black); text-align: center;">
+    <div class="container">
+      <div class="reveal" style="max-width: 640px; margin: 0 auto;">
+        <div class="section-label" style="justify-content: center;">Get in Touch</div>
+        <h2 class="section-heading" style="text-align: center;">Let&rsquo;s Book Your Library</h2>
+        <div style="width: 48px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent); margin: 0 auto 2.5rem;"></div>
+        <a href="contact.html" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.9rem 3rem; letter-spacing: 0.15em; margin-bottom: 2.5rem; display: inline-block;">Book a Program</a>
+        <div class="contact-name">Jay Stinnett &mdash; Author &amp; Producer, Muse Bookings LLC</div>
+        <div class="contact-details">
+          <a href="mailto:info@billwconsciouscontact.com">info@billwconsciouscontact.com</a> &nbsp;&bull;&nbsp; 310-874-2341<br>
+          <a href="https://billwconsciouscontact.com" target="_blank" rel="noopener">billwconsciouscontact.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Bill W. Conscious Contact</h3>
+        <p>Based on the award-winning documentary film. Produced by Jay Stinnett. Directed by Kevin Hanlon.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="index.html">Home</a>
+        <a href="film.html">The Film</a>
+        <a href="book.html">The Book</a>
+        <a href="stepping-stones.html">Stepping Stones</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="press.html">Press</a>
+        <a href="library.html">Library</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-and-conditions.html">Terms of Service</a>
+      </div>
+      <div class="footer-book">
+        <h4>The Book</h4>
+        <p>Published by Muse Bookings LLC &middot; Sedona, Arizona<br>
+        &copy; 2026 Bill W. Conscious Contact. All rights reserved.<br>
+        A Jay Stinnett Production</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bill W. Conscious Contact. Muse Bookings LLC. All rights reserved.</p>
+      <p>A Jay Stinnett Production</p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    (function() {
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      });
+    })();
+
+    // Reveal on scroll
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    })();
+
+    // Video play
+    (function() {
+      var video   = document.getElementById('libraryVideo');
+      var overlay = document.getElementById('videoOverlay');
+      var btn     = document.getElementById('playBtn');
+
+      function play() {
+        video.setAttribute('controls', '');
+        video.play();
+        overlay.classList.add('hidden');
+      }
+
+      btn.addEventListener('click', play);
+      overlay.addEventListener('click', play);
+      video.addEventListener('ended', function() {
+        overlay.classList.remove('hidden');
+      });
+    })();
+  </script>
+
+</body>
+</html>
