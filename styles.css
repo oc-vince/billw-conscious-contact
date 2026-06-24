@@ -876,6 +876,27 @@
       transform: translateY(0);
     }
 
+    /* ——— NARROW DESKTOP (fits all nav items on one line) ——— */
+    @media (max-width: 1280px) and (min-width: 901px) {
+      .nav-links {
+        position: static;
+        left: auto;
+        transform: none;
+        gap: 1.4rem;
+        margin-left: auto;
+      }
+      .nav-links a {
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+      }
+      nav {
+        padding: 1.2rem 1.5rem;
+      }
+      nav.scrolled {
+        padding: 1.2rem 1.5rem;
+      }
+    }
+
     /* ——— MOBILE ——— */
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }

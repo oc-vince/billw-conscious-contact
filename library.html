@@ -165,7 +165,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* ── Video + text column sizing ── */
     .lib-about-grid {
       display: grid;
-      grid-template-columns: 38% 62%;
+      grid-template-columns: 38% 1fr;
       gap: 4rem;
       align-items: center;
     }
@@ -199,22 +199,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><a href="library.html">For Libraries</a></li>
       <li><a href="purchase.html" class="nav-cta">Purchase</a></li>
     </ul>
-    <div class="nav-auth"></div>
+
+    <div class="nav-auth">
+	<!--
+      <div data-ms-content="!members">
+        <a href="#" data-ms-modal="login" class="auth-login">Sign In</a>
+      </div>
+      <div data-ms-content="!members">
+        <a href="subscribe.html" class="auth-signup">Join</a>
+      </div>
+      <div data-ms-content="members" style="display:none;">
+        <a href="members.html" class="auth-account">My Account</a>
+      </div>
+      <div data-ms-content="members" style="display:none;">
+        <a href="#" data-ms-action="logout" class="auth-logout">Sign Out</a>
+      </div>
+
+	  -->
+    </div>
     <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open'); this.classList.toggle('open')">
       <span></span><span></span><span></span>
     </div>
   </nav>
 
   <!-- ── HERO ── -->
-  <section class="hero" style="min-height: 70vh; background: linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.85), var(--black)), url('images/library-hero.webp') center / cover no-repeat;">
+  <section class="hero" style="min-height: 70vh; background: linear-gradient(to bottom, rgba(10,10,10,0.3), rgba(10,10,10,0.8), var(--black)), url('images/film-page-hero.jpg') center / cover no-repeat;">
     <div class="hero-pretitle">For Libraries &amp; Literary Communities</div>
     <h1 class="hero-title">Library</h1>
-    <p class="hero-subtitle">Where Research Meets Recovery — A Program Built for Public Libraries</p>
+    <p class="hero-subtitle">We Bring Community to Your Library</p>
   </section>
 
   <!-- ── INTRO + VIDEO ── -->
   <section class="section-pad" style="background: var(--black-light);">
-    <div class="container" style="max-width: 1200px;">
+    <div class="container" style="max-width: 1200px; padding-right: 3rem;">
       <div class="lib-about-grid">
 
         <!-- Left: Video -->
@@ -239,7 +256,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <h2 class="section-heading">The Film &amp; the Book, Together</h2>
           <p>An exploration of Bill Wilson's spiritual life and the philosophical roots of the Twelve Step Movement — produced in partnership with The Stepping Stones Foundation&reg;. Winner of ten festival awards; screened internationally and across the U.S.</p>
           <p>Twenty-five years of research into Bill Wilson's philosophy, his correspondence with Carl Jung, the influence of William James, and the Oxford Group — presented for general audiences, not just recovery specialists.</p>
-          <p>A natural fit for adult programming, recovery and wellness series, local history collections, and interfaith or philosophy discussion groups.</p>
+          <p>A natural fit for adult programming, recovery and wellness series, local history collections, and spiritual or philosophical discussion groups.</p>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.75rem;">
             <a href="#offerings" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.9rem 2.5rem; letter-spacing: 0.15em;">What We Offer</a>
             <a href="#contact" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.9rem 2.5rem; letter-spacing: 0.15em;">Book Your Library</a>
@@ -255,8 +272,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container">
       <div class="section-label reveal" style="justify-content: center;">Programs &amp; Resources</div>
       <h2 class="section-heading reveal" style="text-align: center;">What We Offer Your Library</h2>
-      <p class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(245,240,230,0.65); text-align: center; max-width: 640px; margin: 0 auto; line-height: 1.8;">Everything your team needs to deliver a meaningful, well-attended program — from first contact to final discussion.</p>
-
       <div class="offerings-grid">
 
         <div class="offering-card reveal">
@@ -268,7 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="offering-card reveal">
           <div class="offering-card-label">Author Event</div>
           <div class="offering-card-title">Author Talk &amp; Book Signing</div>
-          <p class="offering-card-desc">Paperback, hardcover, and a limited Legacy Edition (150 copies) available for your collection or for sale at the event. A rare opportunity for your patrons to meet the author.</p>
+          <p class="offering-card-desc">An engaging keynote speaker, Jay has lectured and led retreats in 18 countries, gaining insights into A.A.'s effectiveness across nations, cultures, and religions.</p>
         </div>
 
         <div class="offering-card reveal">
@@ -300,7 +315,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="section-label" style="justify-content: center;">Community Relevance</div>
         <h2 class="section-heading" style="text-align: center;">Why It Fits Your Community</h2>
         <div style="width: 48px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent); margin: 0 auto 2.5rem;"></div>
-        <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.3rem); color: rgba(245,240,230,0.78); line-height: 1.85;">Twenty-five years of research into Bill Wilson's philosophy, his correspondence with Carl Jung, the influence of William James, and the Oxford Group — presented for general audiences, not just recovery specialists. A natural fit for adult programming, recovery and wellness series, local history collections, and interfaith or philosophy discussion groups.</p>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.3rem); color: rgba(245,240,230,0.78); line-height: 1.85;">Twenty-five years of research into Bill Wilson's philosophy, his correspondence with Carl Jung, the influence of William James, and the Oxford Group — presented for general audiences, not just recovery specialists. A natural fit for adult programming, recovery and wellness series, local history collections, and spiritual or philosophical discussion groups.</p>
       </div>
     </div>
   </section>
@@ -362,25 +377,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <script>
     // Navbar scroll
-    (function() {
-      var navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', function() {
-        navbar.classList.toggle('scrolled', window.scrollY > 40);
-      });
-    })();
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
 
     // Reveal on scroll
-    (function() {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            observer.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
-    })();
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
 
     // Video play
     (function() {
