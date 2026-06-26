@@ -54,10 +54,10 @@ serve(async (req: Request) => {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  // Only process completed checkouts
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    console.log("Checkout completed:", session.id);
+  // Only process successful payments
+  if (event.type === "payment_intent.succeeded") {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    console.log("Payment succeeded:", paymentIntent.id);
 
     // Increment sold count atomically
     const { data: newCount, error } = await supabase.rpc("increment_sold_count");
