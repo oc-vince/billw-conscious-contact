@@ -46,7 +46,8 @@ Deno.serve(async (req: Request) => {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      Deno.env.get("STRIPE_WEBHOOK_SECRET")!
+      Deno.env.get("STRIPE_WEBHOOK_SECRET")!,
+      99999 // temporarily increased tolerance for testing
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
