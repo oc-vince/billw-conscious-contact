@@ -40,6 +40,285 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     }
 
+    /* ── A Glimpse Inside: page-spread carousel ── */
+    .glimpse-intro {
+      max-width: 800px;
+      margin: 2.25rem auto 0;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      font-weight: 300;
+      color: rgba(245, 240, 230, 0.72);
+      line-height: 1.9;
+    }
+
+    .page-carousel {
+      position: relative;
+      margin-top: 3rem;
+    }
+
+    .page-carousel-viewport {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    /* soft edge scrims keep the bare chevrons readable over light spreads */
+    .page-carousel-viewport::before,
+    .page-carousel-viewport::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(70px, 8%, 130px);
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .page-carousel-viewport::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%);
+    }
+
+    .page-carousel-viewport::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%);
+    }
+
+    .page-track {
+      display: flex;
+      will-change: transform;
+      /* slides right → left with an eased glide */
+      transition: transform 0.9s cubic-bezier(0.65, 0.02, 0.28, 1);
+    }
+
+    .page-slide {
+      flex: 0 0 100%;
+      min-width: 100%;
+    }
+
+    .page-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Bare chevrons sitting inside the image — no circle */
+    .page-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 4;
+      background: none;
+      border: none;
+      padding: 0.4rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
+      transition: color 0.35s ease, transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .page-nav svg {
+      width: clamp(26px, 3.2vw, 40px);
+      height: clamp(26px, 3.2vw, 40px);
+      display: block;
+    }
+
+    .page-nav-prev { left: 0.75rem; }
+    .page-nav-next { right: 0.75rem; }
+
+    .page-nav:hover { color: var(--gold-light); }
+    .page-nav-prev:hover { transform: translateY(-50%) translateX(-4px); }
+    .page-nav-next:hover { transform: translateY(-50%) translateX(4px); }
+
+    .page-nav:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+    .page-nav:disabled {
+      opacity: 0.2;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .page-counter {
+      margin-top: 1.1rem;
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(245, 240, 230, 0.45);
+    }
+
+    .page-counter-sep { color: rgba(201, 168, 76, 0.5); margin: 0 0.35rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page-track { transition: none; }
+    }
+
+    /* ── Cover carousel (3D coverflow) ── */
+    .cover-carousel {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cover-carousel-stage {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 68%;
+      max-width: 340px;
+      transform-style: preserve-3d;
+      transition: transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  filter 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform, opacity, filter;
+    }
+
+    .cover-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      box-shadow:
+        -20px 20px 60px rgba(0, 0, 0, 0.65),
+        0 0 80px rgba(201, 168, 76, 0.06);
+    }
+
+    .cover-carousel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .cover-nav-btn {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.35);
+      background: rgba(10, 10, 10, 0.5);
+      backdrop-filter: blur(4px);
+      color: var(--gold);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cover-nav-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cover-nav-btn:hover {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .cover-nav-btn:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 900px) {
+      .cover-carousel-stage { height: 460px; }
+      .cover-slide { width: 62%; }
+    }
+
+    @media (max-width: 767px) {
+      .cover-carousel-stage { height: 400px; }
+      .cover-slide { width: 58%; max-width: 260px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cover-slide { transition: opacity 0.3s linear; }
+    }
+
+    /* ── Edition cells: book cover floating above the card ── */
+    .edition-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .edition-book {
+      position: relative;
+      z-index: 3;
+      width: 74%;
+      max-width: 250px;
+      margin-bottom: -70px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 26px 34px rgba(0,0,0,0.85)) drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+      pointer-events: none;
+      /* fades in once the lazy-loaded image has decoded */
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .edition-book.is-loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .edition-book { transform: none; transition: opacity 0.4s linear; }
+      .edition-book.is-loaded { transform: none; }
+    }
+
+    .edition-cell .plan-card {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 90px;
+      border-color: rgba(201, 168, 76, 0.14);
+      background: linear-gradient(to bottom, rgba(18,18,18,0.85) 0%, rgba(0,0,0,0.96) 45%, #000 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    .edition-cell .plan-card > .btn {
+      margin-top: auto;
+    }
+
+    .edition-cell:hover .edition-book.is-loaded {
+      transform: translateY(-8px);
+    }
+
+    @media (max-width: 767px) {
+      .edition-book {
+        width: 58%;
+        max-width: 210px;
+        margin-bottom: -60px;
+      }
+      .edition-cell .plan-card {
+        padding-top: 80px;
+      }
+      .edition-cell {
+        margin-bottom: 1.5rem;
+      }
+    }
+
     /* ── Waitlist Lightbox ── */
     #waitlist-overlay {
       position: fixed;
@@ -349,6 +628,7 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
     ]
   }
   </script>
+  <link rel="stylesheet" href="protect.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -412,6 +692,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p>This discovery &mdash; confirmed through Lois Wilson&rsquo;s personal guest book at the Stepping Stones Archive &mdash; is documented here for the first time in print.</p>
           <p>Drawing from over 110,000 items in the Stepping Stones Archive &mdash; the historic home of Bill and Lois Wilson in Westchester County, New York &mdash; this volume brings together rare archival photographs, Wilson&rsquo;s own correspondence (including his letters to Carl Jung), and the complete film transcript.</p>
           <p>Where the documentary provides motion, this book offers stillness. Through intimate photographs, we encounter a life that continues to resonate across generations &mdash; not as the cofounder of Alcoholics Anonymous, but as a man whose inner transformation significantly impacted history.</p>
+          <p>Our fondest wish is that you do not consider the musty past, but open this book with the miracle seated across the kitchen table from you.</p>
           <div class="about-quote">
             &ldquo;Words make you think. Pictures make you feel.&rdquo;
             <cite>&mdash; Jeanine Johnston, Creative Director</cite>
@@ -419,8 +700,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!--<p style="margin-top: 1.5rem; font-size: 0.8rem; letter-spacing: 0.05em; color: rgba(245,240,230,0.55);">A joint venture with The Stepping Stones Foundation<br>
           <em>Historic Home of Bill and Lois Wilson&reg; &middot; Katonah, New York</em></p>-->
         </div>
-        <div class="book-cover-wrapper reveal" style="display: flex; align-items: center; justify-content: center;">
-          <img class="book-cover" src="images/book-showcase-bookpage.jpg" alt="Bill W. Conscious Contact — hardcover book" loading="lazy">
+        <div class="book-cover-wrapper reveal">
+          <div class="cover-carousel" id="coverCarousel" aria-roledescription="carousel" aria-label="Bill W. Conscious Contact editions">
+            <div class="cover-carousel-stage" id="coverStage">
+              <div class="cover-slide">
+                <img src="images/books/book-showcase-bookpage-Paperback.webp" alt="Bill W. Conscious Contact — Paperback edition" width="680" height="1024" loading="lazy" decoding="async">
+              </div>
+              <div class="cover-slide">
+                <img src="images/books/book-showcase-bookpage-Kitchen.webp" alt="Bill W. Conscious Contact — Kitchen Table edition" width="680" height="1024" loading="lazy" decoding="async">
+              </div>
+              <div class="cover-slide">
+                <img src="images/books/book-showcase-bookpage-Legacy.webp" alt="Bill W. Conscious Contact — Legacy edition" width="680" height="1024" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <div class="cover-carousel-nav">
+              <button type="button" class="cover-nav-btn" id="coverPrev" aria-label="Previous edition">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button type="button" class="cover-nav-btn" id="coverNext" aria-label="Next edition">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -562,10 +863,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       </div>
 
-      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem;">
+      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;">
 
         <!-- PAPERBACK -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Paperback-v2.webp" alt="Bill W. Conscious Contact — Paperback edition" width="258" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Paperback</div>
           <div class="plan-price">$39.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -595,11 +898,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
           </div>
-          <a href="https://www.amazon.com/Bill-W-Conscious-Contact-Award-Winning/dp/0985606312" target="_blank" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+          <a href="https://buy.stripe.com/00w5kDcIk5wx0gse3MaIM00" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+        </div>
         </div>
 
         <!-- KITCHEN TABLE -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-KitchenTable-v2.webp" alt="Bill W. Conscious Contact — Kitchen Table edition" width="328" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Kitchen Table</div>
           <div class="plan-price">$99.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -643,13 +949,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
               <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0-9856063-2-9</span>
             </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
           </div>
           <a href="https://buy.stripe.com/eVq7sL8s4e332oA1h0aIM03" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
         </div>
+        </div>
 
         <!-- LEGACY -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Legacy-v2.webp" alt="Bill W. Conscious Contact — Legacy edition" width="327" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Legacy</div>
           <div class="plan-price">$149.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -671,7 +980,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered by Jay Stinnett</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered</span>
             </div>
             <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
@@ -685,16 +994,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
               <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 979-8-234-20032-7</span>
             </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
             <div style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(201,168,76,0.6); font-style: italic;">When 250 are gone, this edition is gone.</div>
           </div>
-          <a id="legacy-edition-btn" href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">BUY NOW</a>
-          <p id="legacy-edition-remaining" style="margin-top:6px; font-size:1rem; color:rgba(245,240,230,0.5); text-align:center;"></p>
+          <span id="legacy-edition-btn" class="btn" aria-disabled="true" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center; background:#9e9e9e; color:#ffffff; cursor:not-allowed; pointer-events:none; opacity:0.7;">Only 25 Left</span>
+        </div>
         </div>
 
       </div>
     </div>
   </section>
+
+  <!-- A GLIMPSE INSIDE -->
+  <section class="section-pad" id="glimpse" style="background: var(--black);">
+    <div class="container">
+      <div class="section-label reveal" style="justify-content: center;">A Glimpse Inside</div>
+      <h2 class="section-heading reveal" style="text-align: center;">Preview the Pages</h2>
+
+      <p class="glimpse-intro reveal">
+        These extraordinary photographs capture Bill and Lois Wilson as they have rarely been seen. Each image is a window into history, revealing the deeply human story behind a legacy that has touched millions of lives.
+      </p>
+
+      <div class="page-carousel reveal" id="pageCarousel" aria-roledescription="carousel" aria-label="Preview spreads from the book">
+        <div class="page-carousel-viewport">
+          <div class="page-track" id="pageTrack">
+            <div class="page-slide"><img src="images/gallery/01.webp" alt="Book spread 1" width="1785" height="890" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/02.webp" alt="Book spread 2" width="1785" height="890" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/03.webp" alt="Book spread 3" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/04.webp" alt="Book spread 4" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/05.webp" alt="Book spread 5" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/06.webp" alt="Book spread 6" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/07.webp" alt="Book spread 7" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/08.webp" alt="Book spread 8" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/09.webp" alt="Book spread 9" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/10.webp" alt="Book spread 10" width="1785" height="890" loading="lazy" decoding="async"></div>
+            <div class="page-slide"><img src="images/gallery/11.webp" alt="Book spread 11" width="1785" height="890" loading="lazy" decoding="async"></div>
+          </div>
+
+          <button type="button" class="page-nav page-nav-prev" id="pagePrev" aria-label="Previous spread">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="page-nav page-nav-next" id="pageNext" aria-label="Next spread">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+
+        <div class="page-counter"><span id="pageCurrent">1</span> <span class="page-counter-sep">/</span> 11</div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- ABOUT THE FILM -->
   <section class="section-pad" style="background: var(--black-light);">
@@ -1166,45 +1515,156 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   </script>
 
+  <!-- ── A Glimpse Inside: page-spread carousel ── -->
   <script>
   (function () {
-    var AVAILABILITY_URL = "https://fduvlwcdbsaapgvckteu.supabase.co/functions/v1/check-availability";
-    var PAYMENT_LINK_URL = "https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02";
-    var btn  = document.getElementById("legacy-edition-btn");
-    var note = document.getElementById("legacy-edition-remaining");
-    if (!btn) return;
-    fetch(AVAILABILITY_URL)
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.available) {
-          btn.href = PAYMENT_LINK_URL;
-          btn.textContent = "BUY NOW";
-          btn.style.cursor = "pointer";
-          btn.style.pointerEvents = "auto";
-          btn.style.opacity = "1";
-          if (data.remaining <= 20) {
-            note.textContent = "Only " + data.remaining + " of 135 copies remaining!";
-            note.style.color = "#c0392b";
-            note.style.fontWeight = "600";
-          } else {
-            note.textContent = "Nearly Sold Out";
-          }
-        } else {
-          btn.removeAttribute("href");
-          btn.textContent = "SOLD OUT";
-          btn.style.background = "#9e9e9e";
-          btn.style.color = "#ffffff";
-          btn.style.cursor = "not-allowed";
-          btn.style.pointerEvents = "none";
-          btn.style.opacity = "0.7";
-          note.textContent = "All 135 Legacy Edition copies have been claimed.";
-        }
-      })
-      .catch(function() {
-        btn.href = PAYMENT_LINK_URL;
+    var track = document.getElementById('pageTrack');
+    if (!track) return;
+
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.page-slide'));
+    var total = slides.length;
+    if (!total) return;
+
+    var prev = document.getElementById('pagePrev');
+    var next = document.getElementById('pageNext');
+    var counter = document.getElementById('pageCurrent');
+    var index = 0;
+
+    // Pull the neighbouring spreads forward so navigation never lands on a blank slide
+    function preload(i) {
+      [i - 1, i, i + 1].forEach(function (n) {
+        if (n < 0 || n >= total) return;
+        var img = slides[n].querySelector('img');
+        if (img && img.getAttribute('loading') === 'lazy') img.setAttribute('loading', 'eager');
       });
+    }
+
+    function render() {
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      if (counter) counter.textContent = index + 1;
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === total - 1;
+      preload(index);
+    }
+
+    function go(step) {
+      var target = index + step;
+      if (target < 0 || target > total - 1) return;
+      index = target;
+      render();
+    }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+
+    // Swipe support — the arrows are small on a phone
+    var startX = null;
+    var viewport = track.parentNode;
+    viewport.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 45) go(dx < 0 ? 1 : -1);
+      startX = null;
+    }, { passive: true });
+
+    render();
   })();
   </script>
 
+  <!-- ── Cover carousel (3D coverflow) ── -->
+  <script>
+  (function () {
+    var stage = document.getElementById('coverStage');
+    if (!stage) return;
+
+    var slides = Array.prototype.slice.call(stage.querySelectorAll('.cover-slide'));
+    var total = slides.length;
+    if (!total) return;
+
+    var current = 0;
+    var timer = null;
+    var INTERVAL = 3000;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function render() {
+      for (var i = 0; i < total; i++) {
+        var pos = (i - current + total) % total;
+        if (pos > Math.floor(total / 2)) pos -= total;
+
+        var isCenter = pos === 0;
+        var isAdjacent = Math.abs(pos) === 1;
+        var scale = isCenter ? 1 : isAdjacent ? 0.85 : 0.7;
+        var s = slides[i];
+
+        s.style.transform =
+          'translate(-50%, -50%) translateX(' + (pos * 45) + '%) scale(' + scale + ') rotateY(' + (pos * -10) + 'deg)';
+        s.style.zIndex = isCenter ? 10 : isAdjacent ? 5 : 1;
+        s.style.opacity = isCenter ? 1 : isAdjacent ? 0.4 : 0;
+        s.style.filter = isCenter ? 'blur(0px)' : 'blur(4px)';
+        s.style.visibility = Math.abs(pos) > 1 ? 'hidden' : 'visible';
+        s.setAttribute('aria-hidden', isCenter ? 'false' : 'true');
+      }
+    }
+
+    function go(step) {
+      current = (current + step + total) % total;
+      render();
+    }
+
+    function start() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(function () { go(1); }, INTERVAL);
+    }
+
+    function restart() {
+      if (timer) { clearInterval(timer); timer = null; }
+      start();
+    }
+
+    var prev = document.getElementById('coverPrev');
+    var next = document.getElementById('coverNext');
+    if (prev) prev.addEventListener('click', function () { go(-1); restart(); });
+    if (next) next.addEventListener('click', function () { go(1); restart(); });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (timer) { clearInterval(timer); timer = null; }
+      } else {
+        start();
+      }
+    });
+
+    render();
+    start();
+  })();
+  </script>
+
+  <!-- ── Edition covers: fade in as each lazy-loaded image arrives ── -->
+  <script>
+  (function () {
+    var books = Array.prototype.slice.call(document.querySelectorAll('.edition-book'));
+    if (!books.length) return;
+
+    function reveal(img) { img.classList.add('is-loaded'); }
+
+    books.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        reveal(img);
+      } else {
+        img.addEventListener('load', function () { reveal(img); }, { once: true });
+        // never leave a hole in the layout if an image fails
+        img.addEventListener('error', function () { reveal(img); }, { once: true });
+      }
+    });
+
+    // safety net for any image that never fires load
+    setTimeout(function () { books.forEach(reveal); }, 4000);
+  })();
+  </script>
+
+  <script src="protect.js" defer></script>
 </body>
 </html>

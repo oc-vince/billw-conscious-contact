@@ -1,0 +1,50 @@
+/* ─────────────────────────────────────────────────────────────
+   IMAGE / MEDIA PROTECTION
+   Bill W. Conscious Contact — Muse Bookings LLC
+   Deters casual copying, dragging and saving of imagery.
+   ───────────────────────────────────────────────────────────── */
+
+img,
+picture,
+svg,
+video,
+canvas,
+figure,
+[style*="background-image"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: auto;
+}
+
+img,
+video {
+  /* prevents iOS/Android long-press "Save Image" sheet */
+  -webkit-touch-callout: none !important;
+}
+
+/* Keep interactive imagery clickable (nav logos, buttons, slider media) */
+a img,
+button img,
+label img,
+[role="button"] img {
+  pointer-events: none;
+}
+
+/* Print protection — hide imagery from printed / PDF output */
+@media print {
+  img,
+  picture,
+  svg:not(.print-ok),
+  video,
+  canvas {
+    visibility: hidden !important;
+  }
+}
