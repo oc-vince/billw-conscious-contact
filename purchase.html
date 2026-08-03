@@ -42,6 +42,73 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     }
 
+    /* ── Edition cells: book cover floating above the card ── */
+    .edition-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .edition-book {
+      position: relative;
+      z-index: 3;
+      width: 74%;
+      max-width: 250px;
+      margin-bottom: -70px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 26px 34px rgba(0,0,0,0.85)) drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+      pointer-events: none;
+      /* fades in once the lazy-loaded image has decoded */
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .edition-book.is-loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .edition-book { transform: none; transition: opacity 0.4s linear; }
+      .edition-book.is-loaded { transform: none; }
+    }
+
+    .edition-cell .plan-card {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 90px;
+      border-color: rgba(201, 168, 76, 0.14);
+      background: linear-gradient(to bottom, rgba(18,18,18,0.85) 0%, rgba(0,0,0,0.96) 45%, #000 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    .edition-cell .plan-card > .btn {
+      margin-top: auto;
+    }
+
+    .edition-cell:hover .edition-book.is-loaded {
+      transform: translateY(-8px);
+    }
+
+    @media (max-width: 767px) {
+      .edition-book {
+        width: 58%;
+        max-width: 210px;
+        margin-bottom: -60px;
+      }
+      .edition-cell .plan-card {
+        padding-top: 80px;
+      }
+      .edition-cell {
+        margin-bottom: 1.5rem;
+      }
+    }
+
     /* ── Section padding override (purchase page only) ── */
     .section-pad {
       padding: 2rem 2rem 6rem 2rem;
@@ -599,6 +666,7 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
     gtag('js', new Date());
     gtag('config', 'G-KYCCHQ67JZ');
   </script>
+  <link rel="stylesheet" href="protect.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -632,10 +700,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="section-label reveal" style="justify-content: center;">Choose Your Edition</div>
       <h2 class="section-heading reveal" style="text-align: center;">Three Ways to Own It</h2>
 
-      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem;">
+      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;">
 
         <!-- PAPERBACK -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Paperback-v2.webp" alt="Bill W. Conscious Contact — Paperback edition" width="258" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Paperback</div>
           <div class="plan-price">$39.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -665,11 +735,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
           </div>
-          <a href="https://www.amazon.com/Bill-W-Conscious-Contact-Award-Winning/dp/0985606312" target="_blank" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+          <a href="https://buy.stripe.com/00w5kDcIk5wx0gse3MaIM00" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+        </div>
         </div>
 
         <!-- KITCHEN TABLE -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-KitchenTable-v2.webp" alt="Bill W. Conscious Contact — Kitchen Table edition" width="328" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Kitchen Table</div>
           <div class="plan-price">$99.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -713,13 +786,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
               <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0-9856063-2-9</span>
             </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
           </div>
           <a href="https://buy.stripe.com/eVq7sL8s4e332oA1h0aIM03" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
         </div>
+        </div>
 
         <!-- LEGACY -->
-        <div class="plan-card reveal" style="text-align: center;">
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Legacy-v2.webp" alt="Bill W. Conscious Contact — Legacy edition" width="327" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
           <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Legacy</div>
           <div class="plan-price">$149.95</div>
           <div style="margin: 1.5rem 0; text-align: left;">
@@ -741,7 +817,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered by Jay Stinnett</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered</span>
             </div>
             <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
@@ -755,11 +831,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
               <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 979-8-234-20032-7</span>
             </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
             <div style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(201,168,76,0.6); font-style: italic;">When 250 are gone, this edition is gone.</div>
           </div>
-          <a id="legacy-edition-btn" href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">BUY NOW</a>
-          <p id="legacy-edition-remaining" style="margin-top:6px; font-size:1rem; color:rgba(245,240,230,0.5); text-align:center;"></p>
+          <span id="legacy-edition-btn" class="btn" aria-disabled="true" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center; background:#9e9e9e; color:#ffffff; cursor:not-allowed; pointer-events:none; opacity:0.7;">Only 25 Left</span>
+        </div>
         </div>
 
       </div>
@@ -806,7 +882,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="footer-col">
         <h4>Connect</h4>
-        <a href="subscribe.html">Subscribe</a>
         <a href="press.html">Press</a>
         <a href="library.html">Library</a>
         <a href="events.html">Events</a>
@@ -1472,48 +1547,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
   </script>
+  <!-- ── Edition covers: fade in as each lazy-loaded image arrives ── -->
+  <script>
+  (function () {
+    var books = Array.prototype.slice.call(document.querySelectorAll('.edition-book'));
+    if (!books.length) return;
 
+    function reveal(img) { img.classList.add('is-loaded'); }
 
-
-<script>
-(function () {
-  var AVAILABILITY_URL = "https://fduvlwcdbsaapgvckteu.supabase.co/functions/v1/check-availability";
-  var PAYMENT_LINK_URL = "https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02";
-  var btn  = document.getElementById("legacy-edition-btn");
-  var note = document.getElementById("legacy-edition-remaining");
-  if (!btn) return;
-  fetch(AVAILABILITY_URL)
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.available) {
-        btn.href = PAYMENT_LINK_URL;
-        btn.textContent = "BUY NOW";
-        btn.style.cursor = "pointer";
-        btn.style.pointerEvents = "auto";
-        btn.style.opacity = "1";
-        if (data.remaining <= 20) {
-          note.textContent = "Only " + data.remaining + " of 135 copies remaining!";
-          note.style.color = "#c0392b";
-          note.style.fontWeight = "600";
-        } else {
-          note.textContent = "Nearly Sold Out";
-        }
+    books.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        reveal(img);
       } else {
-        btn.removeAttribute("href");
-        btn.textContent = "SOLD OUT";
-        btn.style.background = "#9e9e9e";
-        btn.style.color = "#ffffff";
-        btn.style.cursor = "not-allowed";
-        btn.style.pointerEvents = "none";
-        btn.style.opacity = "0.7";
-        note.textContent = "All 135 Legacy Edition copies have been claimed.";
+        img.addEventListener('load', function () { reveal(img); }, { once: true });
+        // never leave a hole in the layout if an image fails
+        img.addEventListener('error', function () { reveal(img); }, { once: true });
       }
-    })
-    .catch(function() {
-      btn.href = PAYMENT_LINK_URL;
     });
-})();
-</script>
+
+    // safety net for any image that never fires load
+    setTimeout(function () { books.forEach(reveal); }, 4000);
+  })();
+  </script>
+
+  <script src="protect.js" defer></script>
 </body>
 </html>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

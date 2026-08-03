@@ -35,6 +35,427 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* ═══ THREE WAYS TO OWN IT ═══ */
+    @media (max-width: 767px) {
+      .editions-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ── Edition cells: book cover floating above the card ── */
+    .edition-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .edition-book {
+      position: relative;
+      z-index: 3;
+      width: 74%;
+      max-width: 250px;
+      margin-bottom: -70px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 26px 34px rgba(0,0,0,0.85)) drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+      pointer-events: none;
+      /* fades in once the lazy-loaded image has decoded */
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .edition-book.is-loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .edition-book { transform: none; transition: opacity 0.4s linear; }
+      .edition-book.is-loaded { transform: none; }
+    }
+
+    .edition-cell .plan-card {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 90px;
+      border-color: rgba(201, 168, 76, 0.14);
+      background: linear-gradient(to bottom, rgba(18,18,18,0.85) 0%, rgba(0,0,0,0.96) 45%, #000 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    .edition-cell .plan-card > .btn {
+      margin-top: auto;
+    }
+
+    .edition-cell:hover .edition-book.is-loaded {
+      transform: translateY(-8px);
+    }
+
+    @media (max-width: 767px) {
+      .edition-book {
+        width: 58%;
+        max-width: 210px;
+        margin-bottom: -60px;
+      }
+      .edition-cell .plan-card {
+        padding-top: 80px;
+      }
+      .edition-cell {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* ═══ HERO CAROUSEL ═══ */
+    .hero-carousel {
+      background: var(--black) !important;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+
+    /* ── Backgrounds: overlapping blur cross-fade ── */
+    .hero-bgs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-position: center top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 0;
+      filter: blur(22px);
+      transform: scale(1.08);
+      transition:
+        opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1),
+        filter 1.6s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 2.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: opacity, filter, transform;
+    }
+
+    .hero-bg.is-active {
+      opacity: 1;
+      filter: blur(0px);
+      transform: scale(1);
+    }
+
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        /* top scrim so the navbar stays legible over bright backgrounds */
+        linear-gradient(to bottom, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.35) 14%, transparent 26%),
+        linear-gradient(to bottom, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.72) 50%, var(--black) 100%);
+    }
+
+    /* ── Vertical thumbnail nav (far left) ── */
+    .hero-thumbs {
+      position: absolute;
+      left: 2.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .hero-thumb {
+      position: relative;
+      width: 79px;
+      height: 107px;
+      padding: 0;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      background: #000;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.45s ease, border-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+    }
+
+    .hero-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0.5);
+      transition: filter 0.45s ease;
+    }
+
+    .hero-thumb:hover { opacity: 0.85; border-color: rgba(201, 168, 76, 0.6); }
+
+    .hero-thumb.is-active {
+      opacity: 1;
+      border-color: var(--gold);
+      transform: translateX(4px);
+      box-shadow: 0 0 26px rgba(201, 168, 76, 0.22);
+    }
+
+    .hero-thumb.is-active img { filter: grayscale(0); }
+
+    .hero-thumb::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      height: 2px;
+      width: 0;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+
+    .hero-thumb.is-active::after { width: 100%; }
+
+    .hero-thumb:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* ── Slides ── */
+    .hero-slides {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 1180px;
+      min-height: 62vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .hero-slide.is-active { visibility: visible; pointer-events: auto; z-index: 3; }
+    .hero-slide.is-leaving { visibility: visible; pointer-events: none; z-index: 2; }
+
+    .hero-slide-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-slide-split {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 3.5rem;
+      align-items: center;
+      text-align: left;
+    }
+
+    .hero-split-media { display: flex; align-items: center; justify-content: center; }
+
+    /* wide (landscape-ish) cover renders need more width to match visual weight */
+    .hero-split-media.is-wide img { max-width: 390px; }
+
+    .hero-split-media img {
+      width: 100%;
+      max-width: 290px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 30px 45px rgba(0,0,0,0.85)) drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+    }
+
+    .hero-split-copy .hero-award { justify-content: flex-start; margin-bottom: 1.5rem; }
+    .hero-split-copy .hero-award::before { display: none; }
+    .hero-split-copy .hero-pretitle,
+    .hero-split-copy .hero-title { text-align: left; }
+
+    .hero-title-sm {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-body {
+      font-family: var(--font-body);
+      font-size: clamp(0.98rem, 1.4vw, 1.12rem);
+      font-weight: 300;
+      color: rgba(245, 240, 230, 0.82);
+      line-height: 1.85;
+      max-width: 620px;
+      margin-bottom: 2.25rem;
+    }
+
+    .hero-body strong { color: var(--gold-light); font-weight: 500; }
+
+    /* Legacy title must stay on one line */
+    .hero-title-line {
+      white-space: nowrap;
+      font-size: clamp(1.7rem, 3.6vw, 3.2rem);
+    }
+
+    .hero-lede {
+      font-family: var(--font-body);
+      font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 1.1rem;
+      max-width: 620px;
+    }
+
+    .hero-quote {
+      border-left: 2px solid rgba(201, 168, 76, 0.5);
+      padding-left: 1.1rem;
+      margin: 0 0 1.2rem;
+      max-width: 620px;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: var(--cream);
+      line-height: 1.7;
+    }
+
+    .hero-quote cite {
+      display: block;
+      margin-top: 0.4rem;
+      font-family: var(--font-ui);
+      font-style: normal;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 230, 0.5);
+    }
+
+    /* Sold-out CTA — non-interactive by design */
+    .btn-soldout {
+      display: inline-block;
+      background: #9e9e9e;
+      color: #ffffff;
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .hero-body-kicker {
+      display: inline-block;
+      margin-top: 0.9rem;
+      font-style: italic;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+
+    /* Kitchen Table pretitle must stay on one line */
+    .hero-pretitle-line {
+      white-space: nowrap;
+      font-size: clamp(0.82rem, 1.35vw, 1.15rem);
+      letter-spacing: 0.1em;
+    }
+
+    .hero-slide-split .hero-actions { justify-content: flex-start; }
+
+    .hero-exclusive {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: rgba(245, 240, 230, 0.5);
+      margin-top: 1.1rem;
+    }
+
+    /* ── Per-element entrance / exit animations ── */
+    .hero-slide [data-anim] {
+      opacity: 0;
+      animation: none;
+    }
+
+    .hero-slide.is-active [data-anim] {
+      animation: heroElemIn 0.95s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      animation-delay: var(--d, 0s);
+    }
+
+    .hero-slide.is-leaving [data-anim] {
+      opacity: 1;
+      animation: heroElemOut 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
+      animation-delay: calc(var(--d, 0s) * 0.18);
+    }
+
+    @keyframes heroElemIn {
+      from { opacity: 0; transform: translateY(28px); filter: blur(8px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+
+    @keyframes heroElemOut {
+      from { opacity: 1; transform: translateY(0);     filter: blur(0); }
+      to   { opacity: 0; transform: translateY(-22px); filter: blur(6px); }
+    }
+
+    .hero-carousel .hero-scroll { z-index: 5; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1480px) {
+      .hero-thumbs { left: 0.8rem; }
+    }
+
+    @media (max-width: 1100px) {
+      .hero-slides { max-width: none; padding-left: 5rem; }
+      .hero-slide-split { grid-template-columns: 0.8fr 1.2fr; gap: 2.5rem; }
+    }
+
+    /* Thumbnails move to a horizontal row along the bottom */
+    @media (max-width: 1080px) {
+      .hero-carousel { padding-bottom: 6rem; }
+
+      .hero-thumbs {
+        left: 50%;
+        top: auto;
+        bottom: 1.75rem;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: 0.85rem;
+      }
+
+      .hero-thumb.is-active { transform: translateY(-4px); }
+
+      .hero-slides { padding-left: 0; }
+
+      .hero-carousel .hero-scroll { display: none; }
+    }
+
+    @media (max-width: 767px) {
+      .hero-carousel { padding: 5rem 1.25rem 5.5rem; }
+
+      .hero-thumbs { bottom: 1.5rem; gap: 0.75rem; }
+
+      .hero-thumb { width: 48px; height: 64px; }
+
+      .hero-slides { min-height: 70vh; }
+
+      .hero-slide-split {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+        align-content: center;
+      }
+
+      .hero-pretitle-line { font-size: clamp(0.6rem, 3.1vw, 0.85rem); letter-spacing: 0.06em; }
+      .hero-split-media img { max-width: 150px; }
+      .hero-split-media.is-wide img { max-width: 200px; }
+      .hero-split-copy .hero-award { justify-content: center; }
+      .hero-split-copy .hero-award::before { display: block; }
+      .hero-split-copy .hero-pretitle,
+      .hero-split-copy .hero-title { text-align: center; }
+      .hero-body { margin-left: auto; margin-right: auto; }
+      .hero-slide-split .hero-actions { justify-content: center; }
+      .hero-carousel .hero-scroll { display: none; }
+    }
+
+    @media (max-width: 440px) {
+      .hero-thumbs { bottom: 0rem; }
+      .hero-body { line-height: 1.2em; margin-bottom: 1rem; }
+      .hero-exclusive { font-size: 0.6rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg { transition: opacity 0.4s linear; filter: none; transform: none; }
+      .hero-bg.is-active { filter: none; transform: none; }
+      .hero-slide.is-active [data-anim] { animation: heroElemFade 0.4s linear forwards; animation-delay: 0s; }
+      .hero-slide.is-leaving [data-anim] { animation: none; opacity: 0; }
+      @keyframes heroElemFade { from { opacity: 0; } to { opacity: 1; } }
+    }
+
     .about-vidbg {
       position: absolute;
       top: 0; left: 0;
@@ -214,6 +635,7 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
     ]
   }
   </script>
+  <link rel="stylesheet" href="protect.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -258,16 +680,103 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </nav>
 
 
-  <section class="hero" id="hero">
-    <div class="hero-award">Winner — 2025 Best Director, European Film Association</div>
-    <div class="hero-pretitle">Bill W.</div>
-    <h1 class="hero-title">Conscious<br>Contact</h1>
-    <p class="hero-subtitle">I didn’t write the 11th Step. It came to me as an inspiration.</p>
-    <p class="hero-latin">Spiritus Contra Spiritum</p>
-    <div class="hero-actions">
-      <a href="#" id="trailerBtn" class="btn btn-primary">Watch Trailer</a>
-      <a href="book.html" class="btn btn-outline">About the Book</a>
+  <section class="hero hero-carousel" id="hero" aria-roledescription="carousel" aria-label="Featured">
+
+    <!-- Background layers (cross-fading blur) -->
+    <div class="hero-bgs" aria-hidden="true">
+      <div class="hero-bg is-active" data-bg="0" style="background-image: url('images/hero-bill-writing.jpg');"></div>
+      <div class="hero-bg" data-bg="1" style="background-image: url('images/books/Home-KitchenTable-BG.webp');"></div>
+      <div class="hero-bg" data-bg="2" style="background-image: url('images/hero-legacy-bg.webp');"></div>
+      <div class="hero-bg" data-bg="3" style="background-image: url('images/subscibe-page-hero.webp');"></div>
+      <div class="hero-bg-overlay"></div>
     </div>
+
+    <!-- Vertical thumbnail navigation -->
+    <div class="hero-thumbs" role="tablist" aria-label="Choose slide">
+      <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 1 — Conscious Contact" data-goto="0">
+        <img src="images/books/home-carousel-thumb-Film.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 2 — The Kitchen Table Edition" data-goto="1">
+        <img src="images/books/home-carousel-thumb-KitchenTable.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 3 — The Legacy Edition" data-goto="2">
+        <img src="images/books/home-carousel-thumb-Legacy.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 4 — The Award-Winning Film on Paper" data-goto="3">
+        <img src="images/books/home-carousel-thumb-Paperback.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
+      </button>
+    </div>
+
+    <!-- Slides -->
+    <div class="hero-slides">
+
+      <!-- SLIDE 1 -->
+      <div class="hero-slide hero-slide-center is-active" data-slide="0" role="tabpanel" aria-label="Conscious Contact">
+        <div class="hero-award" data-anim style="--d:0.15s">Winner — 2025 Best Director, European Film Association</div>
+        <div class="hero-pretitle" data-anim style="--d:0.3s">Bill W.</div>
+        <h1 class="hero-title" data-anim style="--d:0.45s">Conscious<br>Contact</h1>
+        <p class="hero-subtitle" data-anim style="--d:0.6s">I didn’t write the 11th Step. It came to me as an inspiration.</p>
+        <p class="hero-latin" data-anim style="--d:0.75s">Spiritus Contra Spiritum</p>
+        <div class="hero-actions" data-anim style="--d:0.9s">
+          <a href="#" id="trailerBtn" class="btn btn-primary">Watch Trailer</a>
+          <a href="film.html" class="btn btn-outline">About the Film</a>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="hero-slide hero-slide-split" data-slide="1" role="tabpanel" aria-label="The Kitchen Table Edition">
+        <div class="hero-split-media is-wide" data-anim style="--d:0.2s">
+          <img src="images/books/KitchenTable-Wide-trans.webp" alt="Bill W. Conscious Contact — Kitchen Table Edition" width="642" height="742" loading="lazy" decoding="async">
+        </div>
+        <div class="hero-split-copy">
+          <div class="hero-award" data-anim style="--d:0.35s">As Seen In The Award-Winning Documentary</div>
+          <div class="hero-pretitle hero-pretitle-line" data-anim style="--d:0.5s">25 Years in the Making &mdash; Now in Your Hands.</div>
+          <h2 class="hero-title hero-title-sm" data-anim style="--d:0.65s">The Kitchen Table Edition</h2>
+          <p class="hero-body" data-anim style="--d:0.8s">The Deluxe Collector&rsquo;s Edition contains the exact same photography, essays, and archival content as our sold-out Legacy Edition — <strong>same premium production quality, at 30% less</strong>. The only differences: a distinct cover design, and it is not individually numbered or accompanied by a dedication signed by author Jay Stinnett.<br><span class="hero-body-kicker">Same book. Same quality. 30% less. Unsigned, unnumbered.</span></p>
+          <div class="hero-actions" data-anim style="--d:0.95s">
+            <a href="https://buy.stripe.com/eVq7sL8s4e332oA1h0aIM03" target="_blank" rel="noopener" class="btn btn-primary">Buy Now &mdash; $99.95</a>
+          </div>
+          <p class="hero-exclusive" data-anim style="--d:1.1s">Available exclusively here. Not sold on Amazon or in stores.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="hero-slide hero-slide-split" data-slide="2" role="tabpanel" aria-label="The Legacy Edition">
+        <div class="hero-split-media is-wide" data-anim style="--d:0.2s">
+          <img src="images/books/LegacyBook-Wide-trans.webp" alt="Bill W. Conscious Contact — The First Edition Legacy" width="642" height="742" loading="lazy" decoding="async">
+        </div>
+        <div class="hero-split-copy">
+          <div class="hero-award" data-anim style="--d:0.35s">As Seen In The Award-Winning Documentary</div>
+          <div class="hero-pretitle hero-pretitle-line" data-anim style="--d:0.5s">25 Years in the Making &mdash; Now in Your Hands.</div>
+          <h2 class="hero-title hero-title-sm hero-title-line" data-anim style="--d:0.65s">The Legacy Edition</h2>
+          <p class="hero-lede" data-anim style="--d:0.78s">The First Edition Legacy won&rsquo;t be available for much longer.</p>
+          <blockquote class="hero-quote" data-anim style="--d:0.88s">&ldquo;I didn&rsquo;t write the 11th Step. It came to me as an inspiration.&rdquo;<cite>&mdash; Bill Wilson</cite></blockquote>
+          <p class="hero-body" data-anim style="--d:0.98s">Those words have inspired generations. The story behind them is one few have ever heard. The award-winning documentary is now available as The First Edition Legacy — a leather-bound, hot-foil stamped edition individually signed and numbered by Jay Stinnett.</p>
+          <div class="hero-actions" data-anim style="--d:1.1s">
+            <a href="purchase.html" class="btn btn-primary">Only 25 Left</a>
+          </div>
+          <p class="hero-exclusive" data-anim style="--d:1.22s">Available exclusively here. Not available on Amazon or in stores.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="hero-slide hero-slide-split" data-slide="3" role="tabpanel" aria-label="The Award-Winning Film on Paper">
+        <div class="hero-split-media" data-anim style="--d:0.2s">
+          <img src="images/books/home-carousel-Paperback.webp" alt="Bill W. Conscious Contact — The Award-Winning Film on Paper" width="526" height="781" loading="lazy" decoding="async">
+        </div>
+        <div class="hero-split-copy">
+          <div class="hero-award" data-anim style="--d:0.35s">As Seen In The Award-Winning Documentary</div>
+          <div class="hero-pretitle hero-pretitle-line" data-anim style="--d:0.5s">25 Years in the Making &mdash; Now in Your Hands.</div>
+          <h2 class="hero-title hero-title-sm" data-anim style="--d:0.65s">The Award-Winning<br>Film on Paper</h2>
+          <p class="hero-body" data-anim style="--d:0.8s"><em>Bill W. Conscious Contact — The Award-Winning Film On Paper</em> presents a deeply moving portrait of William Griffith Wilson (1895&ndash;1971) not as a public institution, but as a man who never stopped seeking. Drawing from the Stepping Stones Archive&reg;&mdash;The Historic Home of Bill and Lois Wilson&reg; in Westchester County, New York — this companion volume to the award-winning documentary brings together rare archival photographs, Bill&rsquo;s own letters, and the full film transcript.</p>
+          <div class="hero-actions" data-anim style="--d:0.95s">
+            <a href="https://buy.stripe.com/00w5kDcIk5wx0gse3MaIM00" target="_blank" rel="noopener" class="btn btn-primary">Buy Now &mdash; $39.95</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <div class="hero-scroll"><span></span></div>
   </section>
 
@@ -343,6 +852,158 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <blockquote>"This beautiful pictorial work brings the idea of conscious contact to life in a deeply moving way. It gently reminds that connection with a Higher Power is not distant or abstract, but present and accessible."</blockquote>
           <cite>Gail LaCroix<span>Archivist, Dr. Bob&rsquo;s Home, Akron, OH</span></cite>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THREE WAYS TO OWN IT ── -->
+  <section id="editions" class="section-pad" style="background: var(--black);">
+    <div class="container">
+      <div class="section-label reveal" style="justify-content: center;">Choose Your Edition</div>
+      <h2 class="section-heading reveal" style="text-align: center;">Three Ways to Own It</h2>
+
+      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;">
+
+        <!-- PAPERBACK -->
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Paperback-v2.webp" alt="Bill W. Conscious Contact — Paperback edition" width="258" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
+          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Paperback</div>
+          <div class="plan-price">$39.95</div>
+          <div style="margin: 1.5rem 0; text-align: left;">
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Softcover edition</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Packed with intimate photos of Bill and Lois</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Previously unpublished letters</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Features the transcripts of the film</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">8.5 &times; 11 format</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0985606312</span>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
+          </div>
+          <a href="https://buy.stripe.com/00w5kDcIk5wx0gse3MaIM00" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+        </div>
+        </div>
+
+        <!-- KITCHEN TABLE -->
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-KitchenTable-v2.webp" alt="Bill W. Conscious Contact — Kitchen Table edition" width="328" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
+          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Kitchen Table</div>
+          <div class="plan-price">$99.95</div>
+          <div style="margin: 1.5rem 0; text-align: left;">
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Deluxe collector art book</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">11 &times; 11 navy leather-bound</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Hot-gold foil stamped cover</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Not available on Amazon</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Bonus content</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Personally dedicated nameplate inscribed by Jay Stinnett mailed separately</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Packed with intimate photos of Bill and Lois</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Previously unpublished letters</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Features the transcripts of the film</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0-9856063-2-9</span>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
+          </div>
+          <a href="https://buy.stripe.com/eVq7sL8s4e332oA1h0aIM03" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+        </div>
+        </div>
+
+        <!-- LEGACY -->
+        <div class="edition-cell reveal">
+        <img class="edition-book" src="images/books/Book-Legacy-v2.webp" alt="Bill W. Conscious Contact — Legacy edition" width="327" height="378" loading="lazy" decoding="async">
+        <div class="plan-card" style="text-align: center;">
+          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Legacy</div>
+          <div class="plan-price">$149.95</div>
+          <div style="margin: 1.5rem 0; text-align: left;">
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">11 &times; 11 leather-bound</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Hot-foil stamped cover</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">First Edition — strictly limited to 250 printed</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Bonus content</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Personal dedication inscribed by Jay Stinnett</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Available exclusively on the website</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 979-8-234-20032-7</span>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
+            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(201,168,76,0.6); font-style: italic;">When 250 are gone, this edition is gone.</div>
+          </div>
+          <span id="legacy-edition-btn" class="btn" aria-disabled="true" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center; background:#9e9e9e; color:#ffffff; cursor:not-allowed; pointer-events:none; opacity:0.7;">Only 25 Left</span>
+        </div>
+        </div>
+
+      </div>
+
+      <div class="reveal" style="text-align: center; margin-top: 3.5rem;">
+        <a href="purchase.html" class="btn btn-primary" style="padding: 1rem 3rem;">See All Purchase Options</a>
       </div>
     </div>
   </section>
@@ -631,4 +1292,124 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })();
 
   </script>
-</bo
+
+  <!-- ── Hero carousel ── -->
+  <script>
+  (function () {
+    var hero = document.getElementById('hero');
+    if (!hero) return;
+
+    var slides = Array.prototype.slice.call(hero.querySelectorAll('.hero-slide'));
+    var bgs    = Array.prototype.slice.call(hero.querySelectorAll('.hero-bg'));
+    var thumbs = Array.prototype.slice.call(hero.querySelectorAll('.hero-thumb'));
+    var total  = slides.length;
+    if (total < 2) return;
+
+    var current = 0;
+    var timer = null;
+    var phaseTimer = null;
+    var INTERVAL = 7000;
+    // Longest outro = 0.5s duration + (max --d 1.3s x 0.18) stagger, plus a small buffer
+    var OUTRO = 800;
+
+    function goTo(index) {
+      index = (index + total) % total;
+      if (index === current) return;
+
+      // An in-flight transition is always interruptible — a click must never be swallowed
+      if (phaseTimer) { clearTimeout(phaseTimer); phaseTimer = null; }
+
+      var outgoing = slides[current];
+      var incoming = slides[index];
+      var outgoingWasVisible = outgoing.classList.contains('is-active');
+
+      current = index;
+
+      // Background cross-fade starts immediately so the blur swap overlaps
+      bgs.forEach(function (bg, i) { bg.classList.toggle('is-active', i === index); });
+
+      // Thumbnails
+      thumbs.forEach(function (t, i) {
+        t.classList.toggle('is-active', i === index);
+        t.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+
+      // Clear any slide left mid-outro by an interrupted transition
+      slides.forEach(function (s) {
+        if (s !== outgoing && s !== incoming) s.classList.remove('is-leaving', 'is-active');
+      });
+
+      incoming.classList.remove('is-leaving');
+
+      function enter() {
+        outgoing.classList.remove('is-leaving');
+        // Force reflow so the entrance animation restarts cleanly
+        void incoming.offsetWidth;
+        incoming.classList.add('is-active');
+        phaseTimer = null;
+      }
+
+      if (outgoingWasVisible) {
+        // Phase 1 — play the outgoing slide's outro to completion, then bring the next slide in
+        outgoing.classList.remove('is-active');
+        outgoing.classList.add('is-leaving');
+        phaseTimer = setTimeout(enter, OUTRO);
+      } else {
+        // Outgoing slide was never shown (rapid clicks) — skip straight to the entrance
+        outgoing.classList.remove('is-active');
+        enter();
+      }
+    }
+
+    function start() {
+      if (timer) return;
+      timer = setInterval(function () { goTo(current + 1); }, INTERVAL);
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    function restart() { stop(); start(); }
+
+    thumbs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        goTo(parseInt(t.getAttribute('data-goto'), 10));
+        restart();
+      });
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); } else { start(); }
+    });
+
+    start();
+  })();
+  </script>
+
+  <!-- ── Edition covers: fade in as each lazy-loaded image arrives ── -->
+  <script>
+  (function () {
+    var books = Array.prototype.slice.call(document.querySelectorAll('.edition-book'));
+    if (!books.length) return;
+
+    function reveal(img) { img.classList.add('is-loaded'); }
+
+    books.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        reveal(img);
+      } else {
+        img.addEventListener('load', function () { reveal(img); }, { once: true });
+        // never leave a hole in the layout if an image fails
+        img.addEventListener('error', function () { reveal(img); }, { once: true });
+      }
+    });
+
+    // safety net for any image that never fires load
+    setTimeout(function () { books.forEach(reveal); }, 4000);
+  })();
+  </script>
+
+  <script src="protect.js" defer></script>
+</body>
+</html>
