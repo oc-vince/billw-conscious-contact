@@ -2,8 +2,11 @@
 # Format: /old-path   /new-path   301
 
 # Press kit — folder URL moved to a flat page
-/billw-presskit-firstrunfeatures/               /billw-presskit-firstrunfeatures.html   301!
-/billw-presskit-firstrunfeatures                /billw-presskit-firstrunfeatures.html   301!
+# /billw-presskit-firstrunfeatures/               /billw-presskit-firstrunfeatures.html   301!
+# /billw-presskit-firstrunfeatures                /billw-presskit-firstrunfeatures.html   301!
+
+# Press kit clean URL
+/billw-presskit-firstrunfeatures                /billw-presskit-firstrunfeatures.html   200
 
 # Trailing-slash cleanup
 /film/                                          /film                           301
