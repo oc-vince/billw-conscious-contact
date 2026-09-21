@@ -21,7 +21,9 @@ figure,
   -o-user-drag: none;
   user-drag: none;
   -webkit-touch-callout: none;
-  pointer-events: auto;
+  /* NOTE: do NOT force `pointer-events: auto` here. It overrides
+     `pointer-events: none` on any hidden parent (e.g. the closed trailer
+     lightbox), leaving invisible images that still swallow clicks. */
 }
 
 img,

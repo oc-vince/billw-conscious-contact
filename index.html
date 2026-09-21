@@ -719,7 +719,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="hero-subtitle" data-anim style="--d:0.6s">I didn’t write the 11th Step. It came to me as an inspiration.</p>
         <p class="hero-latin" data-anim style="--d:0.75s">Spiritus Contra Spiritum</p>
         <div class="hero-actions" data-anim style="--d:0.9s">
-          <a href="#" id="trailerBtn" class="btn btn-primary">Watch Trailer</a>
+          <a href="https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact/purchase" target="_blank" rel="noopener" class="btn btn-primary">Stream Now</a>
+          <a href="#" id="trailerBtn" class="btn btn-outline">Watch Trailer</a>
           <a href="film.html" class="btn btn-outline">About the Film</a>
         </div>
       </div>
@@ -1089,7 +1090,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.92);
-      display: flex;
+      /* Closed state is display:none so the overlay can never sit invisibly
+         over the page and swallow clicks (which used to start the trailer
+         audio with nothing on screen). .is-visible is added first, then
+         .is-open on the next frame so the fade still runs. */
+      display: none;
       align-items: center;
       justify-content: center;
       z-index: 9999;
@@ -1097,6 +1102,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.35s ease;
+    }
+    #trailer-overlay.is-visible,
+    #trailer-overlay.is-closing {
+      display: flex;
     }
     #trailer-overlay.is-open {
       opacity: 1;
@@ -1238,6 +1247,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         videoDiv.style.display = 'none';
         videoDiv.innerHTML   = '';
         overlay.classList.remove('is-closing');
+        overlay.classList.add('is-visible');
+        void overlay.offsetWidth;              // reflow so the fade-in runs
         overlay.classList.add('is-open');
         document.body.style.overflow = 'hidden';
       }
@@ -1245,9 +1256,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       function closeTrailer() {
         // Stop video immediately
         videoDiv.innerHTML = '';
+        overlay.classList.remove('is-open');
         overlay.classList.add('is-closing');
         setTimeout(function () {
-          overlay.classList.remove('is-open', 'is-closing');
+          overlay.classList.remove('is-visible', 'is-closing');
           document.body.style.overflow = '';
           // Reset to cover state for next open
           cover.style.display  = '';
@@ -1256,6 +1268,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function startVideo() {
+        // Never play audio unless the lightbox is actually on screen
+        if (!overlay.classList.contains('is-open')) return;
         cover.style.display    = 'none';
         videoDiv.style.display = '';
         videoDiv.innerHTML =
@@ -1290,6 +1304,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeTrailer();
       });
+
+      // Stop the trailer if the page is left or restored from bfcache
+      window.addEventListener('pagehide', function () { videoDiv.innerHTML = ''; });
     })();
 
   </script>
