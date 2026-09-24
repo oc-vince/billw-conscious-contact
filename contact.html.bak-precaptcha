@@ -328,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             name="contact"
             method="POST"
             action="thank-you.html"
-            data-netlify="true" data-netlify-recaptcha="true"
+            data-netlify="true"
             netlify-honeypot="bot-field"
             class="contact-form"
             id="contactForm"
@@ -372,10 +372,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 id="message"
                 name="message"
                 placeholder="How can we help?"></textarea>
-            </div>
-
-            <div class="form-group">
-              <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.2rem;"></div>
             </div>
 
             <div class="form-submit">
@@ -474,12 +470,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      // ── reCAPTCHA — must be completed before we send anything ──
-      if (!window.bwccCaptchaToken(form)) { window.bwccCaptchaWarn(form); return; }
-
-      // FormData picks up g-recaptcha-response automatically (it's a field
-      // inside the form), so no need to append it by hand.
       const data = new FormData(form);
       try {
         await fetch('/', { method: 'POST', body: data });
@@ -490,59 +480,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     });
   </script>
-
-
-  <!-- ── reCAPTCHA v2 — Netlify Forms spam protection ──────────────────────
-       The SITE key below is public by design (it ships in every page that
-       uses reCAPTCHA). The SECRET key is never in this file — it lives in
-       Netlify env var SITE_RECAPTCHA_SECRET, and Netlify verifies every
-       submission server-side. Forms carry data-netlify-recaptcha="true" so
-       Netlify rejects any POST without a valid g-recaptcha-response — which
-       is what stops bots posting straight to the endpoint.
-       ─────────────────────────────────────────────────────────────────── -->
-  <script>
-    window.BWCC_RECAPTCHA_SITEKEY = '6LfL3sstAAAAAE0Ohcjfy3uQGxRqwAFMQ1BKG5Iv';
-
-    // Explicit render so each form on a page gets its own widget id
-    window.bwccRecaptchaInit = function () {
-      document.querySelectorAll('.g-recaptcha').forEach(function (el) {
-        if (el.dataset.widgetId) return;
-        el.dataset.widgetId = grecaptcha.render(el, {
-          sitekey: window.BWCC_RECAPTCHA_SITEKEY,
-          theme:   el.dataset.theme || 'dark'
-        });
-      });
-    };
-
-    // Token for a given form ('' when the user hasn't completed the challenge)
-    window.bwccCaptchaToken = function (form) {
-      var el = form && form.querySelector('[name="g-recaptcha-response"]');
-      return el ? el.value.trim() : '';
-    };
-
-    window.bwccCaptchaWarn = function (form) {
-      var box = form && form.querySelector('.g-recaptcha');
-      if (!box) return;
-      var err = box.parentNode.querySelector('.rc-err');
-      if (!err) {
-        err = document.createElement('span');
-        err.className = 'rc-err';
-        err.style.cssText = 'display:block;font-size:0.72rem;color:#e07070;margin:-0.5rem 0 0.7rem;';
-        box.parentNode.insertBefore(err, box.nextSibling);
-      }
-      err.textContent = 'Please confirm you are not a robot.';
-    };
-
-    window.bwccCaptchaReset = function (form) {
-      var box = form && form.querySelector('.g-recaptcha');
-      if (box && box.dataset.widgetId && window.grecaptcha) {
-        grecaptcha.reset(Number(box.dataset.widgetId));
-      }
-      var err = form && form.querySelector('.rc-err');
-      if (err) err.remove();
-    };
-  </script>
-  <script src="https://www.google.com/recaptcha/api.js?onload=bwccRecaptchaInit&render=explicit" async defer></script>
 
   <script src="protect.js" defer></script>
 </body>

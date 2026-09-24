@@ -2,33 +2,39 @@
 // LEGACY EDITION — Supabase Edge Function: stripe-webhook
 // Path: supabase/functions/stripe-webhook/index.ts
 // ============================================================
-// Environment variables required (set in Supabase Dashboard →
-// Project Settings → Edge Functions → Secrets):
+// DISABLED 2026-09-23 — automatic sold-count tracking is OFF.
 //
-//   STRIPE_SECRET_KEY       — your Stripe live secret key (sk_live_...)
-//   STRIPE_WEBHOOK_SECRET   — from Stripe Dashboard → Webhooks → signing secret
-//   STRIPE_PAYMENT_LINK_ID  — e.g. plink_1ABC123... (NOT the URL, the ID)
-//   SUPABASE_URL            — auto-set by Supabase
-//   SUPABASE_SERVICE_ROLE_KEY — auto-set by Supabase
+// Why: this function incremented `book_sales.sold_count` on EVERY
+// successful payment on the Stripe account (Kitchen Table, Paperback,
+// merch — not just Legacy Edition), and deactivated the Legacy Edition
+// Payment Link once that inflated count hit BOOK_LIMIT. That is what
+// deactivated buy.stripe.com/6oU28r8s46ABfbm5xgaIM02.
+//
+// Remaining stock is now tracked MANUALLY: update the "Only N Left"
+// copy in index.html / book.html / purchase.html by hand, and
+// activate or deactivate the Payment Link in the Stripe Dashboard.
+//
+// This function now only acknowledges events so Stripe does not retry
+// or flag the endpoint as failing. It never writes to the database and
+// never calls the Stripe API. The previous behaviour is preserved in
+// index.ts.bak-autocount if it is ever needed again.
+//
+// Environment variables still required:
+//   STRIPE_SECRET_KEY       — used only to verify webhook signatures
+//   STRIPE_WEBHOOK_SECRET   — Stripe Dashboard → Webhooks → signing secret
+//
+// STRIPE_PAYMENT_LINK_ID is no longer used and can be removed from the
+// Edge Function secrets.
 // ============================================================
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import Stripe from "https://esm.sh/stripe@12.18.0?target=deno&no-check";
-
-const BOOK_LIMIT = 135;
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2022-11-15",
   httpClient: Stripe.createFetchHttpClient(),
 });
 
-const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-);
-
 Deno.serve(async (req: Request) => {
-  // Only accept POST
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
@@ -40,7 +46,8 @@ Deno.serve(async (req: Request) => {
 
   const body = await req.text();
 
-  // Verify webhook signature
+  // Still verify the signature so this endpoint can't be used as an open
+  // POST target, but take no action on the event.
   let event: Stripe.Event;
   try {
     event = await stripe.webhooks.constructEventAsync(
@@ -53,37 +60,12 @@ Deno.serve(async (req: Request) => {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  // Only process successful payments
-  if (event.type === "payment_intent.succeeded") {
-    const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    console.log("Payment succeeded:", paymentIntent.id);
+  // ── Automatic sold-count tracking is disabled. ──
+  // No increment_sold_count() call. No paymentLinks.update() call.
+  // Stock is managed by hand in Stripe and in the page copy.
+  console.log(`Received ${event.type} (${event.id}) — sold-count tracking disabled, no action taken.`);
 
-    // Increment sold count atomically
-    const { data: newCount, error } = await supabase.rpc("increment_sold_count");
-
-    if (error) {
-      console.error("Failed to increment sold_count:", error.message);
-      return new Response("Database error", { status: 500 });
-    }
-
-    console.log(`Books sold: ${newCount} / ${BOOK_LIMIT}`);
-
-    // Disable the Payment Link once limit is reached
-    if (newCount >= BOOK_LIMIT) {
-      const paymentLinkId = Deno.env.get("STRIPE_PAYMENT_LINK_ID");
-      if (paymentLinkId) {
-        try {
-          await stripe.paymentLinks.update(paymentLinkId, { active: false });
-          console.log("Payment Link deactivated — 135 books sold.");
-        } catch (err) {
-          console.error("Failed to deactivate Payment Link:", err.message);
-          // Non-fatal: the page JS will still show SOLD OUT via the DB check
-        }
-      }
-    }
-  }
-
-  return new Response(JSON.stringify({ received: true }), {
+  return new Response(JSON.stringify({ received: true, action: "none" }), {
     headers: { "Content-Type": "application/json" },
     status: 200,
   });

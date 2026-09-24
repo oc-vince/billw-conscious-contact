@@ -713,7 +713,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="merch-close" aria-label="Close">&times;</button>
       <h2 id="merch-title">Order Now</h2>
       <p class="merch-modal-sub" id="merch-modal-sub">Complete your order below.</p>
-      <form id="merch-form" name="merch-order" data-netlify="true" netlify-honeypot="bot-field">
+      <form id="merch-form" name="merch-order" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="merch-order">
         <input type="hidden" name="product" id="mo-product" value="">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -770,6 +770,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input type="number" id="mo-qty" name="qty" placeholder="1" min="1" value="1" required>
           </div>
         </div>
+        <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.9rem;"></div>
         <button type="submit" class="btn btn-primary" style="font-size:0.7rem;">Order Now</button>
       </form>
       <div id="merch-success">
@@ -786,7 +787,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="bundle-close" aria-label="Close">&times;</button>
       <h2 id="bundle-title">Order — The Hoodie + The T-Shirt</h2>
       <p class="bundle-modal-sub">Complete your bundle order below. FREE nationwide delivery included.</p>
-      <form id="bundle-form" name="bundle-order" data-netlify="true" netlify-honeypot="bot-field">
+      <form id="bundle-form" name="bundle-order" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="bundle-order">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
@@ -853,6 +854,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label for="bo-qty">Quantity</label>
           <input type="number" id="bo-qty" name="qty" placeholder="1" min="1" value="1" required>
         </div>
+        <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.9rem;"></div>
         <button type="submit" class="btn btn-primary" style="font-size:0.7rem;">Order Now</button>
       </form>
     </div>
@@ -921,6 +923,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       merchForm.style.display = '';
       document.getElementById('merch-success').style.display = 'none';
       merchForm.reset();
+      window.bwccCaptchaReset(merchForm);   // form.reset() doesn't clear the captcha
       const submitBtn = merchForm.querySelector('button[type="submit"]');
       submitBtn.disabled    = false;
       submitBtn.textContent = 'Order Now';
@@ -995,6 +998,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
       if (hasError) return;
 
+      // ── reCAPTCHA — check before anything is sent anywhere ──
+      var rcToken = window.bwccCaptchaToken(e.target);
+      if (!rcToken) { window.bwccCaptchaWarn(e.target); return; }
+
       const submitBtn = merchForm.querySelector('button[type="submit"]');
       submitBtn.disabled    = true;
       submitBtn.textContent = 'Submitting…';
@@ -1040,6 +1047,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         qty:         qty
       });
 
+      netlifyParams.append('g-recaptcha-response', rcToken);
+
       const netlifyPromise = fetch('/', {
         method:  'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1058,6 +1067,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function openBundle() {
       bundleForm.reset();
+      window.bwccCaptchaReset(bundleForm);   // form.reset() doesn't clear the captcha
       const btn = bundleForm.querySelector('button[type="submit"]');
       btn.disabled = false; btn.textContent = 'Order Now';
       bundleOverlay.classList.remove('is-closing');
@@ -1131,6 +1141,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       });
       if (hasError) return;
 
+      // ── reCAPTCHA — check before anything is sent anywhere ──
+      var rcToken = window.bwccCaptchaToken(e.target);
+      if (!rcToken) { window.bwccCaptchaWarn(e.target); return; }
+
       const btn = bundleForm.querySelector('button[type="submit"]');
       btn.disabled = true; btn.textContent = 'Submitting…';
 
@@ -1170,6 +1184,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         'tshirt-size': tshirtSize,
         qty:           qty
       });
+      netlifyParams.append('g-recaptcha-response', rcToken);
+
       const netlifyPromise = fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1183,6 +1199,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   </script>
 
+
+
+  <!-- ── reCAPTCHA v2 — Netlify Forms spam protection ──────────────────────
+       The SITE key below is public by design (it ships in every page that
+       uses reCAPTCHA). The SECRET key is never in this file — it lives in
+       Netlify env var SITE_RECAPTCHA_SECRET, and Netlify verifies every
+       submission server-side. Forms carry data-netlify-recaptcha="true" so
+       Netlify rejects any POST without a valid g-recaptcha-response — which
+       is what stops bots posting straight to the endpoint.
+       ─────────────────────────────────────────────────────────────────── -->
+  <script>
+    window.BWCC_RECAPTCHA_SITEKEY = '6LfL3sstAAAAAE0Ohcjfy3uQGxRqwAFMQ1BKG5Iv';
+
+    // Explicit render so each form on a page gets its own widget id
+    window.bwccRecaptchaInit = function () {
+      document.querySelectorAll('.g-recaptcha').forEach(function (el) {
+        if (el.dataset.widgetId) return;
+        el.dataset.widgetId = grecaptcha.render(el, {
+          sitekey: window.BWCC_RECAPTCHA_SITEKEY,
+          theme:   el.dataset.theme || 'dark'
+        });
+      });
+    };
+
+    // Token for a given form ('' when the user hasn't completed the challenge)
+    window.bwccCaptchaToken = function (form) {
+      var el = form && form.querySelector('[name="g-recaptcha-response"]');
+      return el ? el.value.trim() : '';
+    };
+
+    window.bwccCaptchaWarn = function (form) {
+      var box = form && form.querySelector('.g-recaptcha');
+      if (!box) return;
+      var err = box.parentNode.querySelector('.rc-err');
+      if (!err) {
+        err = document.createElement('span');
+        err.className = 'rc-err';
+        err.style.cssText = 'display:block;font-size:0.72rem;color:#e07070;margin:-0.5rem 0 0.7rem;';
+        box.parentNode.insertBefore(err, box.nextSibling);
+      }
+      err.textContent = 'Please confirm you are not a robot.';
+    };
+
+    window.bwccCaptchaReset = function (form) {
+      var box = form && form.querySelector('.g-recaptcha');
+      if (box && box.dataset.widgetId && window.grecaptcha) {
+        grecaptcha.reset(Number(box.dataset.widgetId));
+      }
+      var err = form && form.querySelector('.rc-err');
+      if (err) err.remove();
+    };
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=bwccRecaptchaInit&render=explicit" async defer></script>
 
   <script src="protect.js" defer></script>
 </body>

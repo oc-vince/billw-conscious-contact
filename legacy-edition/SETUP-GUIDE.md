@@ -5,6 +5,23 @@
 
 ---
 
+> ## ⚠️ Automatic sold-count tracking is DISABLED (23 Sep 2026)
+>
+> The webhook used to increment a counter on every successful Stripe payment
+> — including Kitchen Table, Paperback and merch sales, not just Legacy
+> Edition — and deactivated the Legacy Payment Link once that inflated count
+> reached the limit. That is what deactivated
+> `buy.stripe.com/6oU28r8s46ABfbm5xgaIM02`.
+>
+> **Remaining stock is now managed by hand:**
+> - Update the "Only N Left" copy in `index.html`, `book.html` and `purchase.html`
+> - Activate / deactivate the Payment Link in the Stripe Dashboard
+>
+> The deployed `stripe-webhook` function now only acknowledges events. Steps 3b
+> (redemption cap), 5 (webhook) and the "How the SOLD OUT state works" section
+> below no longer describe live behaviour.
+
+
 ## Overview
 
 ```

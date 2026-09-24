@@ -11,14 +11,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://billwconsciouscontact.com/purchase">
+  <link rel="canonical" href="https://billwconsciouscontact.com/collectibles">
   <title>Purchase | Bill W. Conscious Contact — Book & Film</title>
-  <meta name="description" content="Order the Bill W. Conscious Contact book in paperback, hardcover, or Legacy Edition — or stream the award-winning documentary for $9.99.">
+  <meta name="description" content="Shop the official Bill W. Conscious Contact merch — hoodies, t-shirts, and bundles. FREE nationwide delivery.">
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://billwconsciouscontact.com/purchase">
+  <meta property="og:url" content="https://billwconsciouscontact.com/collectibles">
   <meta property="og:title" content="Purchase | Bill W. Conscious Contact — Book & Film">
-  <meta property="og:description" content="Order the Bill W. Conscious Contact book in paperback, hardcover, or Legacy Edition — or stream the award-winning documentary for $9.99.">
+  <meta property="og:description" content="Shop the official Bill W. Conscious Contact merch — hoodies, t-shirts, and bundles. FREE nationwide delivery.">
   <meta property="og:image" content="https://billwconsciouscontact.com/images/OG-image-1200x630.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -27,13 +27,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://billwconsciouscontact.com/purchase">
   <meta name="twitter:title" content="Purchase | Bill W. Conscious Contact — Book & Film">
-  <meta name="twitter:description" content="Order the Bill W. Conscious Contact book in paperback, hardcover, or Legacy Edition — or stream the award-winning documentary for $9.99.">
+  <meta name="twitter:description" content="Shop the official Bill W. Conscious Contact merch — hoodies, t-shirts, and bundles. FREE nationwide delivery.">
   <meta name="twitter:image" content="https://billwconsciouscontact.com/images/OG-image-1200x630.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+
+    /* ── Mini Hero ── */
+    .purchase-hero {
+      min-height: 42vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 1.5rem 60px;
+      background:
+        linear-gradient(to bottom, rgba(10,10,10,0.45), rgba(10,10,10,0.82), var(--black)),
+        url('images/purchase-page-hero.jpg') center / cover no-repeat;
+    }
+    .purchase-hero .hero-pretitle {
+      margin-bottom: 0.5rem;
+    }
+    .purchase-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 600;
+      color: var(--cream, #f5f0e6);
+      line-height: 1.1;
+      margin: 0 0 1rem;
+    }
+    .purchase-hero p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: rgba(245,240,230,0.7);
+      max-width: 688px;
+    }
 
     /* ── Editions grid ── */
     @media (max-width: 767px) {
@@ -42,95 +74,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     }
 
-    /* ── Edition cells: book cover floating above the card ── */
-    .edition-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-    }
-
-    .edition-book {
-      position: relative;
-      z-index: 3;
-      width: 74%;
-      max-width: 250px;
-      margin-bottom: -70px;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 26px 34px rgba(0,0,0,0.85)) drop-shadow(0 6px 12px rgba(0,0,0,0.6));
-      pointer-events: none;
-      /* fades in once the lazy-loaded image has decoded */
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
-    .edition-book.is-loaded {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .edition-book { transform: none; transition: opacity 0.4s linear; }
-      .edition-book.is-loaded { transform: none; }
-    }
-
-    .edition-cell .plan-card {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding-top: 90px;
-      border-color: rgba(201, 168, 76, 0.14);
-      background: linear-gradient(to bottom, rgba(18,18,18,0.85) 0%, rgba(0,0,0,0.96) 45%, #000 100%);
-      backdrop-filter: blur(2px);
-    }
-
-    .edition-cell .plan-card > .btn {
-      margin-top: auto;
-    }
-
-    .edition-cell:hover .edition-book.is-loaded {
-      transform: translateY(-8px);
-    }
-
-    @media (max-width: 767px) {
-      .edition-book {
-        width: 58%;
-        max-width: 210px;
-        margin-bottom: -60px;
-      }
-      .edition-cell .plan-card {
-        padding-top: 80px;
-      }
-      .edition-cell {
-        margin-bottom: 1.5rem;
-      }
-    }
-
     /* ── Section padding override (purchase page only) ── */
     .section-pad {
       padding: 2rem 2rem 6rem 2rem;
-    }
-
-    /* ── Editions hero background ── */
-    #editions {
-      background:
-        linear-gradient(to bottom, rgba(10,10,10,0.80) 0%, rgba(10,10,10,0.90) 35%, var(--black) 50%),
-        url('images/purchase-page-hero.jpg') center top / 100% 50vh no-repeat,
-        var(--black) !important;
-      padding-top: 140px !important;
-    }
-
-    @media (max-width: 767px) {
-      #editions {
-        background:
-          linear-gradient(to bottom, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.92) 70%, var(--black) 100%),
-          url('images/purchase-page-hero.jpg') center top / 100% 22vh no-repeat,
-          var(--black) !important;
-        padding-top: 100px !important;
-      }
     }
 
     /* ── Film CTA Section ── */
@@ -674,274 +620,91 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <nav id="navbar">
-    <a href="index.html" class="nav-logo">
+  <nav id="navbar" style="justify-content: center;">
+    <a href="#top" class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
       <span class="nav-logo-small">Bill W.</span>
       <span class="nav-logo-main">Conscious Contact</span>
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="film.html">Film</a></li>
-      <li><a href="book.html">Book</a></li>
-      <li><a href="stepping-stones.html">Stepping Stones</a></li>
-      <li><a href="press.html">Press</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="library.html">For Libraries</a></li>
-      <li><a href="purchase.html" class="nav-cta">Purchase</a></li>
-    </ul>
-    <div class="nav-auth"></div>
-    <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open'); this.classList.toggle('open')">
-      <span></span><span></span><span></span>
-    </div>
   </nav>
 
 
-  <!-- ── THREE WAYS TO OWN IT ── -->
-  <section id="editions" class="section-pad" style="background: var(--black);">
-    <div class="container">
-      <div class="section-label reveal" style="justify-content: center;">Choose Your Edition</div>
-      <h2 class="section-heading reveal" style="text-align: center;">Three Ways to Own It</h2>
-
-      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;">
-
-        <!-- PAPERBACK -->
-        <div class="edition-cell reveal">
-        <img class="edition-book" src="images/books/Book-Paperback-v2.webp" alt="Bill W. Conscious Contact — Paperback edition" width="258" height="378" loading="lazy" decoding="async">
-        <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Paperback</div>
-          <div class="plan-price">$39.95</div>
-          <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Softcover edition</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Packed with intimate photos of Bill and Lois</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Previously unpublished letters</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Features the transcripts of the film</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">8.5 &times; 11 format</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0985606312</span>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Now Available</div>
-          </div>
-          <a href="https://buy.stripe.com/00w5kDcIk5wx0gse3MaIM00" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
-        </div>
-        </div>
-
-        <!-- KITCHEN TABLE -->
-        <div class="edition-cell reveal">
-        <img class="edition-book" src="images/books/Book-KitchenTable-v2.webp" alt="Bill W. Conscious Contact — Kitchen Table edition" width="328" height="378" loading="lazy" decoding="async">
-        <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Kitchen Table</div>
-          <div class="plan-price">$99.95</div>
-          <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Deluxe collector art book</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">11 &times; 11 navy leather-bound</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Hot-gold foil stamped cover</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Not available on Amazon</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Bonus content</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Personally signed by Jay Stinnett</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Packed with intimate photos of Bill and Lois</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Previously unpublished letters</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Features the transcripts of the film</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 978-0-9856063-2-9</span>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
-          </div>
-          <a href="https://buy.stripe.com/eVq7sL8s4e332oA1h0aIM03" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
-        </div>
-        </div>
-
-        <!-- LEGACY -->
-        <div class="edition-cell reveal">
-        <img class="edition-book" src="images/books/Book-Legacy-v2.webp" alt="Bill W. Conscious Contact — Legacy edition" width="327" height="378" loading="lazy" decoding="async">
-        <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Legacy</div>
-          <div class="plan-price">$149.95</div>
-          <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">11 &times; 11 leather-bound</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Hot-foil stamped cover</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">First Edition — strictly limited to 250 printed</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Bonus content</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Individually signed and hand-numbered</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Personal dedication inscribed by Jay Stinnett</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Available exclusively on the website</span>
-            </div>
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">ISBN 979-8-234-20032-7</span>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
-            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(201,168,76,0.6); font-style: italic;">When 250 are gone, this edition is gone.</div>
-          </div>
-          <!-- <span id="legacy-edition-btn" class="btn" aria-disabled="true" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center; background:#9e9e9e; color:#ffffff; cursor:not-allowed; pointer-events:none; opacity:0.7;">Only 12 Left</span> -->
-           <a href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Only 12 Left – Buy Now</a>
-        </div>
-        </div>
-
-      </div>
-    </div>
+  <!-- ── HERO ── -->
+  <section class="purchase-hero">
+    <h1>Collectibles</h1>
+    <p style="font-size:clamp(1.4rem,3.5vw,1.75rem);">Rock the merch to reflect your Conscious Contact</p>
+    <p style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(201,168,76,0.8);margin-top:0.5rem;font-family:var(--font-ui,'Inter',sans-serif);font-style:normal;">All orders include FREE nationwide delivery.</p>
   </section>
 
-
-  <!-- ── STREAM THE FILM ── -->
-  <section class="film-cta">
-    <div class="film-cta-inner reveal">
-      <div class="film-cta-badge">The Documentary</div>
-      <h2>Watch the Award-Winning Film</h2>
-      <div class="film-cta-divider"></div>
-      <p>
-        58 minutes. Eight international festival awards.<br>
-        A window into the open mind of one of the greatest healers of the 20th century.
-      </p>
-      <a href="https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact/purchase" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.9rem 2.5rem; letter-spacing: 0.15em;">
-        Stream Now &mdash; $9.99
-      </a>
-      <div class="film-cta-awards">
-        Winner &nbsp;&middot;&nbsp; Best Documentary &nbsp;&middot;&nbsp; Best Director &nbsp;&middot;&nbsp; Eight International Festivals
-      </div>
-    </div>
-  </section>
 
 
   <!-- ── COLLECTIBLES ── -->
-  
+  <section class="collectibles-section">
+    <div class="collectibles-inner reveal">
+      <div class="merch-grid">
 
+        <!-- Hoodie -->
+        <div class="merch-card">
+          <div class="merch-carousel" id="hoodie-carousel">
+            <div class="merch-carousel-track" id="hoodie-track">
+              <div class="merch-carousel-slide"><img src="images/hoodie/1.jpg" alt="The Hoodie"></div>
+              <div class="merch-carousel-slide"><img src="images/hoodie/2.jpg" alt="The Hoodie" loading="lazy"></div>
+              <div class="merch-carousel-slide"><img src="images/hoodie/3.jpg" alt="The Hoodie" loading="lazy"></div>
+              <div class="merch-carousel-slide"><img src="images/hoodie/4.jpg" alt="The Hoodie" loading="lazy"></div>
+              <div class="merch-carousel-slide"><img src="images/hoodie/5.jpg" alt="The Hoodie" loading="lazy"></div>
+              <div class="merch-carousel-slide"><img src="images/hoodie/6.jpg" alt="The Hoodie" loading="lazy"></div>
+            </div>
+            <button class="merch-carousel-arrow prev" id="hoodie-prev" aria-label="Previous">&#8249;</button>
+            <button class="merch-carousel-arrow next" id="hoodie-next" aria-label="Next">&#8250;</button>
+          </div>
+          <div class="merch-body">
+            <h3 class="merch-card-title">The Hoodie</h3>
+            <div class="merch-card-price">$69.99</div>
+            <p class="merch-card-desc"><i>Bill W.: Conscious Contact</i> hoodie features a discreet and meaningful design element inspired by the film&rsquo;s exploration of spirituality and the ongoing pursuit of a conscious connection with a higher power.</p>
+            <button class="btn btn-primary merch-order-btn" data-product="The Hoodie" data-mc-tag="The Hoodie" data-redirect="thank-you-hoodie.html">Purchase Now</button>
+          </div>
+        </div>
 
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <h3>Bill W. Conscious Contact</h3>
-        <p>Based on the award-winning documentary film. Produced by Jay Stinnett. Directed by Kevin Hanlon.</p>
+        <!-- T-Shirt -->
+        <div class="merch-card">
+          <img class="merch-img" src="images/tshirt/1.jpg" alt="The T-shirt">
+          <div class="merch-body">
+            <h3 class="merch-card-title">The T-shirt</h3>
+            <div class="merch-card-price">$24.99</div>
+            <p class="merch-card-desc">This <i>Bill W.: Conscious Contact</i> black t-shirt is designed for comfort, style, and impact. Made with premium fabric that&rsquo;s been pre-laundered for reduced shrinkage and a soft, lived-in feel from day one.<br>Perfect for those who walk the path.</p>
+            <button class="btn btn-primary merch-order-btn" data-product="The T-Shirt" data-mc-tag="The T-Shirt" data-redirect="thank-you-tshirt.html">Purchase Now</button>
+          </div>
+        </div>
+
       </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <a href="index.html">Home</a>
-        <a href="film.html">The Film</a>
-        <a href="book.html">The Book</a>
-        <a href="stepping-stones.html">Stepping Stones</a>
+
+      <!-- ── Promo Bundle ── -->
+      <div class="promo-bundle-section">
+        <div class="film-cta-badge">Promo Bundle</div>
+        <div class="promo-bundle-wrap">
+          <div class="merch-card">
+            <img class="merch-img" src="images/promo/product-hoodie+tshirt-bundle.jpg" alt="The Hoodie + The T-Shirt Bundle">
+            <div class="merch-body">
+              <h3 class="merch-card-title">The Hoodie + The T-Shirt</h3>
+              <div class="merch-card-price">$87.99</div>
+              <p class="merch-card-desc">Introducing the <b>Bill W.: Conscious Contact Promo Bundle</b>, a limited-time offer that combines two fan-favorite apparel items into one incredible deal. This exclusive bundle includes <b>The Hoodie</b> and <b>The T-shirt</b>, each featuring iconic designs inspired by the acclaimed film <i>Bill W.: Conscious Contact</i>. Crafted with premium-quality materials, both items are designed for comfort, style, and to spark conversation.</p>
+              <button class="btn btn-primary bundle-order-btn" data-redirect="thank-you-bundle.html">Purchase Now</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <a href="press.html">Press</a>
-        <a href="library.html">Library</a>
-        <a href="events.html">Events</a>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-and-conditions.html">Terms of Service</a>
-      </div>
-      <div class="footer-book">
-        <h4>The Book</h4>
-        <p>
-        Published by Muse Bookings LLC &middot; Sedona, Arizona<br>
-        &copy; 2026 Bill W. Conscious Contact. All rights reserved.<br>
-        A Jay Stinnett Production</p>
-      </div>
+
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Bill W. Conscious Contact. Muse Bookings LLC. All rights reserved.</p>
-      <p>A Jay Stinnett Production</p>
+  </section>
+
+
+  <footer style="text-align:center;padding:3rem 1.5rem 2rem;">
+    <h3 style="font-family:var(--font-heading,'Cinzel',serif);font-size:1.1rem;font-weight:600;color:var(--cream,#f5f0e6);margin:0 0 0.6rem;">Bill W. Conscious Contact</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:rgba(245,240,230,0.55);line-height:1.7;max-width:480px;margin:0 auto 2rem;">Based on the award-winning documentary film. Produced by Jay Stinnett. Directed by Kevin Hanlon.</p>
+    <div style="border-top:1px solid rgba(201,168,76,0.15);padding-top:1.5rem;">
+      <p style="font-family:var(--font-ui,'Inter',sans-serif);font-size:0.7rem;color:rgba(245,240,230,0.35);letter-spacing:0.05em;">&copy; 2026 Bill W. Conscious Contact. Muse Bookings LLC. All rights reserved.</p>
     </div>
   </footer>
 
-
-  <!-- ── Waitlist Lightbox ── -->
-  <div id="waitlist-overlay" role="dialog" aria-modal="true" aria-labelledby="waitlist-title">
-    <div id="waitlist-modal">
-      <button id="waitlist-close" aria-label="Close">&times;</button>
-      <h2 id="waitlist-title">Join the Waitlist</h2>
-      <p class="wl-sub" id="waitlist-sub">Be the first to know when the book is available to purchase.</p>
-      <form id="waitlist-form" name="waitlist-order" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field" novalidate>
-        <input type="hidden" name="form-name" value="waitlist-order">
-        <input type="hidden" id="wl-product" name="product" value="">
-        <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-          <div class="wl-field">
-            <label for="wl-first">First Name</label>
-            <input type="text" id="wl-first" name="firstName" placeholder="Jane" required autocomplete="given-name">
-          </div>
-          <div class="wl-field">
-            <label for="wl-last">Last Name</label>
-            <input type="text" id="wl-last" name="lastName" placeholder="Smith" required autocomplete="family-name">
-          </div>
-        </div>
-        <div class="wl-field">
-          <label for="wl-email">Email</label>
-          <input type="email" id="wl-email" name="email" placeholder="jane@example.com" required autocomplete="email">
-        </div>
-        <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.9rem;"></div>
-        <button type="submit" class="btn btn-primary" style="font-size:0.7rem;">Join the Waitlist</button>
-      </form>
-      <div id="waitlist-success">
-        <div class="wl-check">&#10003;</div>
-        <p>You&rsquo;re on the list! We&rsquo;ll be in touch soon.</p>
-      </div>
-    </div>
-  </div>
 
 
   <!-- ── Merch Order Lightbox ── -->
@@ -950,7 +713,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="merch-close" aria-label="Close">&times;</button>
       <h2 id="merch-title">Order Now</h2>
       <p class="merch-modal-sub" id="merch-modal-sub">Complete your order below.</p>
-      <form id="merch-form" name="merch-order" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field" novalidate>
+      <form id="merch-form" name="merch-order" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="merch-order">
         <input type="hidden" name="product" id="mo-product" value="">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -1007,7 +770,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input type="number" id="mo-qty" name="qty" placeholder="1" min="1" value="1" required>
           </div>
         </div>
-        <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.9rem;"></div>
         <button type="submit" class="btn btn-primary" style="font-size:0.7rem;">Order Now</button>
       </form>
       <div id="merch-success">
@@ -1024,7 +786,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="bundle-close" aria-label="Close">&times;</button>
       <h2 id="bundle-title">Order — The Hoodie + The T-Shirt</h2>
       <p class="bundle-modal-sub">Complete your bundle order below. FREE nationwide delivery included.</p>
-      <form id="bundle-form" name="bundle-order" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field" novalidate>
+      <form id="bundle-form" name="bundle-order" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="bundle-order">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
@@ -1091,7 +853,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label for="bo-qty">Quantity</label>
           <input type="number" id="bo-qty" name="qty" placeholder="1" min="1" value="1" required>
         </div>
-        <div class="g-recaptcha" data-theme="dark" style="margin:0.4rem 0 0.9rem;"></div>
         <button type="submit" class="btn btn-primary" style="font-size:0.7rem;">Order Now</button>
       </form>
     </div>
@@ -1114,145 +875,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
     reveals.forEach(el => revealObserver.observe(el));
 
-    // Mobile nav close
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('navLinks').classList.remove('open');
-      });
-    });
 
-    // ── Waitlist Lightbox ──
-    const overlay  = document.getElementById('waitlist-overlay');
-    const closeBtn = document.getElementById('waitlist-close');
-    const wlForm   = document.getElementById('waitlist-form');
-    const wlTitle  = document.getElementById('waitlist-title');
-    const wlSub    = document.getElementById('waitlist-sub');
-    let   wlRedirect = 'thank-you.html';
-    let   wlMcTag    = '';
-
-    function openWaitlist(edition, sub, redirect, mcTag) {
-      wlTitle.textContent = 'Join the Waitlist';
-      wlSub.innerHTML     = sub || 'Be the first to know when the book is available to purchase.';
-      wlRedirect          = redirect || 'thank-you.html';
-      wlMcTag             = mcTag || '';
-      wlForm.style.display = '';
-      document.getElementById('waitlist-success').style.display = 'none';
-      wlForm.reset();
-      window.bwccCaptchaReset(wlForm);   // form.reset() doesn't clear the captcha
-      const submitBtn = wlForm.querySelector('button[type="submit"]');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Join the Waitlist';
-      overlay.classList.remove('is-closing');
-      overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-      document.getElementById('wl-first').focus();
-    }
-
-    function closeWaitlist() {
-      overlay.classList.add('is-closing');
-      setTimeout(() => {
-        overlay.classList.remove('is-open', 'is-closing');
-        document.body.style.overflow = '';
-      }, 380);
-    }
-
-    document.querySelectorAll('.preorder-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        openWaitlist(
-          btn.dataset.edition,
-          btn.dataset.sub,
-          btn.dataset.redirect,
-          btn.dataset.mcTag
-        );
-      });
-    });
-
-    closeBtn.addEventListener('click', closeWaitlist);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeWaitlist(); });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeWaitlist();
-    });
-
-    wlForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const first = document.getElementById('wl-first').value.trim();
-      const last  = document.getElementById('wl-last').value.trim();
-      const email = document.getElementById('wl-email').value.trim();
-
-      wlForm.querySelectorAll('.wl-err').forEach(el => el.remove());
-
-      let hasError = false;
-      if (!first) { showFieldError('wl-first', 'Please enter your first name.'); hasError = true; }
-      if (!last)  { showFieldError('wl-last',  'Please enter your last name.');  hasError = true; }
-      if (!email) { showFieldError('wl-email', 'Please enter your email.');       hasError = true; }
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showFieldError('wl-email', 'Please enter a valid email address.'); hasError = true;
-      }
-      if (hasError) return;
-
-      // ── reCAPTCHA — check before anything is sent anywhere ──
-      var rcToken = window.bwccCaptchaToken(e.target);
-      if (!rcToken) { window.bwccCaptchaWarn(e.target); return; }
-
-      const submitBtn = wlForm.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting…';
-
-      // Set hidden product field for Netlify
-      document.getElementById('wl-product').value = wlMcTag;
-
-      // ── A: MailChimp (fetch no-cors) ──
-      const mcParams = new URLSearchParams({
-        u:       '1ebaef31f284c8b6f3a5f9434',
-        id:      'a453f92be8',
-        EMAIL:   email,
-        FNAME:   first,
-        LNAME:   last,
-        EDITION: wlMcTag
-      });
-      const mcPromise = fetch('https://billwconsciouscontact.us13.list-manage.com/subscribe/post', {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    mcParams.toString()
-      }).catch(() => {});
-
-      // ── B: Netlify Forms backup ──
-      const netlifyParams = new URLSearchParams({
-        'form-name': 'waitlist-order',
-        product:     wlMcTag,
-        firstName:   first,
-        lastName:    last,
-        email:       email
-      });
-      netlifyParams.append('g-recaptcha-response', rcToken);
-
-      const netlifyPromise = fetch('/', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    netlifyParams.toString()
-      }).catch(() => {});
-
-      // Wait for both (max 5 s) then redirect regardless
-      const timeout = new Promise(resolve => setTimeout(resolve, 5000));
-      Promise.race([Promise.allSettled([mcPromise, netlifyPromise]), timeout])
-        .then(() => { window.location.href = wlRedirect; });
-    });
-
-    function showFieldError(inputId, msg) {
-      const input = document.getElementById(inputId);
-      const err = document.createElement('span');
-      err.className = 'wl-err';
-      err.style.cssText = 'display:block;font-size:0.72rem;color:#e07070;margin-top:0.3rem;';
-      err.textContent = msg;
-      input.parentNode.appendChild(err);
-      input.style.borderColor = 'rgba(224,112,112,0.6)';
-      input.addEventListener('input', () => {
-        err.remove();
-        input.style.borderColor = '';
-      }, { once: true });
-    }
 
     // ── Hoodie Carousel ──
     (function () {
@@ -1298,7 +921,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       merchForm.style.display = '';
       document.getElementById('merch-success').style.display = 'none';
       merchForm.reset();
-      window.bwccCaptchaReset(merchForm);   // form.reset() doesn't clear the captcha
       const submitBtn = merchForm.querySelector('button[type="submit"]');
       submitBtn.disabled    = false;
       submitBtn.textContent = 'Order Now';
@@ -1373,10 +995,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
       if (hasError) return;
 
-      // ── reCAPTCHA — check before anything is sent anywhere ──
-      var rcToken = window.bwccCaptchaToken(e.target);
-      if (!rcToken) { window.bwccCaptchaWarn(e.target); return; }
-
       const submitBtn = merchForm.querySelector('button[type="submit"]');
       submitBtn.disabled    = true;
       submitBtn.textContent = 'Submitting…';
@@ -1422,8 +1040,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         qty:         qty
       });
 
-      netlifyParams.append('g-recaptcha-response', rcToken);
-
       const netlifyPromise = fetch('/', {
         method:  'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1442,7 +1058,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     function openBundle() {
       bundleForm.reset();
-      window.bwccCaptchaReset(bundleForm);   // form.reset() doesn't clear the captcha
       const btn = bundleForm.querySelector('button[type="submit"]');
       btn.disabled = false; btn.textContent = 'Order Now';
       bundleOverlay.classList.remove('is-closing');
@@ -1516,10 +1131,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       });
       if (hasError) return;
 
-      // ── reCAPTCHA — check before anything is sent anywhere ──
-      var rcToken = window.bwccCaptchaToken(e.target);
-      if (!rcToken) { window.bwccCaptchaWarn(e.target); return; }
-
       const btn = bundleForm.querySelector('button[type="submit"]');
       btn.disabled = true; btn.textContent = 'Submitting…';
 
@@ -1559,8 +1170,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         'tshirt-size': tshirtSize,
         qty:           qty
       });
-      netlifyParams.append('g-recaptcha-response', rcToken);
-
       const netlifyPromise = fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1573,83 +1182,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
   </script>
-  <!-- ── Edition covers: fade in as each lazy-loaded image arrives ── -->
-  <script>
-  (function () {
-    var books = Array.prototype.slice.call(document.querySelectorAll('.edition-book'));
-    if (!books.length) return;
 
-    function reveal(img) { img.classList.add('is-loaded'); }
-
-    books.forEach(function (img) {
-      if (img.complete && img.naturalWidth > 0) {
-        reveal(img);
-      } else {
-        img.addEventListener('load', function () { reveal(img); }, { once: true });
-        // never leave a hole in the layout if an image fails
-        img.addEventListener('error', function () { reveal(img); }, { once: true });
-      }
-    });
-
-    // safety net for any image that never fires load
-    setTimeout(function () { books.forEach(reveal); }, 4000);
-  })();
-  </script>
-
-
-  <!-- ── reCAPTCHA v2 — Netlify Forms spam protection ──────────────────────
-       The SITE key below is public by design (it ships in every page that
-       uses reCAPTCHA). The SECRET key is never in this file — it lives in
-       Netlify env var SITE_RECAPTCHA_SECRET, and Netlify verifies every
-       submission server-side. Forms carry data-netlify-recaptcha="true" so
-       Netlify rejects any POST without a valid g-recaptcha-response — which
-       is what stops bots posting straight to the endpoint.
-       ─────────────────────────────────────────────────────────────────── -->
-  <script>
-    window.BWCC_RECAPTCHA_SITEKEY = '6LfL3sstAAAAAE0Ohcjfy3uQGxRqwAFMQ1BKG5Iv';
-
-    // Explicit render so each form on a page gets its own widget id
-    window.bwccRecaptchaInit = function () {
-      document.querySelectorAll('.g-recaptcha').forEach(function (el) {
-        if (el.dataset.widgetId) return;
-        el.dataset.widgetId = grecaptcha.render(el, {
-          sitekey: window.BWCC_RECAPTCHA_SITEKEY,
-          theme:   el.dataset.theme || 'dark'
-        });
-      });
-    };
-
-    // Token for a given form ('' when the user hasn't completed the challenge)
-    window.bwccCaptchaToken = function (form) {
-      var el = form && form.querySelector('[name="g-recaptcha-response"]');
-      return el ? el.value.trim() : '';
-    };
-
-    window.bwccCaptchaWarn = function (form) {
-      var box = form && form.querySelector('.g-recaptcha');
-      if (!box) return;
-      var err = box.parentNode.querySelector('.rc-err');
-      if (!err) {
-        err = document.createElement('span');
-        err.className = 'rc-err';
-        err.style.cssText = 'display:block;font-size:0.72rem;color:#e07070;margin:-0.5rem 0 0.7rem;';
-        box.parentNode.insertBefore(err, box.nextSibling);
-      }
-      err.textContent = 'Please confirm you are not a robot.';
-    };
-
-    window.bwccCaptchaReset = function (form) {
-      var box = form && form.querySelector('.g-recaptcha');
-      if (box && box.dataset.widgetId && window.grecaptcha) {
-        grecaptcha.reset(Number(box.dataset.widgetId));
-      }
-      var err = form && form.querySelector('.rc-err');
-      if (err) err.remove();
-    };
-  </script>
-  <script src="https://www.google.com/recaptcha/api.js?onload=bwccRecaptchaInit&render=explicit" async defer></script>
 
   <script src="protect.js" defer></script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
