@@ -511,6 +511,85 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin-top: 0.3rem;
       line-height: 1.35;
     }
+
+    /* ═══ THE KITCHEN TABLE EDITION ═══ */
+    /* Photographic background. The source image is bright (blown-out
+       windows), so it carries an overlay: 0.70 through the middle so the
+       table and teacups still read, tightening to 0.84 and then solid
+       #141414 at the edges so the band joins the dark sections either
+       side seamlessly. Worst-case cream-on-photo contrast is 6.7:1. */
+    .kt-section {
+      position: relative;
+      /* .container carries no gutter on this site — horizontal padding
+         comes from the section, matching .section-pad (2rem / 1.5rem). */
+      padding: 7rem 2rem;
+      background-image:
+        linear-gradient(to bottom,
+          #141414 0%,
+          rgba(20, 20, 20, 0.84) 16%,
+          rgba(10, 10, 10, 0.70) 50%,
+          rgba(20, 20, 20, 0.84) 84%,
+          #141414 100%),
+        url('images/KitchenTable-Hero.webp');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+    }
+
+    .kt-body {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .kt-title {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .kt-body p {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 300;
+      line-height: 1.95;
+      color: rgba(245, 240, 230, 0.82);
+      margin: 0 0 1.5rem;
+    }
+
+    .kt-signature {
+      font-style: italic;
+      color: var(--gold-light) !important;
+      font-size: 1.2rem !important;
+      margin-top: 2rem !important;
+    }
+
+    .kt-cta { margin-top: 2.5rem; }
+
+    @media (max-width: 767px) {
+      .kt-section { padding: 4rem 1.5rem; }
+      .kt-body p { font-size: 1.05rem; line-height: 1.85; }
+      .kt-cta .btn { display: block; width: 100%; }
+    }
+
+    /* ═══ RECOGNITION ═══ */
+    .awards-strip-light {
+      background: var(--black-light); /* #141414 */
+    }
+
+    /* Edge fades must match the section backdrop */
+    .awards-fade {
+      position: absolute;
+      top: 0;
+      width: 80px;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .awards-fade-l { left: 0;  background: linear-gradient(to right, var(--black-light), transparent); }
+    .awards-fade-r { right: 0; background: linear-gradient(to left,  var(--black-light), transparent); }
   </style>
 
   <!-- Memberstack — replace YOUR_APP_ID with your Memberstack app ID -->
@@ -730,8 +809,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   
 
+  <!-- ═══ THE KITCHEN TABLE EDITION ═══ -->
+  <section class="kt-section" role="img" aria-label="A vintage kitchen with a table set for two">
+    <div class="container">
+      <div class="kt-body reveal">
+        <h2 class="section-heading kt-title">The Kitchen Table Edition</h2>
+
+        <p>The kitchen table is the heart of the 12-Step fellowships. From Ebby to Bill at Clinton St. in New York, from Bill to Dr. Bob, and Anne S. to Lois W. at 855 Ardmore in Akron&mdash;the simple talk in their kitchen is how the message of recovery was, and is, carried.</p>
+
+        <p>The privilege of sharing these photos, many of them never seen, coupled with new verified discoveries about Bill W.&rsquo;s spiritual life called for a presentation of the highest quality. Hence, the volume in your hand&mdash;worthy of gifting to those who passed the message to you.</p>
+
+        <p>Our fondest wish is that you do not consider the musty past, but open this book with the miracle seated across the kitchen table from you.</p>
+
+        <p class="kt-signature">~ Jay &amp; Jeanine</p>
+
+        <div class="kt-cta">
+          <a href="https://buy.stripe.com/28EcN55fS9MN4wI7FoaIM0d" target="_blank" rel="noopener" class="btn btn-primary">Purchase the Book Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- AWARDS STRIP -->
-  <section style="background: var(--black); padding: 4rem 0 3rem; overflow: hidden; text-align: center;">
+  <section class="awards-strip-light" style="padding: 4rem 0 3rem; overflow: hidden; text-align: center;">
     <div class="container">
       <div class="section-label reveal" style="justify-content: center;">Recognition</div>
       <h2 class="section-heading reveal" style="text-align: center;">Award-Winning Documentary</h2>
@@ -740,8 +840,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Scrolling laurel track -->
     <div style="position: relative; margin-top: 2rem; overflow: hidden;">
       <!-- Fade edges -->
-      <div style="position: absolute; top: 0; left: 0; width: 80px; height: 100%; background: linear-gradient(to right, var(--black), transparent); z-index: 2; pointer-events: none;"></div>
-      <div style="position: absolute; top: 0; right: 0; width: 80px; height: 100%; background: linear-gradient(to left, var(--black), transparent); z-index: 2; pointer-events: none;"></div>
+      <div class="awards-fade awards-fade-l"></div>
+      <div class="awards-fade awards-fade-r"></div>
 
       <div class="laurel-track">
         <!-- Awards set 1 — each card uses a different sprite cell -->
