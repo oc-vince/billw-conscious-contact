@@ -274,21 +274,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </script>
     <div class="container">
       <div class="section-label reveal" style="justify-content: center;">Facebook</div>
-      <h2 class="section-heading reveal" style="text-align: center;">Our Facebook Events Feed</h2>
+      <h2 class="section-heading reveal" style="text-align: center;">Find Us on Facebook</h2>
     </div>
-    <!-- Meta caps the Page plugin at 500px wide (min 180). The container is
-         sized to match so the embed centres instead of sitting in dead space.
-         data-tabs opens on the timeline because the Events tab renders blank
-         unless the Page has upcoming *Facebook Events* published on it — our
-         screenings are listed on this page, which is a separate thing. Once
-         FB Events exist for them, the Events tab fills in on its own. -->
+
+    <!-- ──────────────────────────────────────────────────────────────
+         NOTE ON THE FACEBOOK EMBED  (reviewed Oct 2026)
+
+         The Page plugin's timeline/events BODY is currently failing on
+         Meta's side: the plugin renders its header, Follow and Share
+         controls, then an empty grey panel. Independent reports this
+         month show the same failure on unrelated public Pages. The
+         posts are fetched by Facebook's own JS inside a cross-origin
+         iframe, so nothing here can reach or repair them — adding
+         data-tabs just produces a taller blank area.
+
+         So this is deliberately the header-only configuration (no
+         data-tabs), which is the plugin's documented default and the
+         part that still renders, paired with a direct link to the
+         Page's events.
+
+         TO RESTORE THE FULL FEED once Meta fixes it: add
+           data-tabs="events,timeline"
+         and raise data-height back to 800.
+
+         Width is capped at 500px by Meta (min 180) — don't raise it.
+         ────────────────────────────────────────────────────────────── -->
     <div class="reveal" style="margin-top: 2rem; text-align: center;">
       <div style="display: inline-block; width: 500px; max-width: 100%; overflow: hidden;">
         <div class="fb-page"
           data-href="https://www.facebook.com/BillWConsciousContact"
-          data-tabs="timeline,events"
           data-width="500"
-          data-height="800"
+          data-height="130"
           data-small-header="false"
           data-adapt-container-width="true"
           data-hide-cover="false"
@@ -301,6 +317,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </a>
           </blockquote>
         </div>
+      </div>
+
+      <p style="font-size: 1rem; font-weight: 300; color: rgba(245,240,230,0.7); max-width: 520px; margin: 2rem auto 1.5rem;">Screening dates, venues and ticket links go up on our Facebook page as soon as they&rsquo;re confirmed.</p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://www.facebook.com/BillWConsciousContact/events" target="_blank" rel="noopener" class="btn btn-primary">See Our Events on Facebook</a>
+        <a href="https://www.instagram.com/billwconsciouscontact/" target="_blank" rel="noopener" class="btn btn-outline">Follow on Instagram</a>
       </div>
     </div>
   </section>
