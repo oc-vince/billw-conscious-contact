@@ -276,12 +276,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="section-label reveal" style="justify-content: center;">Facebook</div>
       <h2 class="section-heading reveal" style="text-align: center;">Our Facebook Events Feed</h2>
     </div>
+    <!-- Meta caps the Page plugin at 500px wide (min 180). The container is
+         sized to match so the embed centres instead of sitting in dead space.
+         data-tabs lists events first so it opens on the events tab. -->
     <div class="reveal" style="margin-top: 2rem; text-align: center;">
-      <div style="display: inline-block; width: 1100px; max-width: 100%; overflow: hidden;">
+      <div style="display: inline-block; width: 500px; max-width: 100%; overflow: hidden;">
         <div class="fb-page"
           data-href="https://www.facebook.com/BillWConsciousContact"
-          data-tabs="timeline"
-          data-width="1100"
+          data-tabs="events,timeline"
+          data-width="500"
           data-height="800"
           data-small-header="false"
           data-adapt-container-width="true"
