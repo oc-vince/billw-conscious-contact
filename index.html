@@ -53,10 +53,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .edition-book {
       position: relative;
       z-index: 3;
-      width: 74%;
-      max-width: 250px;
+      /* Sized by HEIGHT, not width: the three covers have different aspect
+         ratios (paperback 258x378, the others ~328x378), so equal widths
+         gave unequal heights and knocked the cards out of alignment. */
+      height: 290px;
+      width: auto;
+      max-width: 100%;
       margin-bottom: -70px;
-      height: auto;
       display: block;
       filter: drop-shadow(0 26px 34px rgba(0,0,0,0.85)) drop-shadow(0 6px 12px rgba(0,0,0,0.6));
       pointer-events: none;
@@ -97,8 +100,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     @media (max-width: 767px) {
       .edition-book {
-        width: 58%;
-        max-width: 210px;
+        height: 230px;
+        width: auto;
+        max-width: 100%;
         margin-bottom: -60px;
       }
       .edition-cell .plan-card {
@@ -258,6 +262,37 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       height: auto;
       display: block;
       filter: drop-shadow(0 30px 45px rgba(0,0,0,0.85)) drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+    }
+
+    /* 4px gold→black gradient frame (a padded gradient backdrop — a plain
+       CSS border cannot take a gradient). The drop-shadow moves to the
+       frame so it traces the border rather than the photo inside it. */
+    .hero-media-frame {
+      display: block;
+      padding: 4px;
+      max-width: 290px;
+      background: linear-gradient(145deg,
+        var(--gold-light) 0%,
+        var(--gold) 30%,
+        var(--gold-dark) 58%,
+        #1a1a1a 82%,
+        #0a0a0a 100%);
+      filter: drop-shadow(0 30px 45px rgba(0,0,0,0.85)) drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+    }
+
+    .hero-split-media .hero-media-frame img {
+      max-width: 100%;
+      filter: none;
+    }
+
+    /* Slide 1 only — the social CTAs sit over a photographic background,
+       so they get a solid-ish black fill to stay legible. */
+    .hero-slide[data-slide="0"] .hero-actions .btn {
+      background: rgba(10, 10, 10, 0.8);
+    }
+
+    .hero-slide[data-slide="0"] .hero-actions .btn:hover {
+      background: rgba(10, 10, 10, 0.92);
     }
 
     .hero-split-copy .hero-award { justify-content: flex-start; margin-bottom: 1.5rem; }
@@ -433,6 +468,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .hero-pretitle-line { font-size: clamp(0.6rem, 3.1vw, 0.85rem); letter-spacing: 0.06em; }
       .hero-split-media img { max-width: 150px; }
       .hero-split-media.is-wide img { max-width: 200px; }
+      .hero-media-frame { max-width: 150px; margin: 0 auto; }
+      .hero-split-media .hero-media-frame img { max-width: 100%; }
       .hero-split-copy .hero-award { justify-content: center; }
       .hero-split-copy .hero-award::before { display: block; }
       .hero-split-copy .hero-pretitle,
@@ -685,25 +722,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Background layers (cross-fading blur) -->
     <div class="hero-bgs" aria-hidden="true">
-      <div class="hero-bg is-active" data-bg="0" style="background-image: url('images/hero-bill-writing.jpg');"></div>
-      <div class="hero-bg" data-bg="1" style="background-image: url('images/books/Home-KitchenTable-BG.webp');"></div>
-      <div class="hero-bg" data-bg="2" style="background-image: url('images/hero-legacy-bg.webp');"></div>
-      <div class="hero-bg" data-bg="3" style="background-image: url('images/subscibe-page-hero.webp');"></div>
+      <!-- HIDDEN SLIDE 1 bg: <div class="hero-bg is-active" data-bg="0" style="background-image: url('images/stepping-stones-hero.webp');"></div> -->
+      <div class="hero-bg is-active" data-bg="1" style="background-image: url('images/hero-bill-writing.jpg');"></div>
+      <div class="hero-bg" data-bg="2" style="background-image: url('images/books/Home-KitchenTable-BG.webp');"></div>
+      <div class="hero-bg" data-bg="3" style="background-image: url('images/hero-legacy-bg.webp');"></div>
+      <div class="hero-bg" data-bg="4" style="background-image: url('images/subscibe-page-hero.webp');"></div>
       <div class="hero-bg-overlay"></div>
     </div>
 
     <!-- Vertical thumbnail navigation -->
     <div class="hero-thumbs" role="tablist" aria-label="Choose slide">
-      <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 1 — Conscious Contact" data-goto="0">
+      <!-- HIDDEN SLIDE 1 thumb
+      <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 1 — Where We’re Screening Next" data-goto="0">
+        <img src="images/Jeanine-Hero-thumb.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
+      </button>
+      -->
+      <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 2 — Conscious Contact" data-goto="1">
         <img src="images/books/home-carousel-thumb-Film.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
-      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 2 — The Kitchen Table Edition" data-goto="1">
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 3 — The Kitchen Table Edition" data-goto="2">
         <img src="images/books/home-carousel-thumb-KitchenTable.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
-      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 3 — The Legacy Edition" data-goto="2">
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 4 — The Legacy Edition" data-goto="3">
         <img src="images/books/home-carousel-thumb-Legacy.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
-      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 4 — The Award-Winning Film on Paper" data-goto="3">
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 5 — The Award-Winning Film on Paper" data-goto="4">
         <img src="images/books/home-carousel-thumb-Paperback.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
     </div>
@@ -711,8 +754,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Slides -->
     <div class="hero-slides">
 
-      <!-- SLIDE 1 -->
-      <div class="hero-slide hero-slide-center is-active" data-slide="0" role="tabpanel" aria-label="Conscious Contact">
+      <!-- ═══ SLIDE 1 TEMPORARILY HIDDEN — "Where We’re Screening Next" ═══
+
+           The carousel JS indexes .hero-slide / .hero-bg / .hero-thumb by
+           DOM position, so this slide’s background and thumbnail are
+           commented out too (search "SLIDE 1 HIDDEN"). Markup below is
+           verbatim and still carries is-active.
+
+           TO RESTORE: uncomment this block plus the matching bg and thumb,
+           then remove is-active / aria-selected="true" from what is
+           currently the first slide, bg and thumb.
+      ============================================================ 
+
+      <div class="hero-slide hero-slide-split is-active" data-slide="0" role="tabpanel" aria-label="Where We’re Screening Next">
+        <div class="hero-split-media" data-anim style="--d:0.2s">
+          <div class="hero-media-frame">
+            <img src="images/Jeanine-Hero-bw.webp" alt="Jeanine Johnston holding the Kitchen Table Edition of Bill W. Conscious Contact at a film festival" width="888" height="1184" decoding="async">
+          </div>
+        </div>
+        <div class="hero-split-copy">
+          <div class="hero-award" data-anim style="--d:0.35s">Stay Connected</div>
+          <h2 class="hero-title hero-title-sm" data-anim style="--d:0.5s">Where We&rsquo;re Screening Next</h2>
+          <p class="hero-body" data-anim style="--d:0.65s"><em>Bill W.: Conscious Contact</em> is screening in new cities all the time. Follow us for the latest dates, venues and ticket links &mdash; and to find out when we&rsquo;re near you.</p>
+          <div class="hero-actions" data-anim style="--d:0.8s">
+            <a href="https://www.instagram.com/billwconsciouscontact/" target="_blank" rel="noopener" class="btn btn-outline">Follow on Instagram</a>
+            <a href="https://www.facebook.com/BillWConsciousContact/" target="_blank" rel="noopener" class="btn btn-outline">Follow on Facebook</a>
+          </div>
+        </div>
+      </div>
+      ═══ end hidden slide 1 ═══ -->
+
+
+      <!-- SLIDE 2 -->
+      <div class="hero-slide hero-slide-center is-active" data-slide="1" role="tabpanel" aria-label="Conscious Contact">
         <div class="hero-award" data-anim style="--d:0.15s">Winner — 2025 Best Director, European Film Association</div>
         <div class="hero-pretitle" data-anim style="--d:0.3s">Bill W.</div>
         <h1 class="hero-title" data-anim style="--d:0.45s">Conscious<br>Contact</h1>
@@ -725,8 +799,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
 
-      <!-- SLIDE 2 -->
-      <div class="hero-slide hero-slide-split" data-slide="1" role="tabpanel" aria-label="The Kitchen Table Edition">
+      <!-- SLIDE 3 -->
+      <div class="hero-slide hero-slide-split" data-slide="2" role="tabpanel" aria-label="The Kitchen Table Edition">
         <div class="hero-split-media is-wide" data-anim style="--d:0.2s">
           <img src="images/books/KitchenTable-Wide-trans.webp" alt="Bill W. Conscious Contact — Kitchen Table Edition" width="642" height="742" loading="lazy" decoding="async">
         </div>
@@ -742,8 +816,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
 
-      <!-- SLIDE 3 -->
-      <div class="hero-slide hero-slide-split" data-slide="2" role="tabpanel" aria-label="The Legacy Edition">
+      <!-- SLIDE 4 -->
+      <div class="hero-slide hero-slide-split" data-slide="3" role="tabpanel" aria-label="The Legacy Edition">
         <div class="hero-split-media is-wide" data-anim style="--d:0.2s">
           <img src="images/books/LegacyBook-Wide-trans.webp" alt="Bill W. Conscious Contact — The First Edition Legacy" width="642" height="742" loading="lazy" decoding="async">
         </div>
@@ -755,15 +829,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <blockquote class="hero-quote" data-anim style="--d:0.88s">&ldquo;I didn&rsquo;t write the 11th Step. It came to me as an inspiration.&rdquo;<cite>&mdash; Bill Wilson</cite></blockquote>
           <p class="hero-body" data-anim style="--d:0.98s">Those words have inspired generations. The story behind them is one few have ever heard. The award-winning documentary is now available as The First Edition Legacy — a leather-bound, hot-foil stamped edition individually signed and numbered by Jay Stinnett.</p>
           <div class="hero-actions" data-anim style="--d:1.1s">
-            <a href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; display: block; text-align: center;">Last Copies – Buy Now &mdash; $149.95</a>
+            <a href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; display: block; text-align: center;">Last 5 Copies – Buy Now &mdash; $149.95</a>
           </div>
-          <p data-anim style="--d:1.16s; margin-top: 0.6rem; font-size: 0.85rem; line-height: 1.5; color: rgba(245,240,230,0.7); font-style: normal; text-align: left;">Your personalized book will ship October 24 when Jay returns from Japan.</p>
           <p class="hero-exclusive" data-anim style="--d:1.22s">Available exclusively here. Not available on Amazon or in stores.</p>
         </div>
       </div>
 
-      <!-- SLIDE 4 -->
-      <div class="hero-slide hero-slide-split" data-slide="3" role="tabpanel" aria-label="The Award-Winning Film on Paper">
+      <!-- SLIDE 5 -->
+      <div class="hero-slide hero-slide-split" data-slide="4" role="tabpanel" aria-label="The Award-Winning Film on Paper">
         <div class="hero-split-media" data-anim style="--d:0.2s">
           <img src="images/books/home-carousel-Paperback.webp" alt="Bill W. Conscious Contact — The Award-Winning Film on Paper" width="526" height="781" loading="lazy" decoding="async">
         </div>
@@ -999,8 +1072,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div style="margin-top: 1rem; font-size: 0.8rem; color: rgba(245,240,230,0.45); letter-spacing: 0.05em;">Available exclusively here. Not available on Amazon or in stores.</div>
             <div style="margin-top: 0.5rem; font-size: 0.75rem; color: rgba(201,168,76,0.6); font-style: italic;">When 250 are gone, this edition is gone.</div>
           </div>
-            <a href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Last Copies – Buy Now</a>
-          <p style="margin-top: 0.6rem; font-size: 0.85rem; line-height: 1.5; color: rgba(245,240,230,0.7); font-style: normal; text-align: center;">Your personalized book will ship October 24 when Jay returns from Japan.</p>
+            <a href="https://buy.stripe.com/6oU28r8s46ABfbm5xgaIM02" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Last 5 Copies – Buy Now</a>
         </div>
         </div>
 

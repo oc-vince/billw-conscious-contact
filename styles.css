@@ -96,14 +96,16 @@
       letter-spacing: 0.2em;
     }
 
+    /* Right-aligned at every width. Previously this was absolutely
+       positioned and centred (left:50% + translateX(-50%)), which capped
+       its usable width at half the navbar and made items wrap on screens
+       between ~1300px and ~1600px. */
     .nav-links {
       display: flex;
       gap: 2.5rem;
       list-style: none;
       align-items: center;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-left: auto;
     }
 
     .nav-links a {
@@ -878,12 +880,9 @@
 
     /* ——— NARROW DESKTOP (fits all nav items on one line) ——— */
     @media (max-width: 1280px) and (min-width: 901px) {
+      /* Base rule is already right-aligned; just tighten the spacing. */
       .nav-links {
-        position: static;
-        left: auto;
-        transform: none;
         gap: 1.4rem;
-        margin-left: auto;
       }
       .nav-links a {
         font-size: 0.65rem;
