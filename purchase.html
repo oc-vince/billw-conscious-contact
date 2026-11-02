@@ -94,6 +94,75 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin-top: auto;
     }
 
+    /* ── NOW ON DVD ── */
+    /* Flat vertical padding, overriding .section-pad's 8rem/5rem. One pair
+       of values for all widths, so no breakpoint override is needed. */
+    #dvd {
+      padding-top: 4.2em;
+      padding-bottom: 4em;
+    }
+
+    .dvd-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .dvd-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8));
+    }
+
+    .dvd-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+      color: var(--gold-light);
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+
+    .dvd-body {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(245, 240, 230, 0.78);
+      margin-bottom: 1.4rem;
+    }
+
+    .dvd-body a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.3s ease;
+    }
+
+    .dvd-body a:hover { color: var(--gold-light); }
+
+    /* Status button, not a live link yet — styled as an outline so it reads
+       as pending rather than buyable, and not clickable so it can't mislead. */
+    .dvd-cta {
+      display: inline-block;
+      margin-top: 0.8rem;
+    }
+
+    .dvd-cta[aria-disabled="true"] {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .dvd-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .dvd-media { max-width: 340px; margin: 0 auto; }
+      .dvd-copy { text-align: center; }
+      .dvd-copy .section-heading { text-align: center !important; }
+      .dvd-cta { display: block; width: 100%; }
+    }
+
     .edition-cell:hover .edition-book.is-loaded {
       transform: translateY(-8px);
     }
@@ -849,6 +918,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
 
 
+
+
+  <!-- ── NOW ON DVD ── -->
+  <section id="dvd" class="section-pad" style="background: var(--black-light);">
+    <div class="container">
+      <div class="dvd-grid reveal">
+
+        <div class="dvd-media">
+          <picture>
+            <source srcset="images/Bill-W-DVD.webp" type="image/webp">
+            <img src="images/Bill-W-DVD.jpg" alt="Bill W. Conscious Contact on DVD" width="888" height="1015" loading="lazy" decoding="async">
+          </picture>
+        </div>
+
+        <div class="dvd-copy">
+          <h2 class="section-heading" style="text-align: left; margin-bottom: 0.8rem;">Now Available on DVD!</h2>
+          <p class="dvd-sub">The Award-Winning Documentary Exploring the Spiritual Legacy of Bill W.</p>
+
+          <p class="dvd-body">We have been asked by jail panels and educational groups to make the film available on DVD. Now it&rsquo;s here! If you are involved with a jail, please <a href="contact.html">contact us</a>.</p>
+
+          <p class="dvd-body"><em>Bill W.: Conscious Contact</em> is the 2026 award-winning documentary exploring the spiritual life of William Griffith Wilson, co-founder of Alcoholics Anonymous and one of the most influential figures of the 20th century. Drawing on 25 years of biographical research by producer Jay Stinnett, the film examines the antecedents of the Twelve Step Movement and the profound spiritual philosophy at its core.</p>
+
+          <!-- TODO: when the DVD goes on sale, swap this for a live
+               btn-primary link and delete aria-disabled. -->
+          <a aria-disabled="true" class="btn btn-outline dvd-cta">Available Soon</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
 
   <!-- ── STREAM THE FILM ── -->

@@ -722,8 +722,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Background layers (cross-fading blur) -->
     <div class="hero-bgs" aria-hidden="true">
-      <!-- HIDDEN SLIDE 1 bg: <div class="hero-bg is-active" data-bg="0" style="background-image: url('images/stepping-stones-hero.webp');"></div> -->
-      <div class="hero-bg is-active" data-bg="1" style="background-image: url('images/hero-bill-writing.jpg');"></div>
+      <div class="hero-bg is-active" data-bg="0" style="background-image: url('images/stepping-stones-hero.webp');"></div>
+      <div class="hero-bg" data-bg="1" style="background-image: url('images/hero-bill-writing.jpg');"></div>
       <div class="hero-bg" data-bg="2" style="background-image: url('images/books/Home-KitchenTable-BG.webp');"></div>
       <div class="hero-bg" data-bg="3" style="background-image: url('images/hero-legacy-bg.webp');"></div>
       <div class="hero-bg" data-bg="4" style="background-image: url('images/subscibe-page-hero.webp');"></div>
@@ -732,12 +732,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Vertical thumbnail navigation -->
     <div class="hero-thumbs" role="tablist" aria-label="Choose slide">
-      <!-- HIDDEN SLIDE 1 thumb
       <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 1 — Where We’re Screening Next" data-goto="0">
         <img src="images/Jeanine-Hero-thumb.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
-      -->
-      <button type="button" class="hero-thumb is-active" role="tab" aria-selected="true" aria-label="Slide 2 — Conscious Contact" data-goto="1">
+      <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 2 — Conscious Contact" data-goto="1">
         <img src="images/books/home-carousel-thumb-Film.webp" alt="" width="216" height="288" loading="lazy" decoding="async">
       </button>
       <button type="button" class="hero-thumb" role="tab" aria-selected="false" aria-label="Slide 3 — The Kitchen Table Edition" data-goto="2">
@@ -754,18 +752,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Slides -->
     <div class="hero-slides">
 
-      <!-- ═══ SLIDE 1 TEMPORARILY HIDDEN — "Where We’re Screening Next" ═══
-
-           The carousel JS indexes .hero-slide / .hero-bg / .hero-thumb by
-           DOM position, so this slide’s background and thumbnail are
-           commented out too (search "SLIDE 1 HIDDEN"). Markup below is
-           verbatim and still carries is-active.
-
-           TO RESTORE: uncomment this block plus the matching bg and thumb,
-           then remove is-active / aria-selected="true" from what is
-           currently the first slide, bg and thumb.
-      ============================================================ 
-
+      <!-- SLIDE 1 — Where We’re Screening Next -->
       <div class="hero-slide hero-slide-split is-active" data-slide="0" role="tabpanel" aria-label="Where We’re Screening Next">
         <div class="hero-split-media" data-anim style="--d:0.2s">
           <div class="hero-media-frame">
@@ -782,11 +769,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
       </div>
-      ═══ end hidden slide 1 ═══ -->
+
 
 
       <!-- SLIDE 2 -->
-      <div class="hero-slide hero-slide-center is-active" data-slide="1" role="tabpanel" aria-label="Conscious Contact">
+      <div class="hero-slide hero-slide-center" data-slide="1" role="tabpanel" aria-label="Conscious Contact">
         <div class="hero-award" data-anim style="--d:0.15s">Winner — 2025 Best Director, European Film Association</div>
         <div class="hero-pretitle" data-anim style="--d:0.3s">Bill W.</div>
         <h1 class="hero-title" data-anim style="--d:0.45s">Conscious<br>Contact</h1>
