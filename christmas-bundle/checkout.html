@@ -193,6 +193,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     .co-line span:last-child { color: var(--cream); white-space: nowrap; }
 
+    /* `display: flex` above beats the UA stylesheet's [hidden]{display:none},
+       so rows toggled with the hidden attribute stayed visible — the Film
+       Access Coupon line showed even when the add-on wasn't selected. */
+    .co-line[hidden],
+    .co-panel[hidden],
+    [hidden] { display: none !important; }
+
     .co-line.co-total {
       border-bottom: none;
       border-top: 1px solid rgba(201,168,76,0.3);
