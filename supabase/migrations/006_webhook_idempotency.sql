@@ -63,10 +63,26 @@ begin
 end;
 $$;
 
--- Same PUBLIC-grant trap as migration 003 — revoke from PUBLIC, not just
--- from anon/authenticated, or these remain callable via PostgREST.
-revoke all on function public.claim_stripe_event(text, text, uuid) from public;
-revoke all on function public.release_stripe_event(text)            from public;
+-- ── LOCKDOWN — both halves are required ───────────────────
+-- Postgres grants EXECUTE to PUBLIC by default, AND Supabase grants it
+-- EXPLICITLY to anon/authenticated on new functions in the public schema.
+-- Revoking only one of the two leaves the function callable via PostgREST.
+--
+-- If anon could call claim_stripe_event() it could pre-claim a Stripe
+-- event id, making the real webhook skip it as a duplicate — a paid order
+-- would never be marked paid and the customer would never get a coupon.
+-- release_stripe_event() would let it delete idempotency records.
+revoke all on function public.claim_stripe_event(text, text, uuid)
+  from public, anon, authenticated;
+revoke all on function public.release_stripe_event(text)
+  from public, anon, authenticated;
 
 grant execute on function public.claim_stripe_event(text, text, uuid) to service_role;
 grant execute on function public.release_stripe_event(text)            to service_role;
+
+-- Verify after running — both columns must be false:
+--   select proname,
+--          has_function_privilege('anon', oid, 'execute') as anon,
+--          has_function_privilege('authenticated', oid, 'execute') as auth
+--     from pg_proc
+--    where proname in ('claim_stripe_event','release_stripe_event');
