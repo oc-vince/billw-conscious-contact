@@ -383,7 +383,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="co-line"><span id="sumName">&mdash;</span><span id="sumPrice">&mdash;</span></div>
               <div class="co-line" id="sumFilmLine" hidden><span>Film Access Coupon</span><span id="sumFilm">$5.00</span></div>
               <div class="co-line"><span>USPS Shipping</span><span id="sumShip" class="co-muted">Enter address</span></div>
-              <div class="co-line co-total"><span>Total</span><span id="sumTotal">&mdash;</span></div>
+              <div class="co-line co-total"><span id="sumTotalLabel">Subtotal</span><span id="sumTotal">&mdash;</span></div>
 
               <a id="payBtn" class="btn btn-primary" href="#" disabled>Proceed to Payment</a>
               <div class="co-secure">
@@ -454,6 +454,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     function renderTotal() {
       var t = bundle.price + (withFilm ? FILM_CENTS : 0) + (shippingCents || 0);
       document.getElementById('sumTotal').textContent = money(t);
+
+      // Until shipping is quoted this figure is a subtotal, not the amount
+      // the customer will be charged. Calling it "Total" next to a shipping
+      // row reading "Enter address" reads as the final price, then jumps.
+      document.getElementById('sumTotalLabel').textContent =
+        shippingCents === null ? 'Subtotal' : 'Total';
+
       var payBtn = document.getElementById('payBtn');
       if (shippingCents !== null && selectedRateId) {
         payBtn.removeAttribute('disabled');

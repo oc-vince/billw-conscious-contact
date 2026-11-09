@@ -157,12 +157,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transition: border-color .25s ease, color .25s ease;
     }
 
-    /* The two buttons sit side by side on desktop and wrap on narrow
-       screens; a plain margin-left left the wrapped one off-centre. */
-    .oc-coupon .btn,
-    .oc-copy {
-      margin: 0.35rem 0.25rem 0;
-      vertical-align: middle;
+    /* Flex rather than inline margins: the two buttons have different
+       heights and padding, so only a gap keeps them evenly spaced both
+       side by side and stacked. */
+    .oc-cta-row {
+      display: flex;
+      gap: 0.9rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
     }
     .oc-copy:hover { border-color: var(--gold); color: var(--cream); }
 
@@ -198,6 +202,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media (max-width: 640px) {
       .oc-panel { padding: 1.4rem; }
       .oc-code { font-size: 1.15rem; }
+
+      /* Stack them, matched in width so neither looks like an afterthought. */
+      .oc-cta-row { flex-direction: column; gap: 0.8rem; }
+      .oc-cta-row > * {
+        width: 100%;
+        max-width: 260px;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -265,8 +277,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="oc-panel oc-coupon" id="ocCouponPanel" hidden style="margin-top:2rem;">
             <div class="oc-step" style="margin-bottom:.2rem;">Your Film Access Code</div>
             <div class="oc-code" id="ocCode"></div>
-            <a id="ocWatch" class="btn btn-primary" href="#" rel="noopener">Watch the Film</a>
-            <button type="button" class="oc-copy" id="ocCopy">Copy code</button>
+            <div class="oc-cta-row">
+              <a id="ocWatch" class="btn btn-primary" href="#" rel="noopener">Watch the Film</a>
+              <button type="button" class="oc-copy" id="ocCopy">Copy code</button>
+            </div>
             <p class="oc-ref" style="margin-top:1.2rem; letter-spacing:0;">
               We've emailed this to you as well &mdash; it can be redeemed at any time.
             </p>
