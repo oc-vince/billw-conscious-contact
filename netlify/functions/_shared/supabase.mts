@@ -20,9 +20,19 @@ function base(): string {
 
 function headers(extra: Record<string, string> = {}): Record<string, string> {
   const key = env("SUPABASE_SERVICE_ROLE_KEY");
+
+  // Supabase supports two key generations here:
+  //   • legacy `service_role` — a JWT starting "eyJ"; accepted on both the
+  //     apikey and Authorization headers.
+  //   • new `sb_secret_...`   — NOT a JWT. It must go on `apikey` only;
+  //     sending it as a Bearer token makes PostgREST try to parse it as a
+  //     JWT and reject the request.
+  // Legacy keys are deprecated at the end of 2026, so accept either.
+  const isJwt = key.startsWith("eyJ");
+
   return {
     apikey: key,
-    Authorization: `Bearer ${key}`,
+    ...(isJwt ? { Authorization: `Bearer ${key}` } : {}),
     "Content-Type": "application/json",
     ...extra,
   };
