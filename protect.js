@@ -29,8 +29,23 @@
     return false;
   }
 
-  /* ── 1. Disable right-click / context menu site-wide ── */
-  document.addEventListener('contextmenu', block, { capture: true });
+  /* ── Exemptions ──
+     Form fields and anything marked data-allow-select must stay fully
+     usable. Without this, checkout customers cannot paste an address,
+     right-click a field, or copy their order reference / coupon code —
+     the protection would actively cost sales. Images are unaffected. */
+  function isExempt(el) {
+    if (!el || !el.closest) return false;
+    return !!el.closest(
+      'input, textarea, select, [contenteditable="true"], [data-allow-select]'
+    );
+  }
+
+  /* ── 1. Disable right-click / context menu (except in form fields) ── */
+  document.addEventListener('contextmenu', function (e) {
+    if (isExempt(e.target)) return;
+    return block(e);
+  }, { capture: true });
 
   /* ── 2. Disable dragging images out of the page ── */
   document.addEventListener('dragstart', function (e) {
@@ -65,10 +80,13 @@
   /* ── 4. Block copy/cut when the selection is media ── */
   ['copy', 'cut'].forEach(function (evt) {
     document.addEventListener(evt, function (e) {
+      if (isExempt(e.target)) return;          // let form fields copy freely
       var sel = window.getSelection();
       if (!sel) return;
       var node = sel.anchorNode;
-      if (node && isMedia(node.nodeType === 1 ? node : node.parentElement)) return block(e);
+      var el = node && (node.nodeType === 1 ? node : node.parentElement);
+      if (el && isExempt(el)) return;          // and marked regions (coupon code)
+      if (el && isMedia(el)) return block(e);
     }, { capture: true });
   });
 

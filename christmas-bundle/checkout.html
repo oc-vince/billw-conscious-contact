@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N5GCNJCG');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Checkout | Bill W. Conscious Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../protect.css">
+
+  <style>
+    /* ——— CHECKOUT ———
+       Reuses the site's palette and type. protect.css/protect.js are
+       deliberately relaxed for form fields below so customers can paste
+       addresses and copy their order reference. */
+    .co-wrap { max-width: 980px; margin: 0 auto; }
+
+    .co-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 3rem;
+      align-items: start;
+      margin-top: 2.5rem;
+    }
+
+    .co-panel {
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      background: linear-gradient(to bottom, rgba(18,18,18,0.85), #000);
+      padding: 2rem;
+    }
+
+    .co-step {
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .co-field { margin-bottom: 1.1rem; }
+    .co-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .co-field label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.6);
+      margin-bottom: 0.4rem;
+    }
+
+    .co-field input,
+    .co-field select {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--cream);
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      border-radius: 0;
+      /* customers must be able to select and paste into these */
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .co-field input:focus,
+    .co-field select:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .co-field input::placeholder { color: rgba(245,240,230,0.3); }
+    .co-field.has-error input { border-color: #e07070; }
+
+    .co-err {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      color: #e07070;
+      margin-top: 0.35rem;
+    }
+
+    .co-note {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: rgba(245,240,230,0.5);
+      margin-top: 0.6rem;
+    }
+
+    /* ── shipping options ── */
+    #shipOptions { margin-top: 1.2rem; }
+
+    .co-rate {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(201,168,76,0.22);
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .co-rate:hover { border-color: rgba(201,168,76,0.5); }
+    .co-rate.is-selected { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+
+    .co-rate input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+    .co-rate-dot {
+      flex-shrink: 0;
+      width: 15px; height: 15px;
+      margin-top: 3px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .co-rate input:checked + .co-rate-dot::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .co-rate input:focus-visible + .co-rate-dot {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 2px;
+    }
+
+    .co-rate-body { flex: 1; min-width: 0; }
+
+    .co-rate-name {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      color: var(--cream);
+    }
+
+    .co-rate-eta {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      color: rgba(245,240,230,0.5);
+      margin-top: 0.2rem;
+    }
+
+    .co-rate-price {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    /* ── summary ── */
+    .co-summary { position: sticky; top: 110px; }
+
+    .co-sum-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 1.2rem;
+    }
+
+    .co-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      color: rgba(245,240,230,0.72);
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+
+    .co-line span:last-child { color: var(--cream); white-space: nowrap; }
+
+    .co-line.co-total {
+      border-bottom: none;
+      border-top: 1px solid rgba(201,168,76,0.3);
+      margin-top: 0.5rem;
+      padding-top: 0.9rem;
+      font-size: 1rem;
+    }
+
+    .co-line.co-total span:last-child {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    .co-muted { color: rgba(245,240,230,0.4) !important; font-style: italic; }
+
+    #payBtn { width: 100%; margin-top: 1.4rem; display: block; text-align: center; }
+    #payBtn[disabled] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    .co-secure {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: rgba(245,240,230,0.42);
+      text-align: center;
+      margin-top: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .co-spinner {
+      display: inline-block;
+      width: 13px; height: 13px;
+      border: 2px solid rgba(201,168,76,0.3);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: cospin 0.7s linear infinite;
+      vertical-align: -2px;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes cospin { to { transform: rotate(360deg); } }
+
+    .co-banner {
+      border: 1px solid rgba(224,112,112,0.5);
+      background: rgba(224,112,112,0.08);
+      color: #f0b0b0;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .co-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .co-summary { position: static; }
+      /* summary first on mobile so customers see what they're buying */
+      .co-order-1 { order: 2; }
+      .co-order-2 { order: 1; }
+    }
+
+    @media (max-width: 520px) {
+      .co-row { grid-template-columns: 1fr; gap: 0; }
+      .co-panel { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5GCNJCG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <nav id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-small">Bill W.</span>
+      <span class="nav-logo-main">Conscious Contact</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../film.html">Film</a></li>
+      <li><a href="../book.html">Book</a></li>
+      <li><a href="../stepping-stones.html">Stepping Stones</a></li>
+      <li><a href="../press.html">Press</a></li>
+      <li><a href="../events.html">Events</a></li>
+      <li><a href="../library.html">For Libraries</a></li>
+      <li><a href="../purchase.html" class="nav-cta">Purchase</a></li>
+    </ul>
+    <div class="nav-auth"></div>
+    <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open'); this.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <section class="section-pad" style="background: var(--black-light); padding-top: calc(2em + 90px);">
+    <div class="container">
+      <div class="co-wrap">
+
+        <div class="section-label" style="justify-content: center;">Christmas Bundle</div>
+        <h1 class="section-heading" style="text-align: center; font-size: clamp(1.6rem, 3.4vw, 2.4rem);">Checkout</h1>
+
+        <div id="fatal" class="co-banner" hidden></div>
+
+        <div class="co-grid">
+
+          <!-- ── LEFT: details ── -->
+          <div class="co-order-1">
+            <form id="checkoutForm" novalidate>
+              <div class="co-panel" style="margin-bottom: 1.5rem;">
+                <div class="co-step">1 &mdash; Contact details</div>
+                <div class="co-row">
+                  <div class="co-field">
+                    <label for="firstName">First name</label>
+                    <input id="firstName" name="firstName" autocomplete="given-name" required>
+                  </div>
+                  <div class="co-field">
+                    <label for="lastName">Last name</label>
+                    <input id="lastName" name="lastName" autocomplete="family-name" required>
+                  </div>
+                </div>
+                <div class="co-field">
+                  <label for="email">Email address</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required>
+                  <span class="co-note">Your order confirmation and film coupon code are sent here.</span>
+                </div>
+                <div class="co-field">
+                  <label for="phone">Phone <span style="text-transform:none;">(optional)</span></label>
+                  <input id="phone" name="phone" type="tel" autocomplete="tel">
+                </div>
+              </div>
+
+              <div class="co-panel" style="margin-bottom: 1.5rem;">
+                <div class="co-step">2 &mdash; Shipping address</div>
+                <div class="co-field">
+                  <label for="street1">Street address</label>
+                  <input id="street1" name="street1" autocomplete="address-line1" required>
+                </div>
+                <div class="co-field">
+                  <label for="street2">Apartment, suite, unit <span style="text-transform:none;">(optional)</span></label>
+                  <input id="street2" name="street2" autocomplete="address-line2">
+                </div>
+                <div class="co-row">
+                  <div class="co-field">
+                    <label for="city">City</label>
+                    <input id="city" name="city" autocomplete="address-level2" required>
+                  </div>
+                  <div class="co-field">
+                    <label for="state">State</label>
+                    <input id="state" name="state" autocomplete="address-level1" maxlength="2" placeholder="AZ" required>
+                  </div>
+                </div>
+                <div class="co-row">
+                  <div class="co-field">
+                    <label for="zip">ZIP code</label>
+                    <input id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" required>
+                  </div>
+                  <div class="co-field">
+                    <label for="country">Country</label>
+                    <input id="country" name="country" value="United States" readonly>
+                  </div>
+                </div>
+                <span class="co-note">We currently ship within the United States only.</span>
+
+                <button type="submit" id="rateBtn" class="btn btn-outline" style="margin-top: 1.2rem; width: 100%;">
+                  Calculate Shipping
+                </button>
+              </div>
+            </form>
+
+            <div class="co-panel" id="shipPanel" hidden>
+              <div class="co-step">3 &mdash; Choose USPS service</div>
+              <div id="shipMsg" class="co-note" hidden></div>
+              <div id="shipOptions"></div>
+            </div>
+          </div>
+
+          <!-- ── RIGHT: summary ── -->
+          <div class="co-order-2">
+            <div class="co-panel co-summary">
+              <div class="co-step">Order summary</div>
+              <img id="sumImg" class="co-sum-img" src="" alt="" hidden>
+              <div class="co-line"><span id="sumName">&mdash;</span><span id="sumPrice">&mdash;</span></div>
+              <div class="co-line" id="sumFilmLine" hidden><span>Film Access Coupon</span><span id="sumFilm">$5.00</span></div>
+              <div class="co-line"><span>USPS Shipping</span><span id="sumShip" class="co-muted">Enter address</span></div>
+              <div class="co-line co-total"><span>Total</span><span id="sumTotal">&mdash;</span></div>
+
+              <a id="payBtn" class="btn btn-primary" href="#" disabled>Proceed to Payment</a>
+              <div class="co-secure">
+                Payment is processed securely by Stripe.<br>
+                You will not be asked for your address again.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bill W. Conscious Contact. Muse Bookings LLC. All rights reserved.</p>
+      <p>A Jay Stinnett Production</p>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+
+  <!-- ── Checkout controller ──
+       Display maths only. Every amount is recalculated server-side in
+       /api/create-checkout before a Stripe session is created. The selected
+       rate is re-read from Shippo at that point, so a tampered rateId or
+       amount here cannot change what the customer is charged. ── -->
+  <script>
+  (function () {
+    // Mirrors netlify/functions/_shared/bundles.mts — display only.
+    var BUNDLES = {
+      paperback_2:   { name: 'Two Paperbacks',            price: 4900, img: '../images/ChristmasBundle-2paperback.webp' },
+      kit_paperback: { name: 'Kitchen Table + Paperback', price: 9700, img: '../images/bundles/ChristmasBundle-PB+KT.webp' }
+    };
+    var FILM_CENTS = 500;
+
+    var params  = new URLSearchParams(location.search);
+    var bundleId = params.get('bundle');
+    var withFilm = params.get('film') === '1';
+    var bundle   = BUNDLES[bundleId];
+
+    var fatal = document.getElementById('fatal');
+    if (!bundle) {
+      fatal.hidden = false;
+      fatal.innerHTML = 'We couldn\'t identify that bundle. ' +
+        '<a href="../christmas-bundle" style="color:var(--gold);">Return to the Christmas Bundle page</a> and choose again.';
+      document.getElementById('checkoutForm').hidden = true;
+      return;
+    }
+
+    var money = function (c) { return '$' + (c / 100).toFixed(2); };
+    var shippingCents = null;
+    var selectedRateId = null;
+
+    // ── summary ──
+    var sumImg = document.getElementById('sumImg');
+    sumImg.src = bundle.img; sumImg.alt = bundle.name; sumImg.hidden = false;
+    document.getElementById('sumName').textContent  = bundle.name;
+    document.getElementById('sumPrice').textContent = money(bundle.price);
+    document.getElementById('sumFilmLine').hidden   = !withFilm;
+
+    function renderTotal() {
+      var t = bundle.price + (withFilm ? FILM_CENTS : 0) + (shippingCents || 0);
+      document.getElementById('sumTotal').textContent = money(t);
+      var payBtn = document.getElementById('payBtn');
+      if (shippingCents !== null && selectedRateId) {
+        payBtn.removeAttribute('disabled');
+        payBtn.setAttribute('href', '#pay');
+      } else {
+        payBtn.setAttribute('disabled', '');
+      }
+    }
+    renderTotal();
+
+    // ── field helpers ──
+    function clearErrors() {
+      document.querySelectorAll('.co-field.has-error').forEach(function (f) {
+        f.classList.remove('has-error');
+        var e = f.querySelector('.co-err'); if (e) e.remove();
+      });
+      fatal.hidden = true;
+    }
+
+    function fieldError(id, msg) {
+      var input = document.getElementById(id);
+      if (!input) return;
+      var wrap = input.closest('.co-field');
+      wrap.classList.add('has-error');
+      if (!wrap.querySelector('.co-err')) {
+        var s = document.createElement('span');
+        s.className = 'co-err';
+        s.textContent = msg;
+        wrap.appendChild(s);
+      }
+    }
+
+    function readAddress() {
+      var v = function (id) { return (document.getElementById(id).value || '').trim(); };
+      return {
+        name: (v('firstName') + ' ' + v('lastName')).trim(),
+        street1: v('street1'),
+        street2: v('street2'),
+        city: v('city'),
+        state: v('state').toUpperCase(),
+        zip: v('zip'),
+        country: 'US',
+        phone: v('phone'),
+        email: v('email')
+      };
+    }
+
+    // ── rates ──
+    var form     = document.getElementById('checkoutForm');
+    var rateBtn  = document.getElementById('rateBtn');
+    var shipPanel = document.getElementById('shipPanel');
+    var shipOpts = document.getElementById('shipOptions');
+    var shipMsg  = document.getElementById('shipMsg');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      var addr = readAddress();
+      var required = [['firstName','First name'],['lastName','Last name'],
+                      ['email','Email'],['street1','Street address'],
+                      ['city','City'],['state','State'],['zip','ZIP code']];
+      var bad = false;
+      required.forEach(function (r) {
+        if (!(document.getElementById(r[0]).value || '').trim()) {
+          fieldError(r[0], r[1] + ' is required.'); bad = true;
+        }
+      });
+      if (addr.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(addr.email)) {
+        fieldError('email', 'Please enter a valid email address.'); bad = true;
+      }
+      if (bad) return;
+
+      // reset any previous selection
+      shippingCents = null; selectedRateId = null;
+      document.getElementById('sumShip').textContent = 'Calculating…';
+      document.getElementById('sumShip').classList.add('co-muted');
+      renderTotal();
+
+      rateBtn.disabled = true;
+      rateBtn.innerHTML = '<span class="co-spinner"></span>Calculating…';
+
+      fetch('/api/shipping-rates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bundle: bundleId, address: addr })
+      })
+      .then(function (r) { return r.json().then(function (b) { return { ok: r.ok, body: b }; }); })
+      .then(function (res) {
+        rateBtn.disabled = false;
+        rateBtn.textContent = 'Recalculate Shipping';
+
+        if (!res.ok) {
+          var b = res.body || {};
+          (b.fields || []).forEach(function (f) { fieldError(f, 'Please check this field.'); });
+          fatal.hidden = false;
+          fatal.textContent = b.error || 'We could not calculate shipping. Please try again.';
+          if (b.messages && b.messages.length) {
+            fatal.textContent += ' (' + b.messages.join('; ') + ')';
+          }
+          shipPanel.hidden = true;
+          document.getElementById('sumShip').textContent = 'Enter address';
+          return;
+        }
+
+        renderRates(res.body);
+      })
+      .catch(function () {
+        rateBtn.disabled = false;
+        rateBtn.textContent = 'Calculate Shipping';
+        fatal.hidden = false;
+        fatal.textContent = 'Network problem — please check your connection and try again.';
+      });
+    });
+
+    function renderRates(data) {
+      shipOpts.innerHTML = '';
+      shipPanel.hidden = false;
+
+      if (data.addressMessages && data.addressMessages.length) {
+        shipMsg.hidden = false;
+        shipMsg.textContent = 'Address note: ' + data.addressMessages.join('; ');
+      } else {
+        shipMsg.hidden = true;
+      }
+
+      data.rates.forEach(function (rate, i) {
+        var label = document.createElement('label');
+        label.className = 'co-rate';
+
+        var input = document.createElement('input');
+        input.type = 'radio'; input.name = 'shipRate'; input.value = rate.rateId;
+
+        var dot = document.createElement('span');
+        dot.className = 'co-rate-dot';
+
+        var body = document.createElement('span');
+        body.className = 'co-rate-body';
+        var nm = document.createElement('span');
+        nm.className = 'co-rate-name';
+        nm.textContent = rate.service;
+        body.appendChild(nm);
+        if (rate.estimatedDays) {
+          var eta = document.createElement('span');
+          eta.className = 'co-rate-eta';
+          eta.textContent = 'Estimated ' + rate.estimatedDays +
+            (rate.estimatedDays === 1 ? ' day' : ' days');
+          body.appendChild(eta);
+        }
+
+        var price = document.createElement('span');
+        price.className = 'co-rate-price';
+        price.textContent = rate.amountDisplay;
+
+        label.appendChild(input); label.appendChild(dot);
+        label.appendChild(body);  label.appendChild(price);
+        shipOpts.appendChild(label);
+
+        input.addEventListener('change', function () {
+          document.querySelectorAll('.co-rate').forEach(function (el) {
+            el.classList.remove('is-selected');
+          });
+          label.classList.add('is-selected');
+          selectedRateId = rate.rateId;
+          shippingCents = rate.amountCents;
+          var s = document.getElementById('sumShip');
+          s.textContent = rate.amountDisplay;
+          s.classList.remove('co-muted');
+          renderTotal();
+        });
+
+        if (i === 0) { input.checked = true; input.dispatchEvent(new Event('change')); }
+      });
+
+      shipPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ── proceed to Stripe ──
+    var payBtn = document.getElementById('payBtn');
+    var paying = false;
+
+    payBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (!selectedRateId || paying) return;
+
+      paying = true;
+      clearErrors();
+      var original = payBtn.textContent;
+      payBtn.setAttribute('disabled', '');
+      payBtn.innerHTML = '<span class="co-spinner"></span>Starting secure checkout…';
+
+      var v = function (id) { return (document.getElementById(id).value || '').trim(); };
+
+      fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bundle: bundleId,
+          film: withFilm,
+          rateId: selectedRateId,
+          firstName: v('firstName'),
+          lastName: v('lastName'),
+          email: v('email'),
+          phone: v('phone'),
+          address: readAddress()
+          // deliberately no prices — the server computes every amount
+        })
+      })
+      .then(function (r) { return r.json().then(function (b) { return { ok: r.ok, body: b }; }); })
+      .then(function (res) {
+        if (res.ok && res.body.url) {
+          window.location.href = res.body.url;   // hand off to Stripe
+          return;
+        }
+
+        paying = false;
+        payBtn.removeAttribute('disabled');
+        payBtn.textContent = original;
+
+        var b = res.body || {};
+        fatal.hidden = false;
+        fatal.textContent = b.error || 'We could not start checkout. Please try again.';
+
+        // an expired quote just needs recalculating
+        if (b.code === 'RATE_EXPIRED') {
+          shippingCents = null; selectedRateId = null;
+          shipPanel.hidden = true;
+          document.getElementById('sumShip').textContent = 'Enter address';
+          document.getElementById('sumShip').classList.add('co-muted');
+          renderTotal();
+        }
+      })
+      .catch(function () {
+        paying = false;
+        payBtn.removeAttribute('disabled');
+        payBtn.textContent = original;
+        fatal.hidden = false;
+        fatal.textContent = 'Network problem — please check your connection and try again.';
+      });
+    });
+  })();
+  </script>
+
+  <script src="../protect.js" defer></script>
+</body>
+</html>

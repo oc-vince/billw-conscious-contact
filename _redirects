@@ -1,6 +1,9 @@
 # 301 Redirects — Bill W. Conscious Contact
 # Format: /old-path   /new-path   301
 
+# Christmas Bundle checkout flow
+/christmas-bundle/checkout                      /christmas-bundle/checkout.html         200
+
 # Press kit — folder URL moved to a flat page
 # /billw-presskit-firstrunfeatures/               /billw-presskit-firstrunfeatures.html   301!
 # /billw-presskit-firstrunfeatures                /billw-presskit-firstrunfeatures.html   301!

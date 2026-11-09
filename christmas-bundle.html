@@ -115,13 +115,154 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
       height: 250px;
     }
 
-    /* Placeholder CTA — no Stripe link yet. Styled exactly like the live
-       Buy Now buttons so the design reads true, but not clickable so it
-       cannot send anyone to a dead link. Remove aria-disabled once the
-       href is in place and this rule stops applying. */
-    .bundle-cta[aria-disabled="true"] {
-      cursor: default;
-      pointer-events: none;
+    /* Five cards: wrap to 3 + 2 at container width rather than squeezing
+       five into one row. */
+    .editions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+      align-items: stretch;
+    }
+
+    .bundle-name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      line-height: 1.35;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      min-height: 2.7em;        /* keeps prices on a common baseline */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Struck-through retail value sitting above the actual bundle price. */
+    .bundle-retail {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      color: rgba(245, 240, 230, 0.42);
+      text-decoration: line-through;
+      margin-bottom: 0.25rem;
+    }
+
+    .bundle-breakdown {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: rgba(245, 240, 230, 0.45);
+      margin-top: 0.35rem;
+    }
+
+    /* ── Promotional ribbon ── */
+    .cb-ribbon {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 1.6rem;
+      padding: 0.55rem 1.6rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold) 50%, var(--gold-light));
+      color: #0a0a0a;
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    }
+
+    /* ── Film coupon add-on checkbox ──
+       Native input kept in the DOM for accessibility and form semantics;
+       visually replaced by .cb-addon-box so it can be themed. */
+    .cb-addon {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      text-align: left;
+      cursor: pointer;
+      padding: 0.85rem 0.9rem;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      background: rgba(201, 168, 76, 0.05);
+      transition: border-color 0.3s ease, background 0.3s ease;
+      margin-bottom: 1.1rem;
+    }
+
+    .cb-addon:hover { border-color: rgba(201, 168, 76, 0.55); }
+
+    .cb-addon-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .cb-addon-box {
+      flex-shrink: 0;
+      width: 17px;
+      height: 17px;
+      margin-top: 2px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .cb-addon-input:checked + .cb-addon-box {
+      background: var(--gold);
+    }
+
+    .cb-addon-input:checked + .cb-addon-box::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border: solid #0a0a0a;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    /* visible keyboard focus, since the native box is hidden */
+    .cb-addon-input:focus-visible + .cb-addon-box {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 2px;
+    }
+
+    .cb-addon-text {
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: rgba(245, 240, 230, 0.78);
+    }
+
+    .cb-addon-text strong { color: var(--gold); font-weight: 500; }
+
+    .cb-total {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      color: rgba(245, 240, 230, 0.75);
+      margin-bottom: 1rem;
+    }
+
+    .cb-total strong {
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+    }
+
+    /* Two cards rather than five — keep them from stretching too wide. */
+    .cb-grid {
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 767px) {
+      .cb-grid { grid-template-columns: 1fr; }
+      .cb-ribbon { font-size: 0.6rem; letter-spacing: 0.16em; padding: 0.5rem 1rem; }
     }
 
     @media (max-width: 767px) {
@@ -177,60 +318,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ── CHRISTMAS BUNDLE ── -->
   <section id="christmas-bundle" class="section-pad" style="background: var(--black-light); padding-top: calc(4em + 90px);">
     <div class="container">
-      <div class="section-label reveal" style="justify-content: center;">Limited Time</div>
+      <div class="cb-ribbon reveal">Buy 1 Gift 1 &mdash; Limited Time Offer</div>
       <h2 class="section-heading reveal" style="text-align: center;">Christmas Bundle</h2>
-      <p class="reveal" style="text-align: center; font-size: 1.1rem; font-weight: 300; color: rgba(245,240,230,0.72); line-height: 1.8; max-width: 720px; margin: 0 auto;">Shop exclusive bundle deals from October 31 through January 15! Choose from three special bundle options, available for purchase exclusively through our website&mdash;not on Amazon.</p>
+      <p class="reveal" style="text-align: center; font-size: 1.1rem; font-weight: 300; color: rgba(245,240,230,0.72); line-height: 1.8; max-width: 760px; margin: 0 auto;">Shop exclusive bundle deals from November 10 through January 15! Choose from two special bundle options, available for purchase exclusively through our website&mdash;not on Amazon.</p>
 
-      <div class="editions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;">
+      <div class="editions-grid cb-grid">
 
-        <!-- TIER 1 -->
-        <div class="edition-cell reveal">
-        <img class="edition-book bundle-book" src="images/ChristmasBundle-2paperback.webp" alt="Christmas Bundle Tier 1 — two paperback copies of Bill W. Conscious Contact" width="680" height="621" loading="lazy" decoding="async">
+        <!-- Two Paperbacks — product configuration id: paperback_2 -->
+        <div class="edition-cell reveal" data-bundle="paperback_2">
+        <img class="edition-book bundle-book" src="images/ChristmasBundle-2paperback.webp" alt="Two paperback copies of Bill W. Conscious Contact" width="680" height="621" loading="lazy" decoding="async">
         <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Tier 1</div>
-          <div class="plan-price">$00.00</div>
+          <div class="bundle-name">Two Paperbacks</div>
+          <div class="bundle-retail">$58.00</div>
+          <div class="plan-price" data-base="49">$49</div>
+          <div class="bundle-breakdown">Retail $29.00 each</div>
+
           <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+            <div style="display: flex; gap: 0.6rem; align-items: start;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
               <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Two paperbacks</span>
             </div>
           </div>
-          <!-- TODO: paste the Stripe URL into href and delete aria-disabled -->
-          <a aria-disabled="true" class="btn btn-primary bundle-cta" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+
+          <label class="cb-addon" for="film-paperback_2">
+            <input type="checkbox" id="film-paperback_2" class="cb-addon-input">
+            <span class="cb-addon-box" aria-hidden="true"></span>
+            <span class="cb-addon-text">Add Film $5 Coupon Code <strong>(+$5.00)</strong></span>
+          </label>
+
+          <div class="cb-total" hidden>Your total: <strong>$0.00</strong></div>
+
+          <a class="btn btn-primary cb-buy" href="#">Buy Now</a>
         </div>
         </div>
 
-        <!-- TIER 2 -->
-        <div class="edition-cell reveal">
-        <img class="edition-book bundle-book" src="images/ChristmasBundle-PB+KT.webp" alt="Christmas Bundle Tier 2 — the Kitchen Table book plus one paperback" width="680" height="621" loading="lazy" decoding="async">
+        <!-- Kitchen Table + Paperback — product configuration id: kit_paperback -->
+        <div class="edition-cell reveal" data-bundle="kit_paperback">
+        <img class="edition-book bundle-book" src="images/bundles/ChristmasBundle-PB+KT.webp" alt="The Kitchen Table book plus one paperback" width="680" height="621" loading="lazy" decoding="async">
         <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Tier 2</div>
-          <div class="plan-price">$00.00</div>
-          <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
-              <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Kitchen table book + one paperback</span>
-            </div>
-          </div>
-          <!-- TODO: paste the Stripe URL into href and delete aria-disabled -->
-          <a aria-disabled="true" class="btn btn-primary bundle-cta" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
-        </div>
-        </div>
+          <div class="bundle-name">Kitchen Table + Paperback</div>
+          <div class="bundle-retail">$116.00</div>
+          <div class="plan-price" data-base="97">$97</div>
+          <div class="bundle-breakdown">Retail $87.00 + $29.00</div>
 
-        <!-- TIER 3 -->
-        <div class="edition-cell reveal">
-        <img class="edition-book bundle-book" src="images/ChristmasBundle-PB+KT+Vimeo.webp" alt="Christmas Bundle Tier 3 — the Kitchen Table book, two paperbacks and the film" width="680" height="621" loading="lazy" decoding="async">
-        <div class="plan-card" style="text-align: center;">
-          <div style="font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;">Tier 3</div>
-          <div class="plan-price">$00.00</div>
           <div style="margin: 1.5rem 0; text-align: left;">
-            <div style="display: flex; gap: 0.6rem; align-items: start; margin-bottom: 0.8rem;">
+            <div style="display: flex; gap: 0.6rem; align-items: start;">
               <span style="color: var(--gold); line-height: 1; flex-shrink: 0;">&#10003;</span>
-              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Kitchen table book + two paperbacks + film (via Vimeo promo code)</span>
+              <span style="font-size: 0.9rem; color: rgba(245,240,230,0.7);">Kitchen Table book + one paperback</span>
             </div>
           </div>
-          <!-- TODO: paste the Stripe URL into href and delete aria-disabled -->
-          <a aria-disabled="true" class="btn btn-primary bundle-cta" style="font-size: 0.65rem; padding: 0.7rem 1.5rem; width: 100%; display: block; text-align: center;">Buy Now</a>
+
+          <label class="cb-addon" for="film-kit_paperback">
+            <input type="checkbox" id="film-kit_paperback" class="cb-addon-input">
+            <span class="cb-addon-box" aria-hidden="true"></span>
+            <span class="cb-addon-text">Add Film $5 Coupon Code <strong>(+$5.00)</strong></span>
+          </label>
+
+          <div class="cb-total" hidden>Your total: <strong>$0.00</strong></div>
+
+          <a class="btn btn-primary cb-buy" href="#">Buy Now</a>
         </div>
         </div>
 
@@ -298,6 +444,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('navLinks').classList.remove('open');
       });
     });
+  </script>
+
+  <!-- ── Bundle selection + Film add-on ──
+       The $5 figure here is DISPLAY ONLY. The checkout function resolves
+       every price server-side from the bundle id; nothing monetary is ever
+       trusted from this page. Buy Now passes only the selection. ── -->
+  <script>
+  (function () {
+    var FILM_ADDON_DISPLAY = 5;                       // display only
+    var CHECKOUT_URL = '/christmas-bundle/checkout';
+
+    var cells = Array.prototype.slice.call(document.querySelectorAll('.edition-cell[data-bundle]'));
+    if (!cells.length) return;
+
+    cells.forEach(function (cell) {
+      var bundle   = cell.getAttribute('data-bundle');
+      var priceEl  = cell.querySelector('.plan-price');
+      var checkbox = cell.querySelector('.cb-addon-input');
+      var totalEl  = cell.querySelector('.cb-total');
+      var totalVal = totalEl ? totalEl.querySelector('strong') : null;
+      var buyBtn   = cell.querySelector('.cb-buy');
+      var base     = parseFloat(priceEl.getAttribute('data-base'));
+
+      function render() {
+        var withFilm = checkbox.checked;
+
+        if (withFilm && totalVal) {
+          totalVal.textContent = '$' + (base + FILM_ADDON_DISPLAY).toFixed(2);
+          totalEl.hidden = false;
+        } else if (totalEl) {
+          totalEl.hidden = true;
+        }
+
+        buyBtn.setAttribute(
+          'href',
+          CHECKOUT_URL + '?bundle=' + encodeURIComponent(bundle) + (withFilm ? '&film=1' : '')
+        );
+      }
+
+      checkbox.addEventListener('change', render);
+      render();
+    });
+  })();
   </script>
 
   <!-- ── Bundle covers: fade in as each lazy-loaded image arrives ── -->
