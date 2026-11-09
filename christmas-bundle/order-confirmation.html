@@ -154,8 +154,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       text-transform: uppercase;
       padding: 0.5rem 1rem;
       cursor: pointer;
-      margin-left: 0.5rem;
       transition: border-color .25s ease, color .25s ease;
+    }
+
+    /* The two buttons sit side by side on desktop and wrap on narrow
+       screens; a plain margin-left left the wrapped one off-centre. */
+    .oc-coupon .btn,
+    .oc-copy {
+      margin: 0.35rem 0.25rem 0;
+      vertical-align: middle;
     }
     .oc-copy:hover { border-color: var(--gold); color: var(--cream); }
 
