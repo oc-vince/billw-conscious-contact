@@ -215,6 +215,11 @@ export default async (req: Request, _ctx: Context) => {
     const session = await stripe.checkout.sessions.create(
       {
         mode: "payment",
+        // Adaptive Pricing is ON by default and converts the total into the
+        // visitor's local currency by geolocation — a US-shipping-only store
+        // was being quoted in PHP. It also breaks webhook verification, which
+        // asserts amount_total === our USD cents and currency === "usd".
+        adaptive_pricing: { enabled: false },
         line_items: lineItems,
         customer_email: email,
         client_reference_id: order.order_reference,

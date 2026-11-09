@@ -146,13 +146,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     .co-rate-body { flex: 1; min-width: 0; }
 
+    /* both are spans inside a flex column — without display:block they run
+       together as "Ground AdvantageEstimated 4 days" */
     .co-rate-name {
+      display: block;
       font-family: var(--font-ui);
       font-size: 0.85rem;
       color: var(--cream);
     }
 
     .co-rate-eta {
+      display: block;
       font-family: var(--font-ui);
       font-size: 0.7rem;
       color: rgba(245,240,230,0.5);
