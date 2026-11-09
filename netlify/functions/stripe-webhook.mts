@@ -1,6 +1,7 @@
 import type { Config, Context } from "@netlify/functions";
 import Stripe from "stripe";
 import { rpc, select, update, logEvent } from "./_shared/supabase.mts";
+import { sendOrderEmails, type OrderForEmail, type CouponForEmail } from "./_shared/email.mts";
 
 /**
  * POST /api/stripe-webhook
@@ -38,13 +39,11 @@ const bad = (status: number, message: string) =>
     headers: { "Content-Type": "application/json" },
   });
 
-type OrderRow = {
-  id: string;
-  order_reference: string;
-  total_amount: number;
+// select() fetches "*", so the row already carries every column the email
+// templates need — OrderForEmail just names them for TypeScript.
+type OrderRow = OrderForEmail & {
   currency: string;
   payment_status: string;
-  film_coupon_selected: boolean;
 };
 
 async function findOrder(session: any): Promise<OrderRow | null> {
@@ -107,13 +106,15 @@ async function markPaid(stripeObj: any, order: OrderRow, eventType: string) {
   }
 
   // ── coupon: reserved -> assigned, only now ──
+  let coupon: CouponForEmail | null = null;
+
   if (order.film_coupon_selected) {
-    const assigned = await rpc<Array<{ coupon_id: string; code: string }>>(
-      "assign_film_coupon",
-      { p_order_id: order.id }
-    );
+    const assigned = await rpc<
+      Array<{ coupon_id: string; code: string; redemption_link: string | null }>
+    >("assign_film_coupon", { p_order_id: order.id });
     const row = Array.isArray(assigned) ? assigned[0] : null;
     if (row?.coupon_id) {
+      coupon = { code: row.code, redemption_link: row.redemption_link };
       await logEvent(order.id, "coupon_assigned", "Coupon finalised after payment", {
         coupon_id: row.coupon_id,
       });
@@ -123,7 +124,11 @@ async function markPaid(stripeObj: any, order: OrderRow, eventType: string) {
     }
   }
 
-  // Phase 6 sends the confirmation email from here.
+  // ── emails ──
+  // sendOrderEmails never throws: the money is taken and the coupon is
+  // issued, so an email outage must not turn into a 500 and a Stripe retry.
+  // A failure lands in order_events as confirmation_email_failed instead.
+  await sendOrderEmails(order, coupon);
 }
 
 /** Give a held coupon back and mark the order dead. */
