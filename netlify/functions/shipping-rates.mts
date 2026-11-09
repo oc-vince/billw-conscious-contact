@@ -107,6 +107,9 @@ export default async (req: Request, _context: Context) => {
       rates: rates.map((r) => ({
         rateId: r.rateId,
         service: r.service,
+        // Stable across re-quotes; create-checkout prices from this, not
+        // from rateId, so the amount always matches the real destination.
+        serviceToken: r.serviceToken,
         amountCents: r.amountCents,
         amountDisplay: `$${(r.amountCents / 100).toFixed(2)}`,
         currency: r.currency,

@@ -3,10 +3,11 @@ import Stripe from "stripe";
 import {
   getBundle,
   priceOrder,
+  shipFromAddress,
   FILM_ADDON_CENTS,
   FILM_ADDON_NAME,
 } from "./_shared/bundles.mts";
-import { revalidateRate } from "./_shared/shippo.mts";
+import { quoteChosenService } from "./_shared/shippo.mts";
 import { insert, update, rpc, logEvent } from "./_shared/supabase.mts";
 import { newOrderReference, newAccessToken, hashToken } from "./_shared/orders.mts";
 
@@ -83,14 +84,36 @@ export default async (req: Request, _ctx: Context) => {
     return json(400, { error: "We can only ship within the United States at this time." });
   }
 
-  // ── 4. shipping — re-read from Shippo, never trusted ─────
+  // ── 4. shipping — re-quoted for THIS address, never trusted ─────
+  // The browser tells us which service was chosen. It does not get to tell
+  // us the price, and it does not get to pair a rate quoted for one address
+  // with an order shipping to another — so we re-quote here against the
+  // address we are actually shipping to. See quoteChosenService.
   const rateId = str(payload?.rateId, 64);
-  if (!rateId) return json(400, { error: "Please choose a shipping service." });
+  const serviceToken = str(payload?.serviceToken, 64);
+  if (!rateId && !serviceToken) {
+    return json(400, { error: "Please choose a shipping service." });
+  }
 
-  const rate = await revalidateRate(rateId);
+  let rate;
+  try {
+    rate = await quoteChosenService(
+      shipFromAddress(),
+      address,
+      bundle.parcel as unknown as Record<string, string>,
+      { serviceToken, rateId }
+    );
+  } catch (err: any) {
+    console.error("shipping re-quote failed:", err?.message ?? err);
+    return json(502, {
+      error: "We couldn't confirm shipping for that address. Please try again.",
+    });
+  }
+
   if (!rate) {
     return json(409, {
-      error: "That shipping quote has expired. Please recalculate shipping and try again.",
+      error:
+        "That shipping option isn't available for this address. Please recalculate shipping and try again.",
       code: "RATE_EXPIRED",
     });
   }

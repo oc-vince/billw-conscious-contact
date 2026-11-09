@@ -136,11 +136,53 @@ export async function getUspsRates(
 }
 
 /**
- * Re-read a rate straight from Shippo immediately before payment.
+ * Price the chosen USPS service for the address we are ACTUALLY shipping to.
  *
- * This is the guard against a tampered or stale shipping amount: whatever the
- * browser claims, the price charged comes from this call. Returns null if the
- * rate has expired or does not exist.
+ * ─── WHY NOT JUST RE-READ THE RATE ID ───────────────────────────────────
+ * A Shippo rate belongs to a shipment, and a shipment has a destination.
+ * Re-reading the rate proves the amount is genuine, but says nothing about
+ * where it was quoted to. That gap was exploitable: quote to a cheap ZIP,
+ * then submit the order with a different address and the same rate id, and
+ * the cheap rate was charged for the expensive destination. (Found in QA:
+ * an Anchorage order was charged the Washington DC rate.)
+ *
+ * So we re-quote from scratch for the submitted address and parcel, then
+ * pick the service the customer chose. The rate id is only a hint about
+ * which service they wanted — never about price.
+ *
+ * Returns null if that service is no longer offered, which the caller turns
+ * into "please recalculate shipping" rather than silently charging for a
+ * different service.
+ */
+export async function quoteChosenService(
+  addressFrom: ShippoAddress,
+  addressTo: ShippoAddress,
+  parcel: Record<string, string>,
+  chosen: { serviceToken?: string; rateId?: string }
+): Promise<UspsRate | null> {
+  const { rates } = await getUspsRates(addressFrom, addressTo, parcel);
+  if (!rates.length) return null;
+
+  // Preferred: the service level token, which is stable across quotes.
+  const byToken = chosen.serviceToken
+    ? rates.find((r) => r.serviceToken && r.serviceToken === chosen.serviceToken)
+    : undefined;
+  if (byToken) return byToken;
+
+  // A rate id can still match when the address was not changed at all.
+  const byId = chosen.rateId ? rates.find((r) => r.rateId === chosen.rateId) : undefined;
+  if (byId) return byId;
+
+  // The chosen service is not available for this address. Do not guess.
+  return null;
+}
+
+/**
+ * Re-read a rate straight from Shippo.
+ *
+ * Confirms an amount is genuine, but NOT that it was quoted to the address
+ * being shipped to — see quoteChosenService above, which is what pricing
+ * must go through. Kept for diagnostics only.
  */
 export async function revalidateRate(rateId: string): Promise<UspsRate | null> {
   if (!/^[A-Za-z0-9]+$/.test(rateId)) return null;

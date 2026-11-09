@@ -443,6 +443,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var money = function (c) { return '$' + (c / 100).toFixed(2); };
     var shippingCents = null;
     var selectedRateId = null;
+    var selectedServiceToken = null;
 
     // ── summary ──
     var sumImg = document.getElementById('sumImg');
@@ -470,6 +471,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     }
     renderTotal();
+
+    // ── invalidate the quote when the destination changes ──
+    // A rate is only valid for the address it was quoted to. Letting an
+    // edited address keep an old quote meant someone could price a cheap
+    // ZIP then ship somewhere expensive. The server re-quotes regardless,
+    // but the form should never show a price that no longer applies.
+    ['street1', 'street2', 'city', 'state', 'zip', 'country'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', function () {
+        if (shippingCents === null && !selectedRateId) return;
+        shippingCents = null;
+        selectedRateId = null;
+        selectedServiceToken = null;
+        var panel = document.getElementById('shipPanel');
+        if (panel) panel.hidden = true;
+        var s = document.getElementById('sumShip');
+        s.textContent = 'Recalculate shipping';
+        s.classList.add('co-muted');
+        renderTotal();
+      });
+    });
 
     // ── field helpers ──
     function clearErrors() {
@@ -625,6 +648,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           });
           label.classList.add('is-selected');
           selectedRateId = rate.rateId;
+          selectedServiceToken = rate.serviceToken || '';
           shippingCents = rate.amountCents;
           var s = document.getElementById('sumShip');
           s.textContent = rate.amountDisplay;
@@ -661,6 +685,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           bundle: bundleId,
           film: withFilm,
           rateId: selectedRateId,
+          serviceToken: selectedServiceToken,
           firstName: v('firstName'),
           lastName: v('lastName'),
           email: v('email'),
@@ -686,7 +711,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         // an expired quote just needs recalculating
         if (b.code === 'RATE_EXPIRED') {
-          shippingCents = null; selectedRateId = null;
+          shippingCents = null; selectedRateId = null; selectedServiceToken = null;
           shipPanel.hidden = true;
           document.getElementById('sumShip').textContent = 'Enter address';
           document.getElementById('sumShip').classList.add('co-muted');
