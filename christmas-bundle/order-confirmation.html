@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N5GCNJCG');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <!-- The URL carries a one-time order token: never hand it to a third party. -->
+  <meta name="referrer" content="no-referrer">
+  <title>Order Confirmed | Bill W. Conscious Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../protect.css">
+
+  <style>
+    /* ——— ORDER CONFIRMATION ———
+       Shares the checkout's palette and panel treatment. */
+    .oc-wrap { max-width: 760px; margin: 0 auto; }
+
+    .oc-panel {
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      background: linear-gradient(to bottom, rgba(18,18,18,0.85), #000);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .oc-step {
+      font-family: var(--font-ui);
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    /* `display:` here beats the UA stylesheet's [hidden]{display:none},
+       so every toggled block needs this or it stays visible. */
+    [hidden] { display: none !important; }
+
+    /* ── status banner ── */
+    .oc-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-family: var(--font-ui);
+      color: rgba(245,240,230,0.7);
+      font-size: 0.9rem;
+    }
+
+    .oc-spinner {
+      width: 34px; height: 34px;
+      margin: 0 auto 1.2rem;
+      border: 2px solid rgba(201,168,76,0.25);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: oc-spin 0.9s linear infinite;
+    }
+    @keyframes oc-spin { to { transform: rotate(360deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .oc-spinner { animation-duration: 3s; }
+    }
+
+    .oc-tick {
+      width: 54px; height: 54px;
+      margin: 0 auto 1.2rem;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .oc-ref {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: rgba(245,240,230,0.6);
+      text-align: center;
+      margin-top: 0.4rem;
+    }
+    .oc-ref strong {
+      color: var(--cream);
+      letter-spacing: 0.16em;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    /* ── line items ── */
+    .oc-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      color: rgba(245,240,230,0.85);
+    }
+    .oc-line small {
+      display: block;
+      font-size: 0.72rem;
+      color: rgba(245,240,230,0.45);
+      margin-top: 0.15rem;
+    }
+    .oc-line b { white-space: nowrap; font-weight: 400; }
+
+    .oc-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 1rem;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    /* ── coupon ── */
+    .oc-coupon {
+      border: 1px solid rgba(201,168,76,0.45);
+      background: rgba(201,168,76,0.06);
+      padding: 1.6rem;
+      text-align: center;
+    }
+
+    .oc-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      margin: 0.6rem 0 1rem;
+      word-break: break-all;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .oc-copy {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      transition: border-color .25s ease, color .25s ease;
+    }
+    .oc-copy:hover { border-color: var(--gold); color: var(--cream); }
+
+    .oc-addr {
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(245,240,230,0.8);
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .oc-actions {
+      text-align: center;
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .oc-err {
+      border: 1px solid rgba(224,112,112,0.4);
+      background: rgba(224,112,112,0.07);
+      padding: 1.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(245,240,230,0.85);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .oc-panel { padding: 1.4rem; }
+      .oc-code { font-size: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5GCNJCG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <nav id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-small">Bill W.</span>
+      <span class="nav-logo-main">Conscious Contact</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../film.html">Film</a></li>
+      <li><a href="../book.html">Book</a></li>
+      <li><a href="../stepping-stones.html">Stepping Stones</a></li>
+      <li><a href="../press.html">Press</a></li>
+      <li><a href="../events.html">Events</a></li>
+      <li><a href="../library.html">For Libraries</a></li>
+      <li><a href="../purchase.html" class="nav-cta">Purchase</a></li>
+    </ul>
+    <div class="nav-auth"></div>
+    <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open'); this.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <section class="section-pad" style="background: var(--black-light); padding-top: calc(2em + 90px);">
+    <div class="container">
+      <div class="oc-wrap">
+
+        <!-- ── 1. confirming ── -->
+        <div id="stateLoading" class="oc-state">
+          <div class="oc-spinner"></div>
+          <div id="loadingMsg">Loading your order&hellip;</div>
+        </div>
+
+        <!-- ── 2. problem ── -->
+        <div id="stateError" hidden>
+          <div class="section-label" style="justify-content: center;">Christmas Bundle</div>
+          <h1 class="section-heading" style="text-align:center; font-size: clamp(1.6rem, 3.4vw, 2.4rem);">Order</h1>
+          <div class="oc-err" id="errorMsg"></div>
+          <div class="oc-actions">
+            <a href="../christmas-bundle.html" class="btn btn-outline">Back to the Bundle</a>
+            <a href="../contact.html" class="btn btn-outline">Contact Us</a>
+          </div>
+        </div>
+
+        <!-- ── 3. confirmed ── -->
+        <div id="stateOk" hidden>
+
+          <div class="section-label" style="justify-content: center;">Christmas Bundle</div>
+          <div class="oc-tick" aria-hidden="true">&#10003;</div>
+          <h1 class="section-heading" style="text-align:center; font-size: clamp(1.6rem, 3.4vw, 2.4rem); margin-bottom:.4rem;">
+            Thank you<span id="ocName"></span>.
+          </h1>
+          <p style="text-align:center; color: rgba(245,240,230,0.7); font-family: var(--font-ui); font-size:.92rem;">
+            Your order is confirmed and payment has been received.
+          </p>
+          <p class="oc-ref">Order reference <strong id="ocRef"></strong></p>
+
+          <!-- film coupon -->
+          <div class="oc-panel oc-coupon" id="ocCouponPanel" hidden style="margin-top:2rem;">
+            <div class="oc-step" style="margin-bottom:.2rem;">Your Film Access Code</div>
+            <div class="oc-code" id="ocCode"></div>
+            <a id="ocWatch" class="btn btn-primary" href="#" rel="noopener">Watch the Film</a>
+            <button type="button" class="oc-copy" id="ocCopy">Copy code</button>
+            <p class="oc-ref" style="margin-top:1.2rem; letter-spacing:0;">
+              We've emailed this to you as well &mdash; it can be redeemed at any time.
+            </p>
+          </div>
+
+          <!-- coupon purchased but not yet readable -->
+          <div class="oc-panel" id="ocCouponPending" hidden style="margin-top:2rem;">
+            <div class="oc-step">Your Film Access Code</div>
+            <p style="font-family:var(--font-ui); font-size:.88rem; color:rgba(245,240,230,.75); line-height:1.7; margin:0;">
+              Your code is being issued and will arrive by email within a few minutes.
+              If it hasn't appeared, check your spam folder or contact us with your
+              order reference above.
+            </p>
+          </div>
+
+          <!-- summary -->
+          <div class="oc-panel" style="margin-top:1.5rem;">
+            <div class="oc-step">Order Summary</div>
+            <div id="ocLines"></div>
+            <div class="oc-total">
+              <span>Total</span>
+              <span id="ocTotal"></span>
+            </div>
+          </div>
+
+          <!-- shipping -->
+          <div class="oc-panel">
+            <div class="oc-step">Shipping To</div>
+            <div class="oc-addr" id="ocAddr"></div>
+            <p class="oc-ref" style="text-align:left; margin-top:1rem; letter-spacing:0; line-height:1.7;">
+              Your parcel ships by USPS <span id="ocService"></span>.
+              We'll email tracking details as soon as it leaves us.
+            </p>
+          </div>
+
+          <div class="oc-actions">
+            <a href="../film.html" class="btn btn-outline">Explore the Film</a>
+            <a href="../index.html" class="btn btn-outline">Return Home</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bill W. Conscious Contact. Muse Bookings LLC. All rights reserved.</p>
+      <p>A Jay Stinnett Production</p>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var elLoading = document.getElementById('stateLoading');
+    var elLoadMsg = document.getElementById('loadingMsg');
+    var elError   = document.getElementById('stateError');
+    var elErrMsg  = document.getElementById('errorMsg');
+    var elOk      = document.getElementById('stateOk');
+
+    var token = new URLSearchParams(window.location.search).get('t');
+
+    function money(cents) {
+      return '$' + (Number(cents || 0) / 100).toFixed(2);
+    }
+
+    function show(el) {
+      elLoading.hidden = true;
+      elError.hidden   = true;
+      elOk.hidden      = true;
+      el.hidden        = false;
+    }
+
+    function fail(msg) {
+      elErrMsg.textContent = msg;
+      show(elError);
+    }
+
+    function line(label, note, cents) {
+      var d = document.createElement('div');
+      d.className = 'oc-line';
+      var left = document.createElement('span');
+      left.textContent = label;
+      if (note) {
+        var s = document.createElement('small');
+        s.textContent = note;
+        left.appendChild(s);
+      }
+      var right = document.createElement('b');
+      right.textContent = money(cents);
+      d.appendChild(left);
+      d.appendChild(right);
+      return d;
+    }
+
+    function render(o) {
+      document.getElementById('ocName').textContent = o.firstName ? ', ' + o.firstName : '';
+      document.getElementById('ocRef').textContent  = o.reference;
+
+      // ── items ──
+      var lines = document.getElementById('ocLines');
+      lines.textContent = '';
+      lines.appendChild(line('Christmas Bundle — ' + o.bundle.name, 'Bill W. Conscious Contact', o.amounts.product));
+      if (o.filmSelected) {
+        lines.appendChild(line('Film Access Coupon', 'Digital access code', o.amounts.film));
+      }
+      lines.appendChild(line('Shipping — ' + o.shipping.service, 'USPS', o.amounts.shipping));
+      document.getElementById('ocTotal').textContent = money(o.amounts.total);
+
+      // ── coupon ──
+      if (o.coupon && o.coupon.code) {
+        document.getElementById('ocCode').textContent = o.coupon.code;
+        var watch = document.getElementById('ocWatch');
+        if (o.coupon.redemptionLink) {
+          watch.href = o.coupon.redemptionLink;
+        } else {
+          watch.hidden = true;
+        }
+        document.getElementById('ocCouponPanel').hidden = false;
+      } else if (o.filmSelected) {
+        document.getElementById('ocCouponPending').hidden = false;
+      }
+
+      // ── address ──
+      var a = o.shipping.address;
+      var parts = [
+        a.name,
+        a.street1,
+        a.street2,
+        [a.city, a.state, a.zip].filter(Boolean).join(', '),
+        a.country === 'US' ? 'United States' : a.country
+      ].filter(function (p) { return p && String(p).trim(); });
+
+      var addr = document.getElementById('ocAddr');
+      addr.textContent = '';
+      parts.forEach(function (p, i) {
+        if (i) addr.appendChild(document.createElement('br'));
+        addr.appendChild(document.createTextNode(p));
+      });
+
+      document.getElementById('ocService').textContent = o.shipping.service;
+
+      show(elOk);
+    }
+
+    // ── copy button ──
+    document.getElementById('ocCopy').addEventListener('click', function () {
+      var code = document.getElementById('ocCode').textContent;
+      var btn = this;
+      var done = function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy code'; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(done, function () {
+          btn.textContent = 'Select it above';
+        });
+      } else {
+        btn.textContent = 'Select it above';
+      }
+    });
+
+    // ── load, polling while the webhook catches up ──
+    // The browser redirect from Stripe regularly beats the webhook, so a
+    // freshly placed order can still read 'pending' for a second or two.
+    // That is expected, not an error: poll with a backoff rather than
+    // telling the customer something went wrong.
+    var attempt = 0;
+    var MAX_ATTEMPTS = 12;
+
+    function load() {
+      attempt++;
+
+      fetch('/api/order-status?t=' + encodeURIComponent(token), {
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-store'
+      })
+        .then(function (res) {
+          return res.json().then(function (body) {
+            return { ok: res.ok, status: res.status, body: body };
+          });
+        })
+        .then(function (r) {
+          if (!r.ok) {
+            if (r.status === 404) {
+              fail("We couldn't find that order. If you've just paid, the link may " +
+                   "not be ready yet — wait a moment and refresh. Otherwise please " +
+                   'contact us and we’ll sort it out.');
+            } else {
+              fail(r.body && r.body.error ? r.body.error : 'We could not load your order.');
+            }
+            return;
+          }
+
+          var o = r.body;
+
+          if (o.status === 'paid') {
+            render(o);
+            return;
+          }
+
+          if (o.status === 'failed' || o.status === 'expired') {
+            fail('That payment did not go through, so nothing has been charged. ' +
+                 'You are welcome to try again.');
+            return;
+          }
+
+          // still pending
+          if (attempt >= MAX_ATTEMPTS) {
+            fail('Your payment is taking longer than usual to confirm. Nothing is ' +
+                 'lost — your order reference is ' + o.reference + '. Please refresh ' +
+                 'in a minute, or contact us with that reference.');
+            return;
+          }
+
+          elLoadMsg.textContent = 'Confirming your payment…';
+          setTimeout(load, Math.min(1000 + attempt * 500, 4000));
+        })
+        .catch(function () {
+          if (attempt >= MAX_ATTEMPTS) {
+            fail('We could not reach the server. Please check your connection and refresh.');
+            return;
+          }
+          setTimeout(load, 2000);
+        });
+    }
+
+    if (!token) {
+      fail('This page needs the link from your confirmation email or the one you ' +
+           'were returned to after payment.');
+    } else {
+      load();
+    }
+  })();
+  </script>
+
+  <script src="../protect.js" defer></script>
+</body>
+</html>

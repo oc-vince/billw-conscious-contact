@@ -3,6 +3,7 @@
 
 # Christmas Bundle checkout flow
 /christmas-bundle/checkout                      /christmas-bundle/checkout.html         200
+/christmas-bundle/order-confirmation            /christmas-bundle/order-confirmation.html 200
 
 # Press kit — folder URL moved to a flat page
 # /billw-presskit-firstrunfeatures/               /billw-presskit-firstrunfeatures.html   301!
