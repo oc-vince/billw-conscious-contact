@@ -87,23 +87,37 @@ async function markPaid(stripeObj: any, order: OrderRow, eventType: string) {
     return;
   }
 
-  if (order.payment_status !== "paid") {
-    await update(
-      "orders",
-      { id: order.id },
-      {
-        payment_status: "paid",
-        stripe_payment_intent_id:
-          typeof stripeObj.payment_intent === "string"
-            ? stripeObj.payment_intent
-            : stripeObj.payment_intent?.id ?? stripeObj.id ?? null,
-      }
+  // ── claim the order, atomically ──
+  // Stripe can deliver checkout.session.completed and
+  // payment_intent.succeeded for the same order in the same second.
+  // They are different events, so the event-id dedupe lets both through
+  // by design — but both would otherwise read payment_status 'pending'
+  // and run the whole confirmation path twice. The UPDATE inside
+  // claim_order_payment takes a row lock, so exactly one caller gets
+  // TRUE and everything below runs once. (See migration 007.)
+  const paymentIntentId =
+    typeof stripeObj.payment_intent === "string"
+      ? stripeObj.payment_intent
+      : stripeObj.payment_intent?.id ?? stripeObj.id ?? null;
+
+  const won = await rpc<boolean>("claim_order_payment", {
+    p_order_id: order.id,
+    p_payment_intent: paymentIntentId,
+  });
+
+  if (won !== true) {
+    await logEvent(
+      order.id,
+      "payment_already_confirmed",
+      `Duplicate confirmation via ${eventType}; ignored`
     );
-    await logEvent(order.id, "payment_confirmed", `Verified via ${eventType}`, {
-      amount,
-      currency,
-    });
+    return;
   }
+
+  await logEvent(order.id, "payment_confirmed", `Verified via ${eventType}`, {
+    amount,
+    currency,
+  });
 
   // ── coupon: reserved -> assigned, only now ──
   let coupon: CouponForEmail | null = null;

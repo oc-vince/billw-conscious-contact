@@ -17,6 +17,8 @@ Netlify. **Run them in numerical order** — later files depend on earlier ones.
 | 003 | `003_security_lockdown.sql` | RLS + revokes **(do not skip)** |
 | 004 | `004_schedule_reservation_cleanup.sql` | pg_cron sweep every 5 min (optional) |
 | 005 | `005_import_film_coupons.sql` | the 100 film coupon codes |
+| 006 | `006_webhook_idempotency.sql` | `processed_stripe_events` + claim/release **(do not skip)** |
+| 007 | `007_order_payment_claim.sql` | `claim_order_payment` — one confirmation per order **(do not skip)** |
 
 ## After running, verify
 
