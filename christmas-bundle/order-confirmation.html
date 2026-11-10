@@ -278,7 +278,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="oc-step" style="margin-bottom:.2rem;">Your Film Access Code</div>
             <div class="oc-code" id="ocCode"></div>
             <div class="oc-cta-row">
-              <a id="ocWatch" class="btn btn-primary" href="#" rel="noopener">Watch the Film</a>
               <button type="button" class="oc-copy" id="ocCopy">Copy code</button>
             </div>
             <p class="oc-ref" style="margin-top:1.2rem; letter-spacing:0;">
@@ -403,12 +402,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // ── coupon ──
       if (o.coupon && o.coupon.code) {
         document.getElementById('ocCode').textContent = o.coupon.code;
-        var watch = document.getElementById('ocWatch');
-        if (o.coupon.redemptionLink) {
-          watch.href = o.coupon.redemptionLink;
-        } else {
-          watch.hidden = true;
-        }
         document.getElementById('ocCouponPanel').hidden = false;
       } else if (o.filmSelected) {
         document.getElementById('ocCouponPending').hidden = false;

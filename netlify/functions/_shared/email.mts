@@ -99,7 +99,9 @@ export type OrderForEmail = {
   confirmation_email_sent_at: string | null;
 };
 
-export type CouponForEmail = { code: string; redemption_link: string | null };
+// The redemption URL is deliberately not carried here. The code is issued
+// on its own; no link is shown to the customer anywhere.
+export type CouponForEmail = { code: string };
 
 function addressLines(a: Record<string, string>): string[] {
   return [
@@ -138,21 +140,9 @@ function customerHtml(order: OrderForEmail, coupon: CouponForEmail | null): stri
       <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:22px;font-weight:600;color:#1a1a1a;letter-spacing:.04em;">
         ${esc(coupon.code)}
       </div>
-      ${
-        coupon.redemption_link
-          ? `<div style="margin-top:14px;">
-               <a href="${esc(coupon.redemption_link)}"
-                  style="display:inline-block;background:#1a1a1a;color:#f5e6c8;text-decoration:none;padding:11px 22px;border-radius:3px;font-size:14px;">
-                 Watch the Film
-               </a>
-             </div>
-             <div style="margin-top:12px;color:#6b5a38;font-size:13px;line-height:1.5;">
-               Keep this email — the code is yours and can be redeemed at any time.
-             </div>`
-          : `<div style="margin-top:12px;color:#6b5a38;font-size:13px;">
-               Redemption instructions will follow shortly.
-             </div>`
-      }
+      <div style="margin-top:12px;color:#6b5a38;font-size:13px;line-height:1.5;">
+        Keep this email — the code is yours and can be redeemed at any time.
+      </div>
     </div>`
     : "";
 
@@ -241,7 +231,6 @@ function customerText(order: OrderForEmail, coupon: CouponForEmail | null): stri
   if (coupon) {
     lines.push(
       `YOUR FILM ACCESS CODE: ${coupon.code}`,
-      coupon.redemption_link ? `Watch the film: ${coupon.redemption_link}` : ``,
       `Keep this email - the code is yours and can be redeemed at any time.`,
       ``
     );

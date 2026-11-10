@@ -123,12 +123,14 @@ async function markPaid(stripeObj: any, order: OrderRow, eventType: string) {
   let coupon: CouponForEmail | null = null;
 
   if (order.film_coupon_selected) {
-    const assigned = await rpc<
-      Array<{ coupon_id: string; code: string; redemption_link: string | null }>
-    >("assign_film_coupon", { p_order_id: order.id });
+    const assigned = await rpc<Array<{ coupon_id: string; code: string }>>(
+      "assign_film_coupon",
+      { p_order_id: order.id }
+    );
     const row = Array.isArray(assigned) ? assigned[0] : null;
     if (row?.coupon_id) {
-      coupon = { code: row.code, redemption_link: row.redemption_link };
+      // Only the code travels onward — no redemption URL anywhere.
+      coupon = { code: row.code };
       await logEvent(order.id, "coupon_assigned", "Coupon finalised after payment", {
         coupon_id: row.coupon_id,
       });

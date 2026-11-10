@@ -50,7 +50,7 @@ type OrderRow = {
   tracking_url: string | null;
 };
 
-type CouponRow = { code: string; redemption_link: string | null; status: string };
+type CouponRow = { code: string; status: string };
 
 export default async (req: Request, _ctx: Context) => {
   if (req.method !== "GET") return json(405, { error: "Method not allowed" });
@@ -80,15 +80,18 @@ export default async (req: Request, _ctx: Context) => {
   }
 
   // ── coupon, only once genuinely assigned ──
-  let coupon: { code: string; redemptionLink: string | null } | null = null;
+  // The code only. The redemption URL is never sent to the browser, so it
+  // cannot leak through this endpoint even with a valid token.
+  let coupon: { code: string } | null = null;
   if (order.film_coupon_selected && order.payment_status === "paid") {
     try {
-      const rows = await select<CouponRow>("film_coupons", {
-        assigned_order_id: order.id,
-        status: "assigned",
-      });
+      const rows = await select<CouponRow>(
+        "film_coupons",
+        { assigned_order_id: order.id, status: "assigned" },
+        "code,status"
+      );
       if (rows[0]) {
-        coupon = { code: rows[0].code, redemptionLink: rows[0].redemption_link };
+        coupon = { code: rows[0].code };
       }
     } catch (err: any) {
       // The order still renders; the email carries the code too.
