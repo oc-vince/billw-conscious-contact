@@ -99,8 +99,11 @@ export type OrderForEmail = {
   confirmation_email_sent_at: string | null;
 };
 
-// The redemption URL is deliberately not carried here. The code is issued
-// on its own; no link is shown to the customer anywhere.
+// Only the code travels with the order. The redemption page is a single
+// static URL that every customer shares — never a per-coupon link, so a
+// forwarded email cannot hand anyone a pre-filled redemption.
+const REDEEM_URL = "https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact";
+
 export type CouponForEmail = { code: string };
 
 function addressLines(a: Record<string, string>): string[] {
@@ -140,8 +143,15 @@ function customerHtml(order: OrderForEmail, coupon: CouponForEmail | null): stri
       <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:22px;font-weight:600;color:#1a1a1a;letter-spacing:.04em;">
         ${esc(coupon.code)}
       </div>
-      <div style="margin-top:12px;color:#6b5a38;font-size:13px;line-height:1.5;">
-        Keep this email — the code is yours and can be redeemed at any time.
+      <div style="margin-top:16px;">
+        <a href="${REDEEM_URL}"
+           style="display:inline-block;background:#1a1a1a;color:#f5e6c8;text-decoration:none;padding:11px 22px;border-radius:3px;font-size:14px;">
+          Redeem Your Film
+        </a>
+      </div>
+      <div style="margin-top:14px;color:#6b5a38;font-size:13px;line-height:1.5;">
+        Enter the code above on the redemption page. Keep this email — the code
+        is yours and can be redeemed at any time.
       </div>
     </div>`
     : "";
@@ -231,7 +241,10 @@ function customerText(order: OrderForEmail, coupon: CouponForEmail | null): stri
   if (coupon) {
     lines.push(
       `YOUR FILM ACCESS CODE: ${coupon.code}`,
-      `Keep this email - the code is yours and can be redeemed at any time.`,
+      ``,
+      `Redeem your film: ${REDEEM_URL}`,
+      `Enter the code above on that page. Keep this email - the code is yours`,
+      `and can be redeemed at any time.`,
       ``
     );
   }
