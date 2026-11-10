@@ -150,8 +150,9 @@ function customerHtml(order: OrderForEmail, coupon: CouponForEmail | null): stri
         </a>
       </div>
       <div style="margin-top:14px;color:#6b5a38;font-size:13px;line-height:1.5;">
-        Enter the code above on the redemption page. Keep this email — the code
-        is yours and can be redeemed at any time.
+        Please manually enter and apply the coupon code under &ldquo;Discounts and
+        promo code&rdquo; to activate the discount. Keep this email — the code is
+        yours and can be redeemed at any time.
       </div>
     </div>`
     : "";
@@ -243,8 +244,9 @@ function customerText(order: OrderForEmail, coupon: CouponForEmail | null): stri
       `YOUR FILM ACCESS CODE: ${coupon.code}`,
       ``,
       `Redeem your film: ${REDEEM_URL}`,
-      `Enter the code above on that page. Keep this email - the code is yours`,
-      `and can be redeemed at any time.`,
+      `Please manually enter and apply the coupon code under "Discounts and`,
+      `promo code" to activate the discount. Keep this email - the code is`,
+      `yours and can be redeemed at any time.`,
       ``
     );
   }
