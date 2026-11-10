@@ -18,9 +18,7 @@ values
   ('da9ddf-9b9ea8', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=da9ddf-9b9ea8', true),
   ('f8c92c-d11a24', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=f8c92c-d11a24', true),
   ('14e733-5fcb9b', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=14e733-5fcb9b', true),
-  ('cf2747-1d560d', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=cf2747-1d560d', true),
   ('7b8075-241a59', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=7b8075-241a59', true),
-  ('9750bd-428119', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=9750bd-428119', true),
   ('d0de07-1c4e16', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=d0de07-1c4e16', true),
   ('9c7338-6ce479', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=9c7338-6ce479', true),
   ('64b6ec-c1254e', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=64b6ec-c1254e', true),
@@ -113,7 +111,11 @@ values
   ('a93cb6-951fb9', 'https://billwconsciouscontact1.vhx.tv/checkout/bill-w-conscious-contact?code=a93cb6-951fb9', true)
 on conflict (code) do nothing;
 
--- Verification — all three numbers must read 100:
+-- 10 Nov 2026: cf2747-1d560d and 9750bd-428119 were permanently withdrawn
+-- after being issued during testing, and are deleted from this file so a
+-- rebuild cannot reintroduce them. 98 codes remain.
+--
+-- Verification — all three numbers must read 98:
 --   select count(*)                       as total,
 --          count(distinct code)           as unique_codes,
 --          count(*) filter (where status='available') as available
