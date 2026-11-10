@@ -76,6 +76,28 @@ export function getBundle(value: unknown): Bundle | null {
 }
 
 /**
+ * The four purchasable combinations, named distinctly for analytics.
+ *
+ * GA4 sees one of these on the confirmation URL, so each option reports
+ * separately rather than the two film variants collapsing into their base
+ * bundle. Hyphenated rather than spaced so the value survives a query
+ * string intact — "+" would decode back to a space.
+ *
+ *   paperback_2   + film → two-paperbacks-plus-film
+ *   paperback_2          → two-paperbacks
+ *   kit_paperback + film → kitchen-table-paperback-plus-film
+ *   kit_paperback        → kitchen-table-paperback
+ */
+const VARIANT_BASE: Record<BundleId, string> = {
+  paperback_2: "two-paperbacks",
+  kit_paperback: "kitchen-table-paperback",
+};
+
+export function variantName(bundle: Bundle, withFilm: boolean): string {
+  return VARIANT_BASE[bundle.id] + (withFilm ? "-plus-film" : "");
+}
+
+/**
  * Server-side order maths. The only place a total is ever computed.
  */
 export function priceOrder(bundle: Bundle, withFilm: boolean, shippingCents: number) {

@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import {
   getBundle,
   priceOrder,
+  variantName,
   shipFromAddress,
   FILM_ADDON_CENTS,
   FILM_ADDON_NAME,
@@ -250,14 +251,15 @@ export default async (req: Request, _ctx: Context) => {
         payment_intent_data: { metadata },
         // We already collected the address — do not ask again.
         billing_address_collection: "auto",
-        // `bundle` and `film` are carried purely so GA4 can attribute the
-        // conversion without us having to expose anything else. Nothing on
-        // the page or the server reads them — the order is always resolved
-        // from the token, so a visitor editing these skews their own
-        // analytics and nothing more.
+        // `bundle` is carried purely so GA4 can attribute the conversion to
+        // one of the four purchasable options — the film variants get their
+        // own names rather than folding into the base bundle. Nothing on the
+        // page or the server reads it; the order is always resolved from the
+        // token, so a visitor editing this skews their own analytics and
+        // nothing more.
         success_url:
           `${origin}/christmas-bundle/order-confirmation` +
-          `?t=${accessToken}&bundle=${bundle.id}&film=${wantsFilm ? "1" : "0"}`,
+          `?t=${accessToken}&bundle=${variantName(bundle, wantsFilm)}`,
         cancel_url: `${origin}/christmas-bundle/checkout?bundle=${bundle.id}${wantsFilm ? "&film=1" : ""}`,
         expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // matches the coupon hold
       },
