@@ -39,6 +39,11 @@ async function send(args: SendArgs): Promise<{ id: string } | null> {
     return null;
   }
 
+  const replyToList = (args.replyTo ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   const res = await fetch(API, {
     method: "POST",
     headers: {
@@ -52,7 +57,9 @@ async function send(args: SendArgs): Promise<{ id: string } | null> {
       subject: args.subject,
       html: args.html,
       text: args.text,
-      ...(args.replyTo ? { reply_to: args.replyTo } : {}),
+      // Resend accepts several reply-to addresses; EMAIL_REPLY_TO may be a
+      // comma-separated list so replies can reach more than one inbox.
+      ...(replyToList.length ? { reply_to: replyToList } : {}),
     }),
   });
 
