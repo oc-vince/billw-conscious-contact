@@ -181,11 +181,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hb-copy {
       display: flex;
       align-items: center;
+      /* Push the block to the right of its column so the copy sits flush
+         against the image rather than stranded mid-column. */
+      justify-content: flex-end;
       padding: clamp(2.5rem, 5vw, 5rem);
       background: linear-gradient(135deg, #141414 0%, #0b0b0b 100%);
     }
 
-    .hb-inner { max-width: 34rem; }
+    .hb-inner { max-width: 34rem; text-align: right; }
 
     .hb-ribbon {
       display: inline-block;
@@ -235,7 +238,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     @media (max-width: 900px) {
       .hb-band { grid-template-columns: 1fr; }
-      .hb-copy { padding: 2.5rem 1.5rem 3rem; }
+      .hb-copy {
+        padding: 2.5rem 1.5rem 3rem;
+        justify-content: center;   /* undo the desktop right-push */
+      }
 
       /* Full width at natural height: the absolute + object-fit:cover
          treatment exists to match the copy column's height on desktop.
