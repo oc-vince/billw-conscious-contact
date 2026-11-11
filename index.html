@@ -218,14 +218,53 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin: 0 0 1.1rem;
     }
 
-    .hb-cta { margin-top: 1rem; }
+    /* .btn is display:inline sitewide, so padding doesn't separate wrapped
+       lines and the background breaks into offset rectangles the moment the
+       label wraps. inline-block makes it one solid box at every width. */
+    .hb-cta {
+      display: inline-block;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .hb-media picture { display: contents; }
+
+    /* Hidden on desktop, where the label fits on one line. The space before
+       it in the markup survives, so the dash stays spaced when inline. */
+    .hb-cta-break { display: none; }
 
     @media (max-width: 900px) {
       .hb-band { grid-template-columns: 1fr; }
-      .hb-media { min-height: 300px; }
       .hb-copy { padding: 2.5rem 1.5rem 3rem; }
-      .hb-inner { max-width: none; }
-      .hb-cta { width: 100%; text-align: center; }
+
+      /* Full width at natural height: the absolute + object-fit:cover
+         treatment exists to match the copy column's height on desktop.
+         Stacked, there's nothing to match, and cover would crop the
+         books out of a portrait-ish viewport. */
+      .hb-media {
+        position: static;
+        min-height: 0;
+      }
+
+      .hb-media img {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      /* Centre everything from tablet down. */
+      .hb-inner { max-width: none; text-align: center; }
+      .hb-ribbon { margin-left: auto; margin-right: auto; }
+      .hb-cta {
+        display: block;
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        line-height: 1.7;
+      }
+
+      /* Break exactly where asked, rather than letting the width decide. */
+      .hb-cta-break { display: inline; }
     }
 
     /* ── Vertical thumbnail nav (far left) ── */
@@ -920,9 +959,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ── HOLIDAY BUNDLE — full-bleed split ── -->
   <section class="hb-band" aria-labelledby="hb-title">
     <div class="hb-media">
-      <img src="images/Homepage-HolidayBundle.webp"
-           alt="Bill W. Conscious Contact holiday gift bundle"
-           width="1922" height="792" loading="lazy" decoding="async">
+      <!-- Narrower crop below 900px, where the wide image would crop too
+           tightly to read. The 900px breakpoint matches the CSS below. -->
+      <picture>
+        <source media="(max-width: 900px)" srcset="images/Homepage-HolidayBundle-Mobile.webp">
+        <img src="images/Homepage-HolidayBundle.webp"
+             alt="Bill W. Conscious Contact holiday gift bundle"
+             width="1922" height="792" loading="lazy" decoding="async">
+      </picture>
     </div>
     <div class="hb-copy">
       <div class="hb-inner">
@@ -930,7 +974,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 class="hb-title" id="hb-title">Keep one. Gift one.</h2>
         <p class="hb-body">This holiday season, we&rsquo;ve made it easy to share. Keep one book and gift one. The book brings together the words and images from the film, including images from the Stepping Stones Foundation collection never before seen.</p>
         <p class="hb-body">Thank you for being part of <em>Bill W. Conscious Contact</em>. Many of you have told us the film made you think of someone: a sponsor, a sponsee, a friend who is still seeking.</p>
-        <a href="christmas-bundle.html" class="btn btn-primary hb-cta">Limited Holiday Bundles &ndash; Get Yours Today!</a>
+        <a href="christmas-bundle.html" class="btn btn-primary hb-cta">Limited Holiday Bundles <br class="hb-cta-break">&ndash; Get Yours Today!</a>
       </div>
     </div>
   </section>
