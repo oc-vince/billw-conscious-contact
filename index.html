@@ -241,7 +241,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          treatment exists to match the copy column's height on desktop.
          Stacked, there's nothing to match, and cover would crop the
          books out of a portrait-ish viewport. */
+      /* Image back above the copy when stacked, despite coming second
+         in the DOM. */
       .hb-media {
+        order: -1;
         position: static;
         min-height: 0;
       }
@@ -958,16 +961,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ── HOLIDAY BUNDLE — full-bleed split ── -->
   <section class="hb-band" aria-labelledby="hb-title">
-    <div class="hb-media">
-      <!-- Narrower crop below 900px, where the wide image would crop too
-           tightly to read. The 900px breakpoint matches the CSS below. -->
-      <picture>
-        <source media="(max-width: 900px)" srcset="images/Homepage-HolidayBundle-Mobile.webp">
-        <img src="images/Homepage-HolidayBundle.webp"
-             alt="Bill W. Conscious Contact holiday gift bundle"
-             width="1922" height="792" loading="lazy" decoding="async">
-      </picture>
-    </div>
+    <!-- Copy first in the DOM so it reads first for screen readers and so
+         the image sits right on desktop; the image is pulled back above it
+         on mobile with order, below. -->
     <div class="hb-copy">
       <div class="hb-inner">
         <div class="hb-ribbon">Holiday Gift Bundles from $49</div>
@@ -976,6 +972,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="hb-body">Thank you for being part of <em>Bill W. Conscious Contact</em>. Many of you have told us the film made you think of someone: a sponsor, a sponsee, a friend who is still seeking.</p>
         <a href="christmas-bundle.html" class="btn btn-primary hb-cta">Limited Holiday Bundles <br class="hb-cta-break">&ndash; Get Yours Today!</a>
       </div>
+    </div>
+
+    <div class="hb-media">
+      <!-- Narrower crop below 900px, where the wide image would crop too
+           tightly to read. The 900px breakpoint matches the CSS below. -->
+      <picture>
+        <source media="(max-width: 900px)" srcset="images/Homepage-HolidayBundle-Mobile.webp">
+        <img src="images/Homepage-HolidayBundle-v2.webp"
+             alt="Bill W. Conscious Contact holiday gift bundle"
+             width="1598" height="912" loading="lazy" decoding="async">
+      </picture>
     </div>
   </section>
 
