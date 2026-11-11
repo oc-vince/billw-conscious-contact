@@ -154,6 +154,80 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         linear-gradient(to bottom, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.72) 50%, var(--black) 100%);
     }
 
+    /* ── Holiday Bundle band ──
+       Full-bleed 50/50. The image column uses object-fit so the artwork
+       crops rather than distorts at any viewport, and the two columns are
+       equal height without needing fixed pixel values. */
+    .hb-band {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+      background: var(--black-light);
+      width: 100%;
+    }
+
+    .hb-media { position: relative; min-height: 420px; }
+
+    .hb-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .hb-copy {
+      display: flex;
+      align-items: center;
+      padding: clamp(2.5rem, 5vw, 5rem);
+      background: linear-gradient(135deg, #141414 0%, #0b0b0b 100%);
+    }
+
+    .hb-inner { max-width: 34rem; }
+
+    .hb-ribbon {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      margin-bottom: 1.4rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold) 50%, var(--gold-light));
+      color: #0a0a0a;
+      font-family: var(--font-ui);
+      font-size: 0.64rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .hb-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+      font-weight: 400;
+      color: var(--gold);
+      margin: 0 0 1.2rem;
+      line-height: 1.15;
+    }
+
+    .hb-body {
+      font-family: var(--font-body, inherit);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(245, 240, 230, 0.75);
+      margin: 0 0 1.1rem;
+    }
+
+    .hb-cta { margin-top: 1rem; }
+
+    @media (max-width: 900px) {
+      .hb-band { grid-template-columns: 1fr; }
+      .hb-media { min-height: 300px; }
+      .hb-copy { padding: 2.5rem 1.5rem 3rem; }
+      .hb-inner { max-width: none; }
+      .hb-cta { width: 100%; text-align: center; }
+    }
+
     /* ── Vertical thumbnail nav (far left) ── */
     .hero-thumbs {
       position: absolute;
@@ -841,6 +915,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="hero-scroll"><span></span></div>
+  </section>
+
+  <!-- ── HOLIDAY BUNDLE — full-bleed split ── -->
+  <section class="hb-band" aria-labelledby="hb-title">
+    <div class="hb-media">
+      <img src="images/Homepage-HolidayBundle.webp"
+           alt="Bill W. Conscious Contact holiday gift bundle"
+           width="1922" height="792" loading="lazy" decoding="async">
+    </div>
+    <div class="hb-copy">
+      <div class="hb-inner">
+        <div class="hb-ribbon">Holiday Gift Bundles from $49</div>
+        <h2 class="hb-title" id="hb-title">Keep one. Gift one.</h2>
+        <p class="hb-body">This holiday season, we&rsquo;ve made it easy to share. Keep one book and gift one. The book brings together the words and images from the film, including images from the Stepping Stones Foundation collection never before seen.</p>
+        <p class="hb-body">Thank you for being part of <em>Bill W. Conscious Contact</em>. Many of you have told us the film made you think of someone: a sponsor, a sponsee, a friend who is still seeking.</p>
+        <a href="christmas-bundle.html" class="btn btn-primary hb-cta">Limited Holiday Bundles &ndash; Get Yours Today!</a>
+      </div>
+    </div>
   </section>
 
   <section class="about section-pad" style="position: relative; overflow: hidden;">

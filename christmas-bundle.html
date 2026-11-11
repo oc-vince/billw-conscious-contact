@@ -154,6 +154,37 @@ src="https://www.facebook.com/tr?id=1011784418372941&ev=PageView&noscript=1"
       margin-top: 0.35rem;
     }
 
+    /* ── Hero background ──
+       The overlay runs transparent at the top to dark at the bottom, so the
+       cards below sit on solid colour and stay readable while the book still
+       shows through behind the heading. background-attachment stays scroll:
+       fixed breaks on iOS Safari. */
+    .cb-hero {
+      position: relative;
+      background-color: var(--black-light);
+      background-image: url('images/KitchenTable-Hero.webp');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    .cb-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.55) 0%,
+        rgba(10, 10, 10, 0.75) 40%,
+        rgba(20, 20, 20, 0.95) 75%,
+        var(--black-light) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Lift the content above the overlay. */
+    .cb-hero > .container { position: relative; z-index: 1; }
+
     /* ── Promotional ribbon ── */
     .cb-ribbon {
       display: block;
@@ -316,10 +347,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
   <!-- ── CHRISTMAS BUNDLE ── -->
-  <section id="christmas-bundle" class="section-pad" style="background: var(--black-light); padding-top: calc(4em + 90px);">
+  <section id="christmas-bundle" class="section-pad cb-hero" style="padding-top: calc(4em + 90px);">
     <div class="container">
       <div class="cb-ribbon reveal">Buy 1 Gift 1 &mdash; Limited Time Offer</div>
-      <h2 class="section-heading reveal" style="text-align: center;">Christmas Bundle</h2>
+      <h2 class="section-heading reveal" style="text-align: center;">Holiday Bundle</h2>
       <p class="reveal" style="text-align: center; font-size: 1.1rem; font-weight: 300; color: rgba(245,240,230,0.72); line-height: 1.8; max-width: 760px; margin: 0 auto;">Shop exclusive bundle deals from November 10 through January 15! Choose from two special bundle options, available for purchase exclusively through our website&mdash;not on Amazon.</p>
 
       <div class="editions-grid cb-grid">
